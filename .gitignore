@@ -172,3 +172,4 @@ alembic.ini
 /all_sent_batches_new.xlsx
 !media/images
 !course/static
+ttw.db

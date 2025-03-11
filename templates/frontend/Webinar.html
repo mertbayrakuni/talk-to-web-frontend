@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Webinar</title>
+    <link href="https://test.talktoweb.com/CrmProject/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://test.talktoweb.com/CrmProject/node_modules/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://test.talktoweb.com/CrmProject/Navbar/Css/Navbar.css" rel="stylesheet">
+</head>
+<body>
+<div id="page-content" class="site">
+    <div id="content" class="site-content">
+        <header id="header-cont" class="header sticky-top">
+        </header>
+        <div class="whatsapp">
+            <a href="https://wa.me/5456688801" target="_blank" class="btn btn-success btn-circle"
+                id="whatsappButton">
+                <i class="bi bi-whatsapp"></i>
+            </a>
+        </div>
+        <div class="container-fluid info-section">
+            <div class="banner-section">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="banner-title">
+                                <p class="title">Webinar</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container my-5 past-webinar-section" id="upcomingWebinar">
+        </div>
+        <div class="container my-5 upcoming-webinar-section" id="pastWebinar">
+        </div>
+        <div id="registrationFormContainer" class="registration-form-container d-none"></div>
+        <div class="container my-5 seo-section">
+            <div class="row">
+                <div class="col-lg">
+                    <div class="seo-card p-4" id="seo-card">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="registrationModalLabel">Ön Kayıt Formu</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="registrationForm">
+                                <div class="mb-3">
+                                    <label for="nameSurname" class="form-label">Ad Soyad</label>
+                                    <input type="text" class="form-control" id="nameSurname" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phoneKayit" class="form-label">Telefon</label>
+                                    <input type="text" class="form-control" id="phoneKayit" required>
+                                </div>
+                                <button type="submit" class="btn btn-success">Kayıt Ol</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+<footer id="footer-cont"></footer>
+
+<script src="https://test.talktoweb.com/CrmProject/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="https://test.talktoweb.com/CrmProject/js/bootstrap.bundle.min.js"></script>
+<script src="https://test.talktoweb.com/CrmProject/node_modules/fontawesome/js/all.min.js"></script>
+<script src="https://test.talktoweb.com/CrmProject/Navbar/Js/Navbar.js"></script>
+<script src="https://test.talktoweb.com/CrmProject/Navbar/Js/Webinar.js"></script>
+</body>
+</html>

@@ -1,0 +1,1445 @@
+{%load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}<title>Anasayfa | Talk to Web ile Kariyerini Tasarla</title>{% endblock %}
+
+    <meta name="description" content="Talk to Web; UI/UX Tasarım, Grafik Tasarım, Video Efekt, Dijital Pazarlama, Sosyal Medya, 3D Tasarım ve Yazılım alanlarında eğitim veren bağımsız bir kurumdur.">
+    <meta name="keywords" content="UI/UX Tasarım, Grafik Tasarım, Video Efekt, Dijital Pazarlama, Sosyal Medya, 3D Tasarım, Yazılım Eğitimi">
+    <meta name="author" content="Talk to Web">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://talktoweb.com/">
+
+    <link rel="stylesheet" href="{%static  'frontend/css/bootstrap.min.css' %}">
+    <link href="{%static  'frontend/bootstrap-icons/font/bootstrap-icons.min.css' %}" rel="stylesheet">
+    <link href="{%static  'frontend/css/main.css' %}" rel="stylesheet">
+
+    <style>
+        body {
+            position: relative;
+            height: 100%;
+            background: #eee;
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+        h6{
+            font-family: Inter;
+            text-transform: capitalize;
+            line-height: 28px;
+            letter-spacing: .3px;
+            font-weight: 600;
+            font-style: normal;
+            color: #000248;
+            font-size: 16px;
+        }
+        swiper-container {
+          width: 100%;
+          height: 100%;
+        }
+
+        swiper-slide {
+          text-align: center;
+          font-size: 18px;
+          background: #fff;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        swiper-slide img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .user-content p{
+            margin-top:5px;
+            font-size:12px;
+            min-height: 150px;
+            max-height: 150px;
+        }
+        .user-image{
+            width: 100px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 10px;
+        }
+        span.checked{
+            color: #FFD400;
+            font-size: 18px;
+        }
+        p.testimonial-message{
+            font-size: 18px;
+            line-height: 25px;
+        }
+
+        .instructor-image{
+            /* IE6-9 */
+            -webkit-filter: grayscale(100%);
+            /* Chrome 19+ & Safari 6+ */
+            -webkit-transition: all .6s ease;
+            /* Fade to color for Chrome and Safari */
+            -webkit-backface-visibility: hidden;
+            /* Fix for transition flickering */
+        }
+
+        .instructor-image:hover {
+            filter: none;
+            -webkit-filter: grayscale(0%);
+        }
+    </style>
+{% block css %}
+{% endblock %}
+</head>
+<body>
+    <div id="page-content" class="site">
+        <div id="content" class="site-content">
+
+            {%  include "frontend/header.html" %}
+
+            <div class="whatsapp">
+                <a href="https://wa.me/{{ WHATSAPP_NUMBER }}" target="_blank" class="btn btn-success btn-circle"
+                    id="whatsappButton">
+                    <i class="bi bi-whatsapp"></i>
+                </a>
+            </div>
+            {% block main_content %}
+                <div class="container preliminary-button">
+                    <div class="position-fixed d-flex align-items-center floating-button">
+                        <a href="#" class="btn btn-primary d-block" id="floatingButton" data-bs-toggle="offcanvas"
+                           data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                            Ön Başvuru Formu
+                        </a>
+                    </div>
+                    <div class="offcanvas offcanvas-end custom-offcanvas-width" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                        <div class="offcanvas-header justify-content-between">
+                            <button type="button" class="btn-close btn-close-left" data-bs-dismiss="offcanvas"  aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <div class="container-fluid my-3 form-section">
+                                <div class="container">
+                                    <div class="row justify-content-center">
+                                        <div class="col-lg-12">
+                                            <div class="form-container">
+                                                <form id="preApplicationForm">
+                                                    <div class="row">
+                                                        <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-3">
+                                                            <label for="fullNameForm" class="form-label">Ad Soyad <span
+                                                                    class="asterisk">*</span></label>
+                                                            <input type="text" class="form-control" id="fullNameForm"
+                                                                   placeholder="Adınız Soyadınız" required>
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-3">
+                                                            <label for="phoneForm" class="form-label">Telefon <span
+                                                                    class="asterisk">*</span></label>
+                                                            <input type="tel" class="form-control" id="phoneForm"
+                                                                   placeholder="Telefon" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-3">
+                                                            <label for="educationForm" class="form-label">Hangi Eğitimi Almak
+                                                                İstersiniz? <span class="asterisk">*</span></label>
+                                                            <select class="form-control" id="educationForm" required></select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text">
+                                                        <button type="submit" class="btn btn-primary">Başvuru Yap</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container p-3">
+                                <a href="tel:+905456688801" class="d-flex justify-content-center mb-3">
+                                    <img alt="talk to web kampanya"
+                                         src="https://talktoweb.com/wp-content/uploads/2024/06/talktoweb-kampanya.webp"
+                                         class="img-fluid">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <swiper-container class="mySwiper" pagination="true" pagination-clickable="true"
+                                  navigation="true" space-between="30" centered-slides="true"
+                                  autoplay-delay="3500" autoplay-disable-on-interaction="false">
+                    {% for slide in all_slides %}
+                        <swiper-slide>
+
+                            <div class="container-fluid bg-header biz-sizi-arayalim-section" style="background-image: url('{{ slide.bg_img.original }}');">
+                                {{ slide.html | safe }}
+                            </div>
+
+                        </swiper-slide>
+                    {% endfor %}
+                  </swiper-container>
+
+                <div class="container my-5 course-list">
+                    <div class="row">
+                        <div class="col-12">
+                            <h4 class="text-center mb-4">Güncel Eğitimler</h4>
+                        </div>
+                    </div>
+                    <div class="row g-4" id='MainCourses'>
+                        <div class="col-lg-3 col-md-6">
+
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card shadow-lg h-100 course-card"></div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card shadow-lg h-100 course-card"></div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card shadow-lg h-100 course-card"></div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-12 text-center">
+                            <a href="https://test.talktoweb.com/tum-egitimler"
+                               class="btn btn-primary course-button">
+                                Tüm Eğitimler için tıklayın
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="container my-5 instructor-list">
+                    <div class="row">
+                        <div class="col-12">
+                            <h4 class="text-center mb-4">Eğitmen Kadromuz</h4>
+                        </div>
+                    </div>
+
+                    <div class="row g-4">
+                         {% for instructor in all_instructors %}
+                            <div class="col-6 col-sm-4 col-lg-2" style="text-align: center">
+                                <a href="{{ROOT}}/frontend/instructors/{{ instructor.slug }}">
+                                    <img src="{{ instructor.avatar.original }}" class="w-100 instructor-image" height="auto" alt="{{ instructor.slug }}"/>
+                                </a>
+                                <h6 class="rt-text-1">{{ instructor.full_name }}</h6>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="container-fluid my-5 mezunlarimiz-section">
+                    <div class="container student-video-style">
+                        <div class="col-12 text-center">
+                            <h4 class="mb-4">Mezunlarımız</h4>
+                        </div>
+                    </div>
+                    <div class="container student-video-style">
+                        <div class='row'>
+                            <div class="col-12 col-sm-6 col-lg mb-4 mezun-card text-center">
+                                <figure class="wp-caption">
+                                    <a href="https://test.talktoweb.com/marmara-universitesinden-doc-dr-ilke-kocamaz">
+                                        <img src="https://talktoweb.com/wp-content/uploads/2024/11/ilke-kocamaz.webp"
+                                             alt="İlke Kocamaz" class="img-fluid rounded">
+                                    </a>
+                                    <figcaption class="wp-caption-text">
+                                        Marmara Üniversitesi'nden
+                                        Doç. Dr. İlke Kocamaz
+                                    </figcaption>
+                                </figure>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg mb-4 mezun-card text-center">
+                                <figure class="wp-caption">
+                                    <a href="https://test.talktoweb.com/yeni-yuzyil-universitesi-ogretim-gorevlisi-buse-koca">
+                                        <img src="https://talktoweb.com/wp-content/uploads/2024/05/buse_koca-1.webp"
+                                             alt="Buse Koca" class="img-fluid rounded">
+                                    </a>
+                                    <figcaption class="wp-caption-text">
+                                        Yeni Yüzyıl Üniversitesi Öğretim Görevlisi Buse Koca
+                                    </figcaption>
+                                </figure>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg mb-4 mezun-card text-center">
+                                <figure class="wp-caption">
+                                    <a href="https://test.talktoweb.com/mae-universitesi-ogretim-gorevlisi-serife-sahin-ozcan">
+                                        <img src="https://talktoweb.com/wp-content/uploads/2024/05/serife_sahin_ozcan.webp"
+                                             alt="Şerife Şahin Özcan" class="img-fluid rounded">
+                                    </a>
+                                    <figcaption class="wp-caption-text">
+                                        MAE Üniversitesi Öğretim Görevlisi Şerife Şahin Özcan
+                                    </figcaption>
+                                </figure>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg mb-4 mezun-card text-center">
+                                <figure class="wp-caption">
+                                <a href="https://test.talktoweb.com/kariyerini-degistiren-mine-tastan">
+                                    <img src="https://talktoweb.com/wp-content/uploads/2024/05/mine-tastan-1.webp"
+                                         alt="Mine Taştan" class="img-fluid rounded">
+                                </a>
+                                <figcaption class="wp-caption-text">
+                                    Kariyerini Değiştiren Mine Taştan
+                                </figcaption>
+                            </figure>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg mb-4 mezun-card text-center">
+                                <figure class="wp-caption">
+                                    <a href="https://test.talktoweb.com/isvicrede-yasayan-freelance-tasarimci-ayşe-boz">
+                                        <img src="https://talktoweb.com/wp-content/uploads/2024/05/ayse-boz.webp"
+                                             alt="Ayşe Boz" class="img-fluid rounded">
+                                    </a>
+                                    <figcaption class="wp-caption-text">
+                                        İsviçre'de Yaşayan Freelance Tasarımcı Ayşe Boz
+                                    </figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class="col-12 col-sm-6 col-lg mb-4 mezun-card text-center">
+                                <figure class="wp-caption">
+                                    <a href="https://test.talktoweb.com/sosyal-medya-uzmani-yesim-yalcin">
+                                        <img src="https://talktoweb.com/wp-content/uploads/2024/06/yesim-yalcin.webp"
+                                             alt="Yeşim Yalçın" class="img-fluid rounded">
+                                    </a>
+                                    <figcaption class="wp-caption-text">
+                                        Sosyal Medya Uzmanı Yeşim Yalçın
+                                    </figcaption>
+                                </figure>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg mb-4 mezun-card text-center">
+                                <figure class="wp-caption">
+                                    <a href="https://test.talktoweb.com/dijital-gocebe-ogrencimiz-tufan-ozkan">
+                                        <img src="https://talktoweb.com/wp-content/uploads/2024/06/tufan-ozkan.webp"
+                                             alt="Tufan Özkan" class="img-fluid rounded">
+                                    </a>
+                                    <figcaption class="wp-caption-text">
+                                        Dijital Göçebe Öğrencimiz Tufan Özkan
+                                    </figcaption>
+                                </figure>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg mb-4 mezun-card text-center">
+                                <figure class="wp-caption">
+                                    <a href="https://test.talktoweb.com/ev-hanimiyken-tasarimci-olan-erva-duymaz">
+                                        <img src="https://talktoweb.com/wp-content/uploads/2024/06/erva-duymaz.webp"
+                                             alt="Erva Duymaz" class="img-fluid rounded">
+                                    </a>
+                                    <figcaption class="wp-caption-text">
+                                        Ev Hanımıyken Tasarımcı Olan Erva Duymaz
+                                    </figcaption>
+                                </figure>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg mb-4 mezun-card text-center">
+                                <figure class="wp-caption">
+                                    <a href="https://test.talktoweb.com/grafik-tasarim-ogrencimiz-figen-esme">
+                                        <img src="https://talktoweb.com/wp-content/uploads/2024/06/figen-esme.webp" alt="Figen Eşme" class="img-fluid rounded">
+                                    </a>
+                                    <figcaption class="wp-caption-text">
+                                        Grafik Tasarım Öğrencimiz Figen Eşme
+                                    </figcaption>
+                                </figure>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg mb-4 mezun-card text-center">
+                                <figure class="wp-caption">
+                                    <a href="https://test.talktoweb.com/muhasebeciligi-birakip-tasarimci-olan-sena-gunduz">
+                                        <img src="https://talktoweb.com/wp-content/uploads/2024/05/sena-gunduz.webp" alt="Sena Gündüz" class="img-fluid rounded">
+                                    </a>
+                                    <figcaption class="wp-caption-text">
+                                        Muhasebeciliği Bırakıp Tasarımcı Olan Sena Gündüz
+                                    </figcaption>
+                                </figure>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="container my-5 neden-talk-to-web-section">
+                    <div class="container student-video-style">
+                        <div class="col-12 text-center">
+                            <h4 class="mb-4">Neden Talk to Web?</h4>
+                        </div>
+                    </div>
+                    <div class="container student-video-style">
+                        <div class="col-lg-3 col-md-3 col-sm-6 mb-4">
+                            <div class="card neden-card p-3">
+                                <figure class="wp-caption mb-0 col-10 mx-auto mx-auto">
+                                    <img src="https://talktoweb.com/wp-content/uploads/2024/03/certificate.webp"
+                                         alt="Certificate" class="img-fluid">
+                                    <div class="svg-icon-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                            <path fill="#fff"
+                                                  d="M211 7.3C205 1 196-1.4 187.6 .8s-14.9 8.9-17.1 17.3L154.7 80.6l-62-17.5c-8.4-2.4-17.4 0-23.5 6.1s-8.5 15.1-6.1 23.5l17.5 62L18.1 170.6c-8.4 2.1-15 8.7-17.3 17.1S1 205 7.3 211l46.2 45L7.3 301C1 307-1.4 316 .8 324.4s8.9 14.9 17.3 17.1l62.5 15.8-17.5 62c-2.4 8.4 0 17.4 6.1 23.5s15.1 8.5 23.5 6.1l62-17.5 15.8 62.5c2.1 8.4 8.7 15 17.1 17.3s17.3-.2 23.4-6.4l45-46.2 45 46.2c6.1 6.2 15 8.7 23.4 6.4s14.9-8.9 17.1-17.3l15.8-62.5 62 17.5c8.4 2.4 17.4 0 23.5-6.1s8.5-15.1 6.1-23.5l-17.5-62 62.5-15.8c8.4-2.1 15-8.7 17.3-17.1s-.2-17.4-6.4-23.4l-46.2-45 46.2-45c6.2-6.1 8.7-15 6.4-23.4s-8.9-14.9-17.3-17.1l-62.5-15.8 17.5-62c2.4-8.4 0-17.4-6.1-23.5s-15.1-8.5-23.5-6.1l-62 17.5L341.4 18.1c-2.1-8.4-8.7-15-17.1-17.3S307 1 301 7.3L256 53.5 211 7.3z"/>
+                                        </svg>
+                                    </div>
+                                </figure>
+                                <p class="widget-image-caption wp-caption-text">Üniversite ve Uluslararası Onaylı Sertifika</p>
+                                <p class="neden-description">E devlette görülebilen üniversite ve uluslararası onaylı sertifika
+                                    sahibi olacaksınız.</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 mb-4">
+                            <div class="card neden-card p-3">
+                                <figure class="wp-caption mb-0 col-10 mx-auto">
+                                    <img src="https://talktoweb.com/wp-content/uploads/2024/03/lecturer.webp" alt="Lecturer"
+                                         class="img-fluid">
+                                    <div class="svg-icon-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 20 20">
+                                            <path fill="#fff"
+                                                  d="M14.5 18h-10c-0.276 0-0.5-0.224-0.5-0.5s0.224-0.5 0.5-0.5h10c0.276 0 0.5 0.224 0.5 0.5s-0.224 0.5-0.5 0.5z"></path>
+                                            <path fill="#fff"
+                                                  d="M16.5 3c-0.276 0-0.5 0.224-0.5 0.5v15c0 0.276-0.224 0.5-0.5 0.5h-11c-0.827 0-1.5-0.673-1.5-1.5s0.673-1.5 1.5-1.5h9c0.827 0 1.5-0.673 1.5-1.5v-12c0-0.827-0.673-1.5-1.5-1.5h-10c-0.827 0-1.5 0.673-1.5 1.5v15c0 1.378 1.122 2.5 2.5 2.5h11c0.827 0 1.5-0.673 1.5-1.5v-15c0-0.276-0.224-0.5-0.5-0.5zM3.5 2h10c0.276 0 0.5 0.224 0.5 0.5v12c0 0.276-0.224 0.5-0.5 0.5h-9c-0.562 0-1.082 0.187-1.5 0.501v-13.001c0-0.276 0.224 0.5 0.5 0.5z"></path>
+                                        </svg>
+                                    </div>
+                                </figure>
+                                <p class="widget-image-caption wp-caption-text">%100 Akademik Müfredat ve Akademisyen
+                                    Desteği</p>
+                                <p class="neden-description">Alacağınız akademik eğitim ile rakiplerinizden çok daha önde
+                                    olacaksınız.</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 mb-4">
+                            <div class="card neden-card p-3">
+                                <figure class="wp-caption mb-0 col-10 mx-auto">
+                                    <img src="https://talktoweb.com/wp-content/uploads/2024/03/curriculum.webp" alt="Curriculum"
+                                         class="img-fluid">
+                                    <div class="svg-icon-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 20 20">
+                                            <path fill="#fff"
+                                                  d="M18.5 18h-17c-0.827 0-1.5-0.673-1.5-1.5v-13c0-0.827 0.673-1.5 1.5-1.5h17c0.827 0 1.5 0.673 1.5 1.5v13c0 0.827-0.673 1.5-1.5 1.5zM1.5 3c-0.276 0-0.5 0.224-0.5 0.5v13c0 0.276 0.224 0.5 0.5 0.5h17c0.276 0 0.5-0.224 0.5-0.5v-13c0-0.276-0.224-0.5-0.5-0.5h-17z"></path>
+                                            <path fill="#fff"
+                                                  d="M9.5 6h-6c-0.276 0-0.5-0.224-0.5-0.5s0.224-0.5 0.5-0.5h6c0.276 0 0.5 0.224 0.5 0.5s-0.224 0.5-0.5 0.5z"></path>
+                                            <path fill="#fff"
+                                                  d="M9.5 9h-6c-0.276 0-0.5-0.224-0.5-0.5s0.224-0.5 0.5-0.5h6c0.276 0 0.5 0.224 0.5 0.5s-0.224 0.5-0.5 0.5z"></path>
+                                            <path fill="#fff"
+                                                  d="M9.5 11h-6c-0.276 0-0.5-0.224-0.5-0.5s0.224-0.5 0.5-0.5h6c0.276 0 0.5 0.224 0.5 0.5s-0.224 0.5-0.5 0.5z"></path>
+                                            <path fill="#fff"
+                                                  d="M9.5 13h-6c-0.276 0-0.5-0.224-0.5-0.5s0.224-0.5 0.5-0.5h6c0.276 0 0.5 0.224 0.5 0.5s-0.224 0.5-0.5 0.5z"></path>
+                                            <path fill="#fff"
+                                                  d="M8.5 15h-5c-0.276 0-0.5-0.224-0.5-0.5s0.224-0.5 0.5-0.5h5c0.276 0 0.5 0.224 0.5 0.5s-0.224 0.5-0.5 0.5z"></path>
+                                            <path fill="#fff"
+                                                  d="M17.943 6.544l-0.813-0.591-0.311-0.956h-1.005l-0.813-0.591-0.813 0.591h-1.005l-0.311 0.956-0.813 0.591 0.311 0.956-0.311 0.956 0.813 0.591 0.132 0.406c-0.002 0.016-0.002 0.031-0.002 0.047v5c0 0.202 0.122 0.385 0.309 0.462s0.402 0.035 0.545-0.108l1.146-1.146 1.146 1.146c0.096 0.096 0.223 0.147 0.354 0.146 0.064 0 0.129-0.012 0.191-0.038 0.187-0.077 0.309-0.26 0.309-0.462v-5c0-0.016-0.001-0.032-0.002-0.047l0.132-0.406 0.813-0.591-0.311-0.956 0.311-0.956zM13.233 6.926l0.488-0.355 0.187-0.574h0.604l0.488-0.355 0.488 0.355h0.604l0.187 0.574 0.488 0.355-0.187 0.574 0.187 0.574-0.488 0.355-0.187 0.574h-0.604l-0.488 0.355-0.488-0.355h-0.604l-0.187-0.574-0.488-0.355 0.187-0.574-0.187-0.574zM15.354 12.646c-0.195-0.195-0.512-0.195-0.707 0l-0.646 0.646v-3.29h0.187l0.813 0.591 0.813-0.591h0.187v3.29l-0.646-0.646z"></path>
+                                        </svg>
+                                    </div>
+                                </figure>
+                                <p class="widget-image-caption wp-caption-text">Akademisyenler Tarafından Düzenlenen
+                                    Webinarlar</p>
+                                <p class="neden-description">Her hafta eğitmenlerimiz tarafından düzenlenen webinarlar ile
+                                    online katılım belgesi sahibi olacaksınız.</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 mb-4">
+                            <div class="card neden-card p-3">
+                                <figure class="wp-caption mb-0 col-10 mx-auto">
+                                    <img src="https://talktoweb.com/wp-content/uploads/2024/03/application.webp"
+                                         alt="Application" class="img-fluid">
+                                    <div class="svg-icon-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 20 20">
+                                            <path fill="#fff"
+                                                  d="M10 20c-0.153 0-0.298-0.07-0.393-0.191-0.057-0.073-1.418-1.814-2.797-4.385-0.812-1.513-1.46-2.999-1.925-4.416-0.587-1.787-0.884-3.472-0.884-5.008 0-3.308 2.692-6 6-6s6 2.692 6 6c0 1.536-0.298 3.22-0.884 5.008-0.465 1.417-1.113 2.903-1.925 4.416-1.38 2.571-2.74 4.312-2.797 4.385-0.095 0.121-0.24 0.191-0.393 0.191zM10 1c-2.757 0-5 2.243-5 5 0 3.254 1.463 6.664 2.691 8.951 0.902 1.681 1.809 3.014 2.309 3.71 0.502-0.699 1.415-2.04 2.318-3.726 1.223-2.283 2.682-5.687 2.682-8.935 0-2.757-2.243-5-5-5z"></path>
+                                            <path fill="#fff"
+                                                  d="M10 9c-1.654 0-3-1.346-3-3s1.346-3 3-3 3 1.346 3 3-1.346 3-3 3zM10 4c-1.103 0-2 0.897-2 2s0.897 2 2 2c1.103 0 2-0.897 2-2s-0.897-2-2-2z"></path>
+                                        </svg>
+                                    </div>
+                                </figure>
+                                <p class="widget-image-caption wp-caption-text">Uygulama Esasına Dayanan Eğitim Garantisi</p>
+                                <p class="neden-description">Sektör ihtiyacına yönelik verilen eğitimlerde uygulamalı projeler
+                                    hazırlayabileceksiniz.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid numaralar-section my-5">
+                    <div class="inner-wrapper">
+                        <div class="container student-video-style">
+                            <div class="col-7 d-flex flex-column justify-content-center stats-numbers">
+                                <h5 class="section-title text-center mb-4">Kariyeriniz İçin En Doğru Adım</h5>
+                                <div class="d-flex justify-content-between w-100">
+                                    <div class="text-center number-box">
+                                        <h2>263</h2>
+                                        <p>Tamamlanan Eğitim</p>
+                                    </div>
+                                    <div class="text-center number-box">
+                                        <h2>359</h2>
+                                        <p>Onaylanmış Eğitim</p>
+                                    </div>
+                                    <div class="text-center number-box">
+                                        <h2>5,191+</h2>
+                                        <p>Mezun Öğrenci</p>
+                                    </div>
+                                    <div class="text-center number-box">
+                                        <h2>100%</h2>
+                                        <p>Memnuniyet</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-1"></div>
+                            <div class="col-4 stats-form">
+                                <div class="card p-4">
+                                    <h4 class="mb-4">Biz Sizi Arayalım</h4>
+                                    <form id="mainPage-form-2">
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control custom-input" placeholder="Ad Soyad"
+                                                   required id="nameSurname2">
+                                        </div>
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control custom-input" placeholder="Telefon" required id="telephone2">
+                                        </div>
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-primary custom-button">Gönder</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container my-5">
+                    <h4 class="text-center mb-4">Öğrencilerimiz hakkımızda ne düşünüyor?</h4>
+                    <div class="row">
+                        <swiper-container class="testimonialSwiper" init="false" autoplay-delay="2500">
+                            {% for testimonial in testimonials %}
+                                <swiper-slide style="border-radius: 10px;">
+                                    <div class="card p-3 text-center px-4 testimonial-item">
+
+                                        <div class="testimonial-content" >
+                                            <h5 class="mb-0 testimonial-title">{{ testimonial.title }}</h5>
+                                            <p class="testimonial-message">{{ testimonial.message }}</p>
+                                        </div>
+
+                                        <div class="ratings">
+                                            <span class="{% if testimonial.rate >= 1 %}checked{% endif %}"><i class="fa fa-star"></i></span>
+                                            <span class="{% if testimonial.rate >= 2 %}checked{% endif %}"><i class="fa fa-star"></i></span>
+                                            <span class="{% if testimonial.rate >= 3 %}checked{% endif %}"><i class="fa fa-star"></i></span>
+                                            <span class="{% if testimonial.rate >= 4 %}checked{% endif %}"><i class="fa fa-star"></i></span>
+                                            <span class="{% if testimonial.rate >= 5 %}checked{% endif %}"><i class="fa fa-star"></i></span>
+
+                                        </div>
+                                        <div class="user-image" style="text-align: center">
+                                            <img src="{{ testimonial.avatar.original }}" alt="{{ testimonial.slug }}"  class="rounded-circle" width="60">
+                                        </div>
+                                        <div class="user-content">
+                                            <h5 class="mb-0">{{ testimonial.profession }}</h5>
+                                            <span>{{ testimonial.name }}</span>
+                                        </div>
+
+
+
+                                    </div>
+
+                                </swiper-slide>
+                            {% endfor %}
+                        </swiper-container>
+                    </div>
+                </div>
+            {% endblock %}
+        </div>
+    </div>
+
+
+
+    {%  include "frontend/footer.html"%}
+    <!-- core js file -->
+    <script src="{%static  'frontend/js/bootstrap.bundle.js' %}"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+    <script src="{%static  'frontend/plugins/fontawesome/js/all.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+    <script>
+
+        // Modified sendApiRequest function with caching
+        {#function sendApiRequest(operation, collection = null, filter = null, document = null, update = null, limit = null, sort = null) {#}
+        {#    const payload = {#}
+        {#        operation: operation,#}
+        {#    };#}
+        {##}
+        {#    if (operation !== 'groups') {#}
+        {#        if (collection) {#}
+        {#            payload.collection = collection;#}
+        {#        }#}
+        {##}
+        {#        if (filter) {#}
+        {#            payload.filter = filter;#}
+        {#        }#}
+        {##}
+        {#        if (document) {#}
+        {#            payload.document = document;#}
+        {#        }#}
+        {##}
+        {#        if (update) {#}
+        {#            payload.update = update;#}
+        {#        }#}
+        {##}
+        {#        if (limit) {#}
+        {#            payload.limit = limit;#}
+        {#        }#}
+        {##}
+        {#        if (sort) {#}
+        {#            payload.sort = sort;#}
+        {#        }#}
+        {#    }#}
+        {##}
+        {#    let apiUrl = 'https://api.talktoweb.com/PhpBack/handleRequest.php';#}
+        {#    const method = 'POST';#}
+        {#    const requestOptions = {#}
+        {#        method: method,#}
+        {#        headers: {#}
+        {#            'Content-Type': 'application/json'#}
+        {#        },#}
+        {#    };#}
+        {##}
+        {#    if (method === 'POST') {#}
+        {#        requestOptions.body = JSON.stringify(payload);#}
+        {#    }#}
+        {##}
+        {#    return fetch(apiUrl, requestOptions)#}
+        {#        .then(response => {#}
+        {#            if (!response.ok) {#}
+        {#                throw new Error(`HTTP error! status: ${response.status}`);#}
+        {#            }#}
+        {#            return response.json();#}
+        {#        })#}
+        {#        .then(data => {#}
+        {#            return data;#}
+        {#        })#}
+        {#        .catch((error) => {#}
+        {#            console.error('Error:', error);#}
+        {#            throw error;#}
+        {#        });#}
+        {#}#}
+
+        function initializePage() {
+            {#try {#}
+            {#    const headerResponse = await fetch('https://test.talktoweb.com/CrmProject/Navbar/Html/Header.html');#}
+            {#    const headerText = await headerResponse.text();#}
+            {#    const parser = new DOMParser();#}
+            {#    const Hdoc = parser.parseFromString(headerText, 'text/html');#}
+            {#    const navbar = Hdoc.getElementById('header-div');#}
+            {#    const footer = Hdoc.getElementById('footer-div')#}
+            {##}
+            {#    document.getElementById('header-cont').innerHTML = navbar.outerHTML;#}
+            {#    document.getElementById('footer-cont').innerHTML = footer.outerHTML#}
+            {##}
+            {#} catch (error) {#}
+            {#    console.error('Error initializing page:', error);#}
+            {#}#}
+        }
+        $('#preApplicationForm').submit(async function(e) {
+            e.preventDefault();
+                const CourseName = $('#educationForm option:selected').text();
+                const Name = $('#nameInput').val()
+                const Phone = $('#phoneForm').val()
+
+                fetch('https://api.talktoweb.com/PhpBack/mailSend.php',{
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({type:"ön başvuru",name:Name,phone:Phone,courseName:CourseName})
+                })
+                $('#preApplicationForm').trigger('reset')
+        });
+
+        $('#contactForm').submit(async function(e) {
+            e.preventDefault();
+                const CourseName = $('title').text();
+                const Name = $('#nameInput').val();
+                const Phone = $('#phoneInput').val();
+                const Message = $('#messageInput').val()
+
+                fetch('https://api.talktoweb.com/PhpBack/mailSend.php',{
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({type:"eğitmen mesaj",name:Name,phone:Phone,courseName:CourseName,message:Message})
+                })
+                $('#contactForm').trigger('reset')
+        });
+
+        $('#mainPage-form-2').submit(async function(e) {
+            e.preventDefault();
+                const CourseName = $('title').text();
+                const Name = $('#nameSurname2').val()
+                const Phone = $('#telephone2').val()
+
+                fetch('https://api.talktoweb.com/PhpBack/mailSend.php',{
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({type:"size ulaşalım",name:Name,phone:Phone,courseName:CourseName})
+                })
+                $('#mainPage-form-2').trigger('reset')
+        });
+
+        $('#navbar-contact-form').submit(async function(e) {
+            e.preventDefault();
+                const Name = $('#fullName').val()
+                const Phone = $('#phone').val()
+                const Email = $('#email').val()
+                const Konu = $('#subject').val()
+                const Message = $('#message').val()
+
+                fetch('https://api.talktoweb.com/PhpBack/mailSend.php',{
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({type:"size ulaşalım",name:Name,phone:Phone,email:Email,konu:Konu,message:Message})
+                })
+                $('#navbar-contact-form').trigger('reset')
+        });
+
+        if (window.innerWidth >= 768) {
+            document.addEventListener('click', function (event) {
+                const offcanvas = document.getElementById('offcanvasScrolling');
+                const offcanvasButton = document.getElementById('menuButton')
+                const offcanvasCloseBtn = document.getElementById('btn-close')
+
+                if(offcanvasCloseBtn.contains(event.target)){
+                    offcanvasButton.click();
+                    return;
+                }
+
+                if(offcanvas.contains(event.target) || offcanvasButton.contains(event.target)){
+                    return;
+                }
+
+                if (offcanvas.classList.contains('show')) {
+                    offcanvasButton.click();
+                }
+            });
+        }
+
+        function detectIdType(id) {
+            if (/^[0-9a-fA-F]{24}$/.test(id)) {
+                return id.toString() ;
+            } else if (!isNaN(id) && Number.isInteger(parseFloat(id))) {
+                return parseInt(id);
+            }
+            return null; // Geçersiz ID
+        }
+
+         document.addEventListener('DOMContentLoaded', async function () {
+            const menuButton = document.querySelector('.icon-menu-button');
+            const backButton = this.getElementById('menuBack');
+            const header = document.getElementById('header-div');
+            const offcanvas = document.querySelector('.offcanvas-custom');
+            const blogCardElements = document.querySelectorAll('.blog-section .card');
+            const categoryCounts = {};
+            const contactForm = document.getElementById('contactForm');
+            const successMessage = document.getElementById('successMessage');
+            const statsForm = document.querySelector('.stats-form form');
+            const statsSuccessMessage = document.createElement('div');
+            const menuButtonIcon = document.getElementById('menuButtonIcon');
+            const menuButtonText = document.getElementById('menuButtonText');
+            const CourseSelect = document.getElementById('educationForm')
+            const container = document.getElementById('MainCourses');
+
+            {#CourseSelect ? PopulateCourses(): "" ;#}
+            {#container ? populateMainEducations():"";#}
+            {##}
+            {#if (statsForm) {#}
+            {#    statsSuccessMessage.className = 'mt-3 text-success';#}
+            {#    statsSuccessMessage.style.display = 'none';#}
+            {#    statsSuccessMessage.textContent = 'Başarılı! Bilgileriniz alınmıştır.';#}
+            {#    statsForm.parentNode.appendChild(statsSuccessMessage);#}
+            {#}#}
+
+            document.getElementById('menuButton').addEventListener('click',function(){
+                if(document.getElementById('offcanvasScrolling').classList.contains('show')){
+                    document.getElementById('menuButtonText').innerText='MENÜ'
+                } else {
+                    document.getElementById('menuButtonText').innerText='KAPAT'
+                }
+            })
+
+            if (contactForm) {
+                contactForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
+
+                    const nameInput = document.getElementById('nameInput').value.trim();
+                    const phoneInput = document.getElementById('phoneInput').value.trim();
+
+                    if (nameInput && phoneInput) {
+                        successMessage.style.display = 'block';
+
+                        contactForm.reset();
+
+                        setTimeout(function () {
+                            successMessage.style.display = 'none';
+                        }, 5000);
+                    }
+                });
+            }
+
+            if (statsForm) {
+                statsForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
+
+                    const nameInput = statsForm.querySelector('input[placeholder="Ad Soyad"]').value.trim();
+                    const phoneInput = statsForm.querySelector('input[placeholder="Telefon"]').value.trim();
+
+                    if (nameInput && phoneInput) {
+                        statsSuccessMessage.style.display = 'block';
+
+                        statsForm.reset();
+
+                        setTimeout(function () {
+                            statsSuccessMessage.style.display = 'none';
+                        }, 5000);
+                    }
+                });
+            }
+
+            offcanvas.addEventListener('show.bs.offcanvas', function () {
+                if (menuButtonIcon) {
+                    menuButtonIcon.classList.remove('bi-list');
+                    menuButtonIcon.classList.add('bi-x');
+                }
+            });
+
+            offcanvas.addEventListener('hide.bs.offcanvas', function () {
+                if (menuButtonIcon) {
+                    menuButtonIcon.classList.remove('bi-x');
+                    menuButtonIcon.classList.add('bi-list');
+                }
+            });
+
+            blogCardElements.forEach(function (card) {
+                const badge = card.querySelector('.badge');
+                if (badge) {
+                    const category = badge.textContent.trim();
+                    if (categoryCounts[category]) {
+                        categoryCounts[category]++;
+                    } else {
+                        categoryCounts[category] = 1;
+                    }
+                }
+            });
+
+            const categoryListItems = document.querySelectorAll('.side-content .text-categories');
+
+            categoryListItems.forEach(function (item) {
+                const categoryName = item.textContent.split(' (')[0].trim();
+                if (categoryCounts[categoryName]) {
+                    item.textContent = `${categoryName} (${categoryCounts[categoryName]})`;
+                }
+            });
+
+            {#function adjustOffcanvas() {#}
+            {#    const headerHeight = header.offsetHeight;#}
+            {#    offcanvas.style.top = `${headerHeight}px`;#}
+            {#    offcanvas.style.height = `calc(100% - ${headerHeight}px)`;#}
+            {#}#}
+            {##}
+            {#adjustOffcanvas();#}
+            {#window.addEventListener('resize', adjustOffcanvas);#}
+
+            if (!localStorage.getItem('lastSelectedSection')) {
+                localStorage.setItem('lastSelectedSection', 'educations');
+            }
+            setActiveSection(localStorage.getItem('lastSelectedSection'));
+
+            let currentIndex = 0;
+            const wrapper = document.querySelector('.testimonial-wrapper');
+
+            if(wrapper){
+                const items = document.querySelectorAll('.testimonial-item');
+                const totalItems = items.length;
+                let visibleItems = window.innerWidth <= 768 ? 1 : (window.innerWidth <= 991 ? 2 : 4);
+                let itemWidth = 100 / visibleItems;
+
+                for (let i = 0; i < visibleItems; i++) {
+                    wrapper.appendChild(items[i].cloneNode(true));
+                    wrapper.insertBefore(items[totalItems - 1 - i].cloneNode(true), items[0]);
+                }
+
+                wrapper.style.transform = `translateX(-${itemWidth * visibleItems}%)`;
+                setInterval(slideTestimonials, 3000);
+
+                function slideTestimonials() {
+                    currentIndex++;
+                    wrapper.style.transition = 'transform 0.5s ease-in-out';
+                    wrapper.style.transform = `translateX(-${(currentIndex + visibleItems) * itemWidth}%)`;
+
+                    if (currentIndex >= totalItems) {
+                        setTimeout(() => {
+                            currentIndex = 0;
+                            wrapper.style.transition = 'none';
+                            wrapper.style.transform = `translateX(-${itemWidth * visibleItems}%)`;
+                        }, 500);
+                    }
+                }
+            }
+
+            if(wrapper){
+                window.addEventListener('resize', function () {
+                    visibleItems = window.innerWidth <= 768 ? 1 : (window.innerWidth <= 991 ? 2 : 4);
+                    itemWidth = 100 / visibleItems;
+                    wrapper.style.transform = `translateX(-${(currentIndex + visibleItems) * itemWidth}%)`;
+                });
+            }
+
+
+            function adjustOffcanvasForMobile() {
+                const offcanvasContent = document.getElementById('offcanvas-content');
+                const offcanvasHeader = document.getElementById('offcanvas-header');
+
+                if (window.innerWidth <= 768) {
+                    offcanvasContent.classList.remove('col-10');
+                    offcanvasContent.classList.add('d-none');
+                    offcanvasHeader.classList.remove('col-2');
+
+                    document.querySelector('.btn-student-mobile').parentElement.parentElement.classList.remove('d-none')
+
+                    document.getElementById("homeLink").classList.add('d-none')
+
+                    document.querySelectorAll('.header-link').forEach((element) => {
+                        element.addEventListener('click', function (e) {
+                            e.preventDefault();
+                            const selectedSection = element.getAttribute('data-content');
+                            if (selectedSection) {
+                                localStorage.setItem('lastSelectedSection', selectedSection);
+                                setActiveSection(selectedSection);
+
+                                document.getElementById('offcanvas-content').classList.remove('d-none');
+                                setTimeout(() => {
+                                    document.getElementById('offcanvas-content').classList.add('show');
+                                }, 1);
+                                menuButton.classList.add('d-none');
+                                backButton.classList.remove('d-none');
+                            }
+                        });
+                    });
+
+                    backButton.addEventListener('click', function () {
+                        document.getElementById('offcanvas-content').classList.remove('show');
+                        setTimeout(() => {
+                            document.getElementById('offcanvas-content').classList.add('d-none');
+                        }, 350);
+                        menuButton.classList.remove('d-none');
+                        backButton.classList.add('d-none');
+                    });
+                } else {
+                    offcanvasContent.classList.add('col-10');
+                    offcanvasContent.classList.remove('col', 'd-none');
+                    offcanvasHeader.classList.add('col-2');
+                    offcanvasHeader.classList.remove('col');
+                }
+            }
+
+            adjustOffcanvasForMobile();
+            window.addEventListener('resize', adjustOffcanvasForMobile);
+
+            document.addEventListener('scroll', function () {
+                const topHeader = document.querySelector('.top-header');
+                const links = topHeader.querySelectorAll('a');
+                const navbar = document.querySelector('.navbar-custom');
+                const brand = document.querySelector('.navbar-brand');
+                const homeButtons = document.querySelectorAll('.icon-home-button');
+                const logos = document.querySelectorAll('#navbarLogo, #navbarLogoMobile');
+                const houseIcons = document.querySelectorAll('.house-icon');
+                const logoText = document.querySelectorAll('.logo-font-style');
+
+                if (window.scrollY > 50) {
+                    topHeader.classList.add('scrolled');
+                    document.querySelector('.info-text').classList.add('scrolled')
+                    links.forEach(link => {
+                        if (link.classList.contains('youtube')) {
+                            link.style.color = '#FF0000'; // YouTube kırmızı
+                        } else if (link.classList.contains('instagram')) {
+                            link.style.color = '#C13584'; // Instagram pembe
+                        } else if (link.classList.contains('linkedin')) {
+                            link.style.color = '#0077B5'; // LinkedIn mavi
+                        }
+                    });
+                    navbar.classList.add('navbar-scrolled');
+                    brand.classList.add('scrolled');
+                    homeButtons.forEach(button => button.classList.add('scrolled'));
+                    logos.forEach(logo => {
+                        logo.src = '{{frontend.logo_white.original}}';
+                    });
+                    houseIcons.forEach(icon => icon.classList.add('scrolled'));
+                    logoText.forEach(text => text.classList.add('scrolled'));
+                } else {
+                    topHeader.classList.remove('scrolled');
+                    document.querySelector('.info-text').classList.remove('scrolled')
+                    links.forEach(link => {
+                        if (link.classList.contains('youtube')) {
+                            link.style.color = ''; // Varsayılan renk
+                        } else if (link.classList.contains('instagram')) {
+                            link.style.color = ''; // Varsayılan renk
+                        } else if (link.classList.contains('linkedin')) {
+                            link.style.color = ''; // Varsayılan renk
+                        }
+                    });
+                    navbar.classList.remove('navbar-scrolled');
+                    brand.classList.remove('scrolled');
+                    homeButtons.forEach(button => button.classList.remove('scrolled'));
+                    logos.forEach(logo => {
+                        logo.src = 'https://test.talktoweb.com/CrmProject/Navbar/logo_ttw.png';
+                    });
+                    houseIcons.forEach(icon => icon.classList.remove('scrolled'));
+                    logoText.forEach(text => text.classList.remove('scrolled'));
+                }
+            });
+
+
+            document.querySelectorAll('[data-bs-toggle="offcanvas"]').forEach((element) => {
+                element.addEventListener('click', function () {
+                    const offcanvasId = element.getAttribute('data-bs-target');
+                    const offcanvasElement = document.querySelector(offcanvasId);
+                    offcanvasElement.classList.toggle('show');
+                });
+            });
+
+            document.querySelectorAll('[data-bs-dismiss="offcanvas"]').forEach((element) => {
+                element.addEventListener('click', function () {
+                    const offcanvasElement = element.closest('.offcanvas-custom');
+                    offcanvasElement.classList.remove('show');
+                });
+            });
+
+            document.querySelectorAll('.header-link').forEach((element) => {
+                element.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const selectedSection = element.getAttribute('data-content');
+                    if (selectedSection) {
+                        localStorage.setItem('lastSelectedSection', selectedSection);
+                        setActiveSection(selectedSection);
+                    } else {
+                        const linkId = element.id;
+                        if (linkId === 'homeLink') {
+                            window.location.href = '#';
+                        }
+                    }
+                });
+            });
+
+            function setActiveSection(sectionId) {
+                document.querySelectorAll('.header-link').forEach((link) => {
+                    if (!link.parentElement.classList.contains('home-icon-container')) {
+                        link.parentElement.style.backgroundColor = '';
+                    }
+                });
+                const activeLink = document.querySelector(`.header-link[data-content="${sectionId}"]`);
+                if (activeLink && !activeLink.parentElement.classList.contains('home-icon-container')) {
+                    activeLink.parentElement.style.backgroundColor = '#4898C0';
+                }
+
+                document.querySelectorAll('.content-section').forEach((section) => {
+                    section.classList.add('d-none');
+                });
+                const activeSection = document.getElementById(sectionId);
+                if (activeSection) {
+                    activeSection.classList.remove('d-none');
+                }
+            }
+
+            {#async function populateMainEducations() {#}
+            {#    try {#}
+            {#        const response = await sendApiRequest('groups');#}
+            {#        let data = response;#}
+            {##}
+            {#        data = data.filter(item => item.OnMain === true);#}
+            {##}
+            {#        // Grupları tarihine göre sırala#}
+            {#        data.sort((a, b) => {#}
+            {#            const timestampA = parseInt(a._id.toString().substring(0, 8), 16);#}
+            {#            const timestampB = parseInt(b._id.toString().substring(0, 8), 16);#}
+            {#            return timestampB - timestampA;#}
+            {#        });#}
+            {##}
+            {#        // Sadece ilk 4 öğeyi alın#}
+            {#        data = data.slice(0, 4);#}
+            {#        container.innerHTML = '';#}
+            {##}
+            {#        // Kısa bir döngü ile öğeleri oluşturun#}
+            {#        for (let i = 0; i < data.length; i++) {#}
+            {#            const item = data[i];#}
+            {##}
+            {#            const colDiv = document.createElement('div');#}
+            {#            colDiv.className = 'col-lg-3 col-md-6';#}
+            {##}
+            {#            const cardDiv = document.createElement('div');#}
+            {#            cardDiv.className = 'card shadow-lg h-100 course-card';#}
+            {##}
+            {#            const cardLink = document.createElement('a');#}
+            {#            const formattedCourseName = formatName(item.Course.CourseName || 'egitimler'); // Kurs adını formatla#}
+            {#            cardLink.href = `https://test.talktoweb.com/egitimler/${formattedCourseName}`;#}
+            {#            cardLink.addEventListener('click', function (event) {#}
+            {#                event.preventDefault(); // Varsayılan davranışı durdur#}
+            {#                const fullHref = `${titleLink.href}?id=${item._id}`;#}
+            {#            window.location.href = fullHref; // Güncellenmiş href ile yönlendirme#}
+            {#            });#}
+            {##}
+            {#            const imgContainer = document.createElement('div');#}
+            {#            imgContainer.className = 'card-img-container';#}
+            {##}
+            {#            const img = document.createElement('img');#}
+            {#            img.src = item.MainImg || 'https://via.placeholder.com/150';#}
+            {#            img.className = 'card-img-top img-fluid';#}
+            {#            img.alt = item.title || 'Kurs Resmi';#}
+            {##}
+            {#            imgContainer.appendChild(img);#}
+            {#            cardLink.appendChild(imgContainer);#}
+            {##}
+            {#            const cardBody = document.createElement('div');#}
+            {#            cardBody.className = 'card-body';#}
+            {##}
+            {#            const cardTitle = document.createElement('h6');#}
+            {#            cardTitle.className = 'card-title';#}
+            {##}
+            {#            const titleLink = document.createElement('a');#}
+            {#            titleLink.href = `https://test.talktoweb.com/egitimler/${formattedCourseName}`;#}
+            {#            titleLink.className = 'text-decoration-none text-primary';#}
+            {#            titleLink.textContent = item.Course.CourseName || 'Eğitim Başlığı';#}
+            {#            titleLink.addEventListener('click', function (event) {#}
+            {#                event.preventDefault(); // Varsayılan davranışı durdur#}
+            {#                const fullHref = `${titleLink.href}?id=${item._id}`;#}
+            {#            window.location.href = fullHref; // Güncellenmiş href ile yönlendirme#}
+            {#            });#}
+            {##}
+            {#            cardTitle.appendChild(titleLink);#}
+            {#            cardBody.appendChild(cardTitle);#}
+            {##}
+            {#            cardDiv.appendChild(cardLink);#}
+            {#            cardDiv.appendChild(cardBody);#}
+            {#            colDiv.appendChild(cardDiv);#}
+            {##}
+            {#            container.appendChild(colDiv);#}
+            {#        }#}
+            {##}
+            {#    } catch (error) {#}
+            {#        console.error('Error populating education cards:', error);#}
+            {#    }#}
+            {#}#}
+            {##}
+            {#async function createNoticeCard(notice) {#}
+            {#    const noticeCardContainer = document.createElement('div');#}
+            {#    noticeCardContainer.classList.add('col-lg-3', 'col-md-6', 'mb-4', 'event-card-container');#}
+            {##}
+            {#    const noticeCard = document.createElement('div');#}
+            {#    noticeCard.classList.add('event-card');#}
+            {##}
+            {#    const img = document.createElement('img');#}
+            {#    img.src = notice.imageUrl;#}
+            {#    img.classList.add('img-fluid', 'rounded-start');#}
+            {#    img.alt = notice.NoticeName;#}
+            {##}
+            {#    const imgLink = document.createElement('a');#}
+            {#    imgLink.href = notice.NoticeTopic;#}
+            {#    imgLink.appendChild(img);#}
+            {##}
+            {#    // Duyuru başlığı için div oluştur#}
+            {#    const titleDiv = document.createElement('div');#}
+            {#    titleDiv.classList.add('card-title');#}
+            {#    titleDiv.textContent = notice.NoticeName;#}
+            {##}
+            {#    // Tarih ve yorum bilgisi için div oluştur#}
+            {#    const dateDiv = document.createElement('div');#}
+            {#    dateDiv.classList.add('card-text');#}
+            {#    dateDiv.textContent = "Tarih: " + new Date(notice.Date).toLocaleDateString('tr-TR');#}
+            {##}
+            {#    // Duyuruya git butonu#}
+            {#    const link = document.createElement('a');#}
+            {#    link.href = notice.NoticeTopic;#}
+            {#    link.classList.add('btn', 'btn-primary', 'btn-sm');#}
+            {#    link.textContent = 'Duyuruya Git';#}
+            {##}
+            {#    // Kart içeriklerini noticeCard'a ekle#}
+            {#    noticeCard.appendChild(imgLink);#}
+            {#    noticeCard.appendChild(titleDiv);#}
+            {#    noticeCard.appendChild(dateDiv);#}
+            {#    noticeCard.appendChild(link);#}
+            {##}
+            {#    // Ana container'a kartı ekle#}
+            {#    noticeCardContainer.appendChild(noticeCard);#}
+            {##}
+            {#    // DOM'a kartı ekle#}
+            {#    const announcementsRow = document.getElementById('announcementsRow');#}
+            {#    const allEducationCard = document.getElementById('announcementsButton');#}
+            {#    announcementsRow.insertBefore(noticeCardContainer, allEducationCard);#}
+            {#}#}
+            {##}
+            {#async function createEduCard(edu) {#}
+            {#    // API'den kurs verisini çekme#}
+            {#    const course = await sendApiRequest('findOne', 'Courses', { '_id': detectIdType(edu.CourseId) });#}
+            {#    const cd = course;#}
+            {##}
+            {#    // education-card-container div'i oluştur#}
+            {#    const eduCardContainer = document.createElement('div');#}
+            {#    eduCardContainer.classList.add('col-lg-3', 'col-md-6', 'mb-4', 'education-card-container');#}
+            {##}
+            {#    // education-card div'i oluştur#}
+            {#    const eduCard = document.createElement('div');#}
+            {#    eduCard.classList.add('education-card');#}
+            {##}
+            {#    // Resim elementini oluştur#}
+            {#    const img = document.createElement('img');#}
+            {#    img.src = edu.NavImg;#}
+            {#    img.alt = cd.CourseName;#}
+            {#    img.classList.add('img-fluid', 'rounded-start');#}
+            {##}
+            {#    // Kurs başlığını içeren div oluştur#}
+            {#    const titleDiv = document.createElement('div');#}
+            {#    titleDiv.classList.add('card-title');#}
+            {#    titleDiv.textContent = cd.CourseName;#}
+            {##}
+            {#    // Açıklama metnini içeren div oluştur#}
+            {#    const descDiv = document.createElement('div');#}
+            {#    descDiv.classList.add('card-text');#}
+            {#    descDiv.textContent = truncateHtmlContent(edu.Description, 70);  // Açıklamayı kısaltıyoruz#}
+            {##}
+            {#    // Resim elementini tıklanabilir linke dönüştür#}
+            {#    const imgLink = document.createElement('a');#}
+            {#    const formattedCourseName = formatName(cd.CourseName || 'egitimler');#}
+            {#    imgLink.href = `https://test.talktoweb.com/egitimler/${formattedCourseName}`;#}
+            {#    imgLink.appendChild(img);#}
+            {##}
+            {#    imgLink.addEventListener('click', function() {#}
+            {#        event.preventDefault(); // Varsayılan davranışı durdur#}
+            {#        const fullHref = `${imgLink.href}?id=${edu._id}`;#}
+            {#        window.location.href = fullHref; // Güncellenmiş href ile yönlendirme#}
+            {#    });#}
+            {##}
+            {#    // Tüm elementleri education-card div'ine ekle#}
+            {#    eduCard.appendChild(imgLink);#}
+            {#    eduCard.appendChild(titleDiv);#}
+            {#    eduCard.appendChild(descDiv);#}
+            {##}
+            {#    // education-card'ı ana container'a ekle#}
+            {#    eduCardContainer.appendChild(eduCard);#}
+            {##}
+            {#    // Oluşan kartı DOM'daki ilgili satıra ekle#}
+            {#    const edusRow = document.getElementById('trueEducationsRow');#}
+            {#    const allEducationCard = document.getElementById('trueAllButton');#}
+            {#    edusRow.insertBefore(eduCardContainer, allEducationCard);  // allButton'dan önce ekliyoruz#}
+            {#}#}
+            {##}
+            {#async function createActivityCard(activity) {#}
+            {#    // Ana container div'i oluştur#}
+            {#    const activityCardContainer = document.createElement('div');#}
+            {#    activityCardContainer.classList.add('col-lg-3', 'col-md-6', 'mb-4', 'event-card-container');#}
+            {##}
+            {#    // Kart yapısı için div oluştur#}
+            {#    const activityCard = document.createElement('div');#}
+            {#    activityCard.classList.add('event-card');#}
+            {##}
+            {#    // Aktivite adı URL için formatlanmış versiyon#}
+            {#    const formattedActivityName = formatName(activity.ActivityName);#}
+            {##}
+            {#    // Resim oluştur#}
+            {#    const img = document.createElement('img');#}
+            {#    img.src = activity.imageUrl;#}
+            {#    img.classList.add('img-fluid');  // Sadece img-fluid class'ı kullanılmalı#}
+            {#    img.alt = activity.ActivityName;#}
+            {##}
+            {#    // Resmi tıklanabilir yapmak için link oluştur#}
+            {#    const imgLink = document.createElement('a');#}
+            {#    imgLink.href = `https://test.talktoweb.com/etkinlikler/${formattedActivityName}`;#}
+            {#    imgLink.appendChild(img);#}
+            {##}
+            {#    imgLink.addEventListener('click', function() {#}
+            {#        event.preventDefault(); // Varsayılan davranışı durdur#}
+            {#        const fullHref = `${imgLink.href}?id=${activity._id}`;#}
+            {#        window.location.href = fullHref; // Güncellenmiş href ile yönlendirme#}
+            {#    });#}
+            {##}
+            {#    // Aktivite adı için div oluştur#}
+            {#    const nameDiv = document.createElement('div');#}
+            {#    nameDiv.classList.add('card-title');#}
+            {#    nameDiv.textContent = activity.ActivityName;#}
+            {##}
+            {#    // Konuşmacı bilgisi için div oluştur#}
+            {#    const titleDiv = document.createElement('div');#}
+            {#    titleDiv.classList.add('card-text');#}
+            {#    titleDiv.textContent = "Konuşmacı: " + activity.ModName;#}
+            {##}
+            {#    // Tarih için div oluştur#}
+            {#    const topicDiv = document.createElement('div');#}
+            {#    topicDiv.classList.add('card-text');#}
+            {#    topicDiv.textContent = "Tarih: " + new Date(activity.DateTime).toLocaleString('tr-TR', {#}
+            {#        year: 'numeric',#}
+            {#        month: 'long',#}
+            {#        day: 'numeric',#}
+            {#        hour: '2-digit',#}
+            {#        minute: '2-digit',#}
+            {#    });#}
+            {##}
+            {#    // Webinara Git butonu için link oluştur#}
+            {#    const link = document.createElement('a');#}
+            {#    link.href = `https://test.talktoweb.com/etkinlikler/${formattedActivityName}`;#}
+            {#    link.classList.add('btn', 'btn-primary', 'btn-sm');#}
+            {#    link.textContent = 'Webinara Git';  // Duyuru yerine Webinara Git yazısı#}
+            {##}
+            {#    link.addEventListener('click', function() {#}
+            {#        event.preventDefault(); // Varsayılan davranışı durdur#}
+            {#        const fullHref = `${link.href}?id=${activity._id}`;#}
+            {#        window.location.href = fullHref; // Güncellenmiş href ile yönlendirme#}
+            {#    });#}
+            {##}
+            {#    // Kart içeriklerini activityCard'a ekle#}
+            {#    activityCard.appendChild(imgLink);#}
+            {#    activityCard.appendChild(nameDiv);#}
+            {#    activityCard.appendChild(titleDiv);#}
+            {#    activityCard.appendChild(topicDiv);#}
+            {#    activityCard.appendChild(link);#}
+            {##}
+            {#    // Ana container'a kartı ekle#}
+            {#    activityCardContainer.appendChild(activityCard);#}
+            {##}
+            {#    // DOM'a kartı ekle#}
+            {#    const eventsRow = document.getElementById('eventsRow');#}
+            {#    const allEducationCard = document.getElementById('activityButton');#}
+            {#    eventsRow.insertBefore(activityCardContainer, allEducationCard);#}
+            {#}#}
+            {##}
+            {#async function createBlogCard(blog) {#}
+            {#    const blogDiv = document.createElement('div');#}
+            {#    blogDiv.classList.add('col-lg-4', 'col-md-6', 'col-sm-12', 'mb-4', 'blog-item');#}
+            {##}
+            {#    const blogCard = document.createElement('div');#}
+            {#    blogCard.classList.add('card', 'h-100');#}
+            {##}
+            {#    const img = document.createElement('img');#}
+            {#    img.src = blog.imageUrl;#}
+            {#    img.classList.add('card-img-top');#}
+            {#    img.alt = blog.BlogName;#}
+            {##}
+            {#    const cardBody = document.createElement('div');#}
+            {#    cardBody.classList.add('card-body');#}
+            {##}
+            {#    const title = document.createElement('h5');#}
+            {#    title.classList.add('card-title', 'text-white');#}
+            {##}
+            {#    // Blog ismini URL dostu hale getirmek için fonksiyonu kullan#}
+            {#    const formattedBlogName = formatName(blog.BlogName);#}
+            {##}
+            {#    const titleLink = document.createElement('a');#}
+            {#    titleLink.href = `https://test.talktoweb.com/blog/${formattedBlogName}`;#}
+            {#    titleLink.classList.add('text-white', 'text-decoration-none');#}
+            {#    titleLink.textContent = capitalizeWords(blog.BlogName);#}
+            {#    title.appendChild(titleLink);#}
+            {##}
+            {#    titleLink.addEventListener('click', function() {#}
+            {#        event.preventDefault(); // Varsayılan davranışı durdur#}
+            {#        const fullHref = `${titleLink.href}?id=${blog._id}`;#}
+            {#        window.location.href = fullHref; // Güncellenmiş href ile yönlendirme#}
+            {#    });#}
+            {##}
+            {#    const category = await sendApiRequest('findOne','Categories',{'_id':detectIdType(blog.MainCategory)})#}
+            {##}
+            {#    const topic = document.createElement('p');#}
+            {#    topic.classList.add('card-text', 'text-white');#}
+            {#    topic.textContent = `${blog.WriterName} | ${blog.date} | ${category.Name}`;#}
+            {##}
+            {#    const desc = document.createElement('p');#}
+            {#    desc.classList.add('card-preview', 'text-white');#}
+            {#    desc.textContent = truncateHtmlContent(blog.Content, 50);#}
+            {##}
+            {#    // Append elements to card body#}
+            {#    cardBody.appendChild(title);#}
+            {#    cardBody.appendChild(topic);#}
+            {#    cardBody.appendChild(desc);#}
+            {##}
+            {#    // Append image and body to the card#}
+            {#    blogCard.appendChild(img);#}
+            {#    blogCard.appendChild(cardBody);#}
+            {##}
+            {#    // Append card to the main blog div#}
+            {#    blogDiv.appendChild(blogCard);#}
+            {##}
+            {#    // Append the blog card to the row in the DOM#}
+            {#    const announcementsRow = document.getElementById('blogRow');#}
+            {#    const allEducationCard = document.getElementById('blogButton');#}
+            {#    announcementsRow.insertBefore(blogDiv, allEducationCard);#}
+            {#}#}
+            {##}
+            {#async function CardData() {#}
+            {#    const noticeResponse = await sendApiRequest('find', 'Notices',null,null,null,3,{'_id':-1});#}
+            {#    const notices = noticeResponse;#}
+            {#    notices.forEach(notice => {#}
+            {#        createNoticeCard(notice);#}
+            {#    });#}
+            {##}
+            {#    const trueGroupsResponse = await sendApiRequest('find', 'Groups', { 'OnNav': true },null,null,3,{'_id':-1});#}
+            {#    const trueGroups = trueGroupsResponse;#}
+            {#    trueGroups.forEach(trueEdu => {#}
+            {#        createEduCard(trueEdu);#}
+            {#    });#}
+            {##}
+            {#    if(trueGroups.length<3){#}
+            {#        const i = 3 - trueGroups.length#}
+            {#        const falseGroupsResponse = await sendApiRequest('find', 'Groups', { 'Open': false },null,null,i,{'_id':-1});#}
+            {#        const falseGroups = falseGroupsResponse;#}
+            {#        falseGroups.forEach(falseEdu => {#}
+            {#            createEduCard(falseEdu);#}
+            {#        });#}
+            {#    }#}
+            {##}
+            {#    const activityResponse = await sendApiRequest('find', 'Activities',null,null,null,3,{'_id':-1});#}
+            {#    const activities = activityResponse;#}
+            {#    activities.forEach(activity => {#}
+            {#        createActivityCard(activity);#}
+            {#    });#}
+            {##}
+            {#    const blogResponse = await sendApiRequest('find', 'Blogs',null,null,null,2,{'_id':-1});#}
+            {#    const blogs = blogResponse;#}
+            {#    blogs.forEach(blog => {#}
+            {#        createBlogCard(blog);#}
+            {#    });#}
+            {#}#}
+
+            function truncateHtmlContent(htmlString, maxLength) {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = htmlString;
+
+                let plainText = tempDiv.textContent || tempDiv.innerText || "";
+
+                if (plainText.length > maxLength) {
+                    plainText = plainText.substring(0, maxLength) + '...';
+                }
+
+                return plainText;
+            }
+
+            function capitalizeWords(str) {
+                // Veriyi küçük harfe çevirir ve sonra her kelimenin baş harfini büyük yapar
+                return str
+                    .toLowerCase('tr-TR')  // Türkçe karakterler için küçük harfe çevirme
+                    .replace(/(^|\s)\S/g, function(char) {
+                        return char.toUpperCase('tr-TR');  // Türkçe karakterler için baş harfi büyük yapma
+                    });
+            }
+
+            function formatName(courseName) {
+                return courseName
+                    .toLowerCase() // Tüm harfleri küçük harfe çevir
+                    .replace(/ö/g, 'o') // Türkçe karakterleri dönüştür
+                    .replace(/ü/g, 'u')
+                    .replace(/ş/g, 's')
+                    .replace(/ç/g, 'c')
+                    .replace(/ı/g, 'i')
+                    .replace(/ğ/g, 'g')
+                    .replace(/[^a-z0-9\s]/g, '') // Özel karakterleri kaldır
+                    .replace(/\s+/g, '-') // Boşlukları '-' ile değiştir
+                    .trim(); // Baş ve sondaki boşlukları kaldır
+            }
+
+            async function PopulateCourses() {
+                try {
+                    const response = await sendApiRequest('find','Courses')
+                    const courses = response;
+
+                    courses.forEach(course => {
+                        const option = document.createElement('option');
+                        option.value = course._id;
+                        option.innerText = course.CourseName;
+                        CourseSelect.appendChild(option);
+                    });
+
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+        });
+
+    </script>
+
+
+</body>
+</html>

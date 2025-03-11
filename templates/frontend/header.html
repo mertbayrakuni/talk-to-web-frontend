@@ -1,0 +1,373 @@
+
+<header id="header-cont" class="header sticky-top">
+    <div class="container-fluid top-header">
+        <div class="container">
+            <div class="row d-flex justify-content-between">
+                <div class="col-3 info-text">
+                    Müşteri Hizmetleri:<a href="tel:{{ frontend.phone_number }}">{{ frontend.phone_number }}</a>
+                </div>
+                <div class="col-3 info-text d-none d-lg-block">
+                    <div class="social-icons w-100">
+                        <a href="{{ frontend.you_address }}" target="_blank" class="social-icon youtube">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                        <a href="{{ frontend.instagram_address }}" target="_blank" class="social-icon instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="{{ frontend.linkedin_address }}" target="_blank" class="social-icon linkedin">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-start offcanvas-custom" data-bs-scroll="true"
+         data-bs-backdrop="false"
+         tabindex="-1"
+         id="offcanvasScrolling"
+         aria-labelledby="offcanvasScrollingLabel">
+
+        <div class="offcanvas-body position-relative">
+            <div class="row h-100">
+                <div class="col-2 offcanvas-header-list d-flex flex-column align-items-center h-100" id="offcanvas-header">
+                    <ul class="list-unstyled w-100">
+                        <li class="home-icon-container d-flex justify-content-center align-items-center mb-2">
+                            <a href="{{ ROOT }}" id="homeLink" class="header-link">
+                                <i class="fa-solid fa-house home-icon"></i>
+                            </a>
+                        </li>
+                        <li class="d-flex align-items-center border-top li-style">
+                            <i class="fa-solid fa-caret-right menu-caret"></i>
+                            <a href="#" class="header-link" data-content="educations">Eğitimler</a>
+                        </li>
+                        <li class="d-flex align-items-center border-bottom li-style">
+                            <i class="fa-solid fa-caret-right menu-caret"></i>
+                            <a href="#" class="header-link" data-content="events">Etkinlikler</a>
+                        </li>
+                        <li class="d-flex align-items-center border-bottom li-style">
+                            <i class="fa-solid fa-caret-right menu-caret"></i>
+                            <a href="#" class="header-link" data-content="faculty">Kurumsal</a>
+                        </li>
+                        <li class="d-flex align-items-center border-bottom li-style">
+                            <i class="fa-solid fa-caret-right menu-caret"></i>
+                            <a href="#" class="header-link" data-content="blog">Blog</a>
+                        </li>
+                        <li class="d-flex align-items-center border-bottom li-style">
+                            <i class="fa-solid fa-caret-right menu-caret"></i>
+                            <a href="#" class="header-link" data-content="announcements">Duyurular</a>
+                        </li>
+                        <li class="d-flex align-items-center border-bottom li-style">
+                            <i class="fa-solid fa-caret-right menu-caret"></i>
+                            <a href="#" class="header-link" data-content="contact">İletişim</a>
+                        </li>
+                        <li class="d-flex align-items-center mt-3 w-100 d-none">
+                            <a class="w-100 student-login-style" href="{{ ROOT }}/login">
+                                <button class="btn btn-student-mobile d-sm-block w-100 float-end" type="button">
+                                    <i class="fa-solid fa-user"></i> Öğrenci Girişi </button>
+                            </a>
+                        </li>
+                        <li class="d-flex align-items-center border-bottom d-none">
+                            <i class="fa-solid fa-star menu-caret"></i>
+                            <a href="#" class="header-link" data-content="technology" id="technologyLink">Teknoloji</a>
+                        </li>
+                    </ul>
+                    <div class="social-icons d-flex justify-content-between w-100">
+                        <a href="{{ YOUTUBE_ADDRESS }}" target="_blank" class="social-icon">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                        <a href="{{INSTAGRAM_ADDRESS }}" target="_blank" class="social-icon">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="{{ LINKEDIN_ADDRESS }}" target="_blank" class="social-icon">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                    <div class="banner mt-3">
+                        <img src="#" alt="Banner">
+                    </div>
+                </div>
+                <div class="col-10 offcanvas-content h-100 navbar-tab-style" id="offcanvas-content">
+                    <button type="button" class="btn" id="btn-close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <div id="educations" class="content-section d-none">
+                        <h3 class="col-lg-9">Güncel Eğitimler</h3>
+                        <div class="row" id="trueEducationsRow">
+                            <div class="col-lg-3 col-md-6 mb-4 to-all-button" id="trueAllButton">
+                                <div class="all-education-card">
+                                    <img src="{{frontend.logo_white.original}}" alt="TalkToWeb Logo" width="120" id="navbarLogo1">
+                                    <a href="{{ROOT}}/tum-egitimler" class="text-decoration-none">
+                                        <div class="card-title all-education-button">TÜM EĞİTİMLER</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="events" class="content-section d-none">
+                        <h3 class="col-lg-9">Yaklaşan Etkinlikler</h3>
+                        <div class="row" id='eventsRow'>
+                            <div class="col-lg-3 col-md-6 mb-4 to-all-button" id="activityButton">
+                                <div class="all-education-card">
+                                    <img src="{{frontend.logo_white.original}}" alt="TalkToWeb Logo" width="120" id="navbarLogo2">
+                                    <a href="{{ROOT}}/tum-etkinlikler" class="text-decoration-none">
+                                        <div class="card-title all-education-button">TÜM ETKİNLİKLER</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="faculty" class="content-section d-none">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="widget widget--list">
+                                    <h3 class="widget__title">Hakkımızda</h3>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="{{ROOT}}/about-us">Hakkımızda</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ROOT}}/why-talk-to-web">Neden Talk to Web?</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ROOT}}/preliminary">Ön Başvuru</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ROOT}}/blog">Blog</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ROOT}}/tum-egitimler">Tüm Eğitimler</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="widget widget--list">
+                                    <h3 class="widget__title">Kurumsal</h3>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="{{ROOT}}/business-learning">Kurumsal Eğitim Çözümleri</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ROOT}}/contracted-institutions">Anlaşmalı Kurumlar</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ROOT}}/faq">Sıkça Sorulan Sorular</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ROOT}}/write-to-us">Bize Yazın</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ROOT}}/hr">İnsan Kaynakları</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="widget widget--list">
+                                    <h3 class="widget__title">Politikalarımız</h3>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="{{ROOT}}/quality-policy">Kalite Politikamız</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ROOT}}/customer-policy">Müşteri Politikası</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ROOT}}/security-policy">Bilgi Güvenliği Politikamız</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ROOT}}/cookie-policy">Gizlilik ve Çerez Politikamız</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ROOT}}/terms-and-conditions">Koşullar ve Şartlar</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="blog" class="content-section d-none">
+                        <h3 class="col-lg-9">Son Bloglar</h3>
+                        <div class="row" id='blogRow'>
+                            <div class="col-lg-3 col-md-6 mb-4 to-all-button" id="blogButton">
+                                <div class="all-education-card">
+                                    <img src="{{frontend.logo_white.original}}" alt="TalkToWeb Logo" width="120" id="navbarLogo2">
+                                    <a href="{{ROOT}}/tum-bloglar" class="text-decoration-none">
+                                        <div class="card-title all-education-button">TÜMÜNÜ İNCELE</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="announcements" class="content-section d-none">
+                        <h3 class="col-lg-9">Duyurular</h3>
+                        <div class="row" id="announcementsRow">
+                            <div class="col-lg-3 col-md-6 mb-4 to-all-button" id="announcementsButton">
+                                <div class="all-education-card">
+                                    <img src="{{frontend.logo_white.original}}" alt="TalkToWeb Logo" width="120" id="navbarLogo4">
+                                    <a href="{{ROOT}}/tum-etkinlikler" class="text-decoration-none">
+                                        <div class="card-title all-education-button">TÜM DUYURULAR</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="contact" class="content-section d-none">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h2>Bize Yazın</h2>
+                                <br>
+                                <form id="navbar-contact-form">
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label for="fullName" class="form-label">Ad Soyad *</label>
+                                            <input type="text" class="form-control" id="fullName" placeholder="Adınız Soyadınız" required>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="email" class="form-label">E-posta *</label>
+                                            <input type="email" class="form-control" id="email" placeholder="E-posta adresiniz" required>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="phone" class="form-label">Telefon *</label>
+                                            <input type="tel" class="form-control" id="phone" placeholder="Telefon" required>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="subject" class="form-label">Konu *</label>
+                                            <input type="text" class="form-control" id="subject" placeholder="Konu" required>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="message" class="form-label">Mesajınız *</label>
+                                        <textarea class="form-control" id="message" rows="3" placeholder="Mesajınız" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Gönder</button>
+                                </form>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row navbar-adresses">
+                                    <div class="col-md-6">
+                                        <h4 class="navbar-office">İstanbul Ofis</h4> Sinanpaşa Mahallesi <br> Süleyman Seba Caddesi No:14/5 <br> Sıraevler, Beşiktaş, Türkiye <br>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4 class="navbar-office">Almanya Ofis</h4> Scheffelstraße 72, 40470 <br> Nordrhein-Westfalen, <br> Düsseldorf, Germany
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="technology" class="content-section d-none">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6 mb-4 event-card-container">
+                                <div class="event-card">
+                                    <a href="{{ROOT}}/portfolyo-degerlendirme/">
+                                        <img src="{{ROOT}}/wp-content/uploads/2023/11/portfolyo-inceleme-kucuk.webp" alt="Portfolyo Değerlendirme">
+                                    </a>
+                                    <div class="card-title">Portfolyo Değerlendirme</div>
+                                    <div class="card-text">Konuşmacı: Cengiz Ceylan, Ali Kadir Özer, Şehrazat Safari </div>
+                                    <div class="card-text">Tarih: 17 Aralık 2023 - 20:00</div>
+                                    <a href="{{ROOT}}/portfolyo-degerlendirme-webinari/" class="btn btn-primary btn-sm">Webinara Git</a>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 mb-4 event-card-container">
+                                <div class="event-card">
+                                    <a href="{{ROOT}}/illustrator-ile-kurumsal-kimlik-tasarimi/">
+                                        <img src="{{ROOT}}/wp-content/uploads/2023/11/Kurumsal-kimlik-kucuk.webp" alt="Adobe Illustrator ile Kurumsal Kimlik Tasarımı">
+                                    </a>
+                                    <div class="card-title">Adobe Illustrator ile Kurumsal Kimlik Tasarımı</div>
+                                    <div class="card-text">Konuşmacı: Ali Kadir Özer</div>
+                                    <div class="card-text">Tarih: 24 Aralık 2023 - 20:00</div>
+                                    <a href="{{ROOT}}/illustrator-ile-kurumsal-kimlik-tasarimi/" class="btn btn-primary btn-sm">Webinara Git</a>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 mb-4 event-card-container">
+                                <div class="event-card">
+                                    <a href="{{ROOT}}/hayat-kurtaran-photoshop-uygulamalari/">
+                                        <img src="{{ROOT}}/wp-content/uploads/2023/11/25-photoshop-uygulamasi-kucuk.webp" alt="Hayat Kurtaran Photoshop Uygulamaları">
+                                    </a>
+                                    <div class="card-title">Hayat Kurtaran Photoshop Uygulamaları</div>
+                                    <div class="card-text">Konuşmacı: Cengiz Ceylan</div>
+                                    <div class="card-text">Tarih: 10 Aralık 2023 - 20:00</div>
+                                    <a href="{{ROOT}}/hayat-kurtaran-photoshop-uygulamalari/" class="btn btn-primary btn-sm">Webinara Git</a>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 mb-4 education-card-container">
+                                <div class="all-education-card">
+                                    <img src="{{frontend.logo_white.original}}" alt="ttw-white-logo" width="120" id="navbarLogo3" >
+                                    <a href="{{ROOT}}/tum-etkinlikler" class="text-decoration-none">
+                                        <div class="card-title all-education-button">TEKNOLOJI</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <div class="container">
+                <div class="row">
+                    <!--Mobil Header-->
+                    <nav class="navbar navbar-expand-lg d-lg-none">
+                        <div class="container-fluid">
+                            <button class="icon-home-button me-2 navbar-brand" type="button"
+                                    aria-label="Ana Sayfa" id="homeIconMobile">
+                                <i class="fa-solid fa-house"></i>
+                            </button>
+                            <a class="navbar-brand mx-auto" href="{{ROOT}}">
+                                <img src="{{frontend.logo}}" alt="TalkToWeb Logo" width="50"
+                                     id="navbarLogoMobile">
+                                <span class="d-none d-sm-block">talktoweb</span>
+                            </a>
+                            <div>
+                                <button class="navbar-toggler icon-menu-button" type="button"
+                                        data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"
+                                        aria-controls="offcanvasScrolling" aria-expanded="false"
+                                        aria-label="Toggle navigation" id="menuButtonMobile">
+                                    <span id="menuButtonIcon" class="fa-solid fa-bars"></span>
+                                </button>
+                                <button class="navbar-toggler icon-menu-button d-none" type="button"
+                                        aria-expanded="false" aria-label="Back navigation" id="menuBack">
+                                    <span><i class="fa-solid fa-arrow-left"></i></span>
+                                </button>
+                            </div>
+                        </div>
+                    </nav>
+    
+                    <!--Header for desktop screens-->
+                    <nav class="navbar navbar-expand-lg d-none d-lg-flex navbar-style">
+                        <a class="navbar-brand" href="{{ROOT}}">
+                            <button class="icon-home-button me-2 navbar-brand" type="button"
+                                    aria-label="Ana Sayfa"
+                                    id="homeIcon">
+                                <i class="fa-solid fa-house house-icon"></i>
+                            </button>
+                        </a>
+                        <button class="icon-menu-button" type="button" id="menuButton"
+                                data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasScrolling"
+                                aria-controls="offcanvasScrolling">
+                            <span id="menuButtonIcon" class="fa-solid fa-bars"></span> <span
+                                id="menuButtonText">MENÜ</span>
+                        </button>
+                        <a class="navbar-brand mx-auto" href="{{ROOT}}">
+                            <img src="{{frontend.logo.original}}" alt="TalkToWeb Logo" width="50" id="navbarLogo">
+                            <span class="d-none d-sm-block logo-font-style">talktoweb</span>
+                        </a>
+                        <div class="d-flex align-items-center">
+                            <a href="{{ROOT}}/CrmProject/CoreFiles/Html/LoginPage.html">
+                                <button class="btn btn-student d-none d-sm-block float-end" type="button">
+                                <i class="fa-solid fa-user"></i> Öğrenci Girişi
+                                </button>
+                            </a>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>

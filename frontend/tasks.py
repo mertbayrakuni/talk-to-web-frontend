@@ -78,7 +78,7 @@ def get_service_packets():
 
 
 def get_slides():
-    resp_json = my_request("slide")
+    resp_json = my_request("slides")
     slides = resp_json["data"]
 
     if slides:
@@ -88,7 +88,7 @@ def get_slides():
 
 
 def get_testimonials_data():
-    resp_json = my_request("testimonial")
+    resp_json = my_request("testimonials")
     testimonials = resp_json["data"]
 
     if testimonials:
@@ -98,7 +98,7 @@ def get_testimonials_data():
 
 def get_instructors_data(slug=None):
     if slug is None:
-        resp_json = my_request("instructor")
+        resp_json = my_request("instructors")
         instructors = resp_json["data"]
 
         if instructors:
@@ -114,6 +114,10 @@ def get_instructors_data(slug=None):
 
 def get_frontend_data():
     resp_json = my_request("frontend")
+    if resp_json is None:
+        logging.error("get_frontend_data return None")
+        return
+
     frontend = resp_json["data"]
     if isinstance(frontend, list):
         frontend = frontend[0]
@@ -124,7 +128,7 @@ def get_frontend_data():
         logging.error("get_services return None")
 
 def get_services():
-    resp_json = my_request("service")
+    resp_json = my_request("services")
     services = resp_json["data"]
     if services:
         cache.set("services", services, timeout=3600)

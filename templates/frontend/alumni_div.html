@@ -1,0 +1,14 @@
+<div class="row video-student">
+    {% for my_alumna in alumni %}
+        {% if not my_alumna.id == alumna.id %}
+            <div class="col mb-4 text-left">
+                <figure class="wp-caption">
+                    <a href="{{ ROOT }}/alumni/{{ my_alumna.slug }}">
+                        <img src="{{ my_alumna.img.original }}" alt="{{ my_alumna.slug }}" class="img-fluid rounded">
+                    </a>
+                    <figcaption class="wp-caption-text">{{ my_alumna.title }} </figcaption>
+                </figure>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>

@@ -1,34 +1,11 @@
+{% extends "frontend/base.html" %}
+{% load  static %}
 {%load static %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    {% block title %}<title>:: Talk To Web :: 404 :: Page Not Found</title>{% endblock %}
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Talk TO Web CRM & Project Admin Dashboard Template with Bootstrap 5x">
-    <meta name="author" content="Talk To Web, design by: Tekin TOPUZ">
-    <link rel="icon" href="{{ ROOT }}/favicon.ico" type="image/x-icon">
+{% block title %}<title>404 | Talk to Web ile Kariyerini Tasarla</title>{% endblock %}
 
-    <!-- MAIN CSS -->
-    <link rel="stylesheet" href="{%static  'course/assets/css/main.css' %}">
-    <style>
-        .theme-blue{
-            --primary-color: #0d2192;
-            --secondary-color: #ffc464;
-            --chart-color1: #0d2192;
-            --chart-color2: #ffc464;
-            --chart-color3: #ff80ad;
-            --chart-color4: #FF8364;
-            --chart-color5: #4E709D;
-            --primary-gradient: linear-gradient(145deg, var(--primary-color), var(--chart-color4));
-        }
 
-    </style>
-</head>
-
-<body>
+{% block main_content %}
     <div id="layout" class="theme-blue">
         <div id="wrapper">
             <div class="d-flex h100vh align-items-center auth-main w-100">
@@ -58,7 +35,7 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
 {% block js %}
 {% endblock %}
-</body>
-</html>

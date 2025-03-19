@@ -36,23 +36,45 @@
             <div class="col-lg-3 d-flex justify-content-center d-none d-sm-block no-padding">
                 <div class="card p-3" style="text-align: center">
                     <h4 class="info-title mb-3">İletişime geç</h4>
-                        <form id="instructor_contact_form">
-                            <div class="mb-3">
-                                <input type="text" class="form-control custom-input" id="instructor_contact_name" placeholder="Ad Soyad" required>
-                            </div>
-                            <div class="mb-3">
-                                <input type="text" class="form-control custom-input" id="instructor_contact_phone" placeholder="Telefon" required>
-                            </div>
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary custom-button">Gönder</button>
-                            </div>
-                        </form>
+                       {% include 'frontend/biz_sizi_arayalim.html' %}
                     </div>
                 </div>
         </div>
     </div>
 
     <h5 class="mt-3 mb-3">Dahil Olduğu Eğitimler</h5>
+    <div class="row">
+        {% for course_group in instructor.course_groups %}
+            <div class="col-lg-3 col-md-6">
+                <div class="card shadow-lg h-100 course-card">
+                    <a href="https://test.talktoweb.com/egitimler/web-tasarim-frontend-uzmanligi">
+                        <div class="card-img-container">
+                            <img src="https://test.talktoweb.com/images/web_tasarim_front-end.webp" class="card-img-top img-fluid" alt="Kurs Resmi">
+                        </div>
+                    </a>
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <a href="https://test.talktoweb.com/egitimler/web-tasarim-frontend-uzmanligi" class="text-decoration-none text-primary">Web Tasarım &amp; Front-End Uzmanlığı</a>
+                        </h6>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="col-lg-3 col-md-6">
+            <div class="card shadow-lg h-100 course-card">
+                <a href="https://test.talktoweb.com/egitimler/ui-ve-ux-tasarim-uzmanligi">
+                    <div class="card-img-container">
+                        <img src="https://talktoweb.com/wp-content/uploads/2024/07/ui-ux_tasarim_uzmanligi.webp" class="card-img-top img-fluid" alt="Kurs Resmi">
+                    </div>
+                </a>
+                <div class="card-body">
+                    <h6 class="card-title">
+                        <a href="https://test.talktoweb.com/egitimler/ui-ve-ux-tasarim-uzmanligi" class="text-decoration-none text-primary">UI ve UX Tasarım Uzmanlığı</a>
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
     
 {% endblock %}
 

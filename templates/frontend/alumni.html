@@ -1,0 +1,46 @@
+{% extends "frontend/base.html" %}
+{% load  static %}
+{%load static %}
+{% block title %}<title>{{ alumna.title }}</title>{% endblock %}
+
+{% block main_content %}
+    <div class="container-fluid info-section">
+        <div class="banner-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="banner-title">
+                            <p class="title">Marmara Üniversitesi'nden Doç. Dr. İlke Kocamaz</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container my-5 upcoming-webinar-section">
+        <div class="row align-items-flex-start">
+            <div class="col-lg-5">
+                 {{ alumna.youtube_embed | safe }}
+            </div>
+            <div class="col-lg-4">
+                <h2 class="info-title">{{ alumna.title }}</h2>
+                {{ alumna.html | safe}}
+            </div>
+            <div class="col-lg-3 d-flex justify-content-center d-none d-sm-block no-padding">
+                <div class="card p-3 text-center">
+                    <h4 class="info-title mb-3">Biz Sizi Arayalım</h4>
+                    {% include "frontend/biz_sizi_arayalim.html" %}
+                </div>
+            </div>
+        </div>
+        {% include 'frontend/alumni_div.html' %}
+
+    </div>
+    <div class="container my-5 seo-section">
+        <div class="row">
+            <div class="col-lg">
+                {{ frontend.alumni_sub_html|safe }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

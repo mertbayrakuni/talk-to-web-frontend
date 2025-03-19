@@ -8,7 +8,7 @@ from django.template import loader
 from django.views.generic.base import View
 from dotenv import load_dotenv
 
-from frontend.tasks import get_frontend_data, get_testimonials_data, get_instructors_data
+from frontend.tasks import get_frontend_data, get_testimonials_data, get_instructors_data, get_alumni_data
 from utils.util import get_file_handler
 
 load_dotenv()
@@ -51,25 +51,12 @@ def handler501(request, exception="", template_name='frontend/errorPage501.html'
 
 class IndexView(View):
     def get(self, request):
-        # all_slides = cache.get("all_slides", None)
-        # all_testimonials = cache.get("all_testimonials", None)
-        # all_instructors = cache.get("all_instructors", None)
-        #
-        # if True or all_testimonials is None:
-        #     all_courses = TestimonialSerializer(Testimonial.objects.all(), many=True).data
-        #     cache.set("all_testimonials", all_courses, 1800)
-        # if True or all_slides is None:
-        #     all_slides = SlideSerializer(Slide.objects.all(), many=True).data
-        #     cache.set("all_slides", all_slides, 1800)
-        #
-        # if True or all_instructors is None:
-        #     all_instructors = InstructorSerializerForPublic(Instructor.objects.all(), many=True).data
-        #     cache.set("all_instructors", all_instructors, 1800)
-
         context = {
             "frontend": cache.get("frontend", get_frontend_data()),
+            "news": cache.get("news", get_frontend_data()),
             "testimonials": cache.get("testimonials", get_testimonials_data()),
             "instructors": cache.get("instructors", get_instructors_data()),
+            "alumni": cache.get("alumni", get_alumni_data()),
         }
 
         template = loader.get_template(f'frontend/index.html')
@@ -98,3 +85,20 @@ class KVKKView(LoginRequiredMixin, View):
 
         template = loader.get_template(f'frontend/kvkk.html')
         return HttpResponse(template.render(context, request))
+
+
+class AlumniDetailView(View):
+    def get(self, request, slug):
+        alumni = cache.get("alumni", get_alumni_data())
+        alumna = cache.get(f"alumni-{slug}", get_alumni_data(slug))
+        if alumna is None:
+            raise Http404
+
+        context = {
+            'alumna': alumna,
+            'alumni': alumni
+        }
+
+        template = loader.get_template(f'frontend/alumni.html')
+        return HttpResponse(template.render(context, request))
+

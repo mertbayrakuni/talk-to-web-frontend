@@ -1,0 +1,13 @@
+<form id="let_call_you_form_2">
+    {{ csrf_exempt }}
+    <input type="text" hidden="hidden" name="from_url" value="{{ request.path }}">
+    <div class="mb-3">
+        <input type="text" class="form-control custom-input" name="name" id="let_call_you_form_name2" placeholder="Ad Soyad" required>
+    </div>
+    <div class="mb-3">
+        <input type="text" class="form-control custom-input" name="phone" id="let_call_you_form_phone2" placeholder="Telefon" required>
+    </div>
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary custom-button" id="let_call_you_2_submit_btn">Gönder</button>
+    </div>
+</form>

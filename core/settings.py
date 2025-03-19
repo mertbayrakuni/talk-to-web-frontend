@@ -91,7 +91,7 @@ def force_download_pdfs(headers, path, url):
     if path.endswith('.pdf'):
         headers['Content-Disposition'] = 'attachment'
 
-
+USE_THOUSAND_SEPARATOR=True
 WHITENOISE_ADD_HEADERS_FUNCTION = force_download_pdfs
 
 handler404 = 'frontend.views.handler404'
@@ -148,7 +148,7 @@ WHATSAPP_NUMBER = os.getenv("WHATSAPP_NUMBER")
 
 ROOT = os.getenv("ROOT")
 WS_ROOT = os.getenv("WS_ROOT")
-PANEL_ROOT = os.getenv("PANEL_ROOT")
+API_ROOT = os.getenv("API_ROOT")
 CDN_ENDPOINT = os.getenv("CDN_ENDPOINT")
 
 GOOGLE_RECAPTCHA_SITE_KEY = os.getenv("GOOGLE_RECAPTCHA_SITE_KEY")

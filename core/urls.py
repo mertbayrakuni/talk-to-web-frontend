@@ -6,7 +6,7 @@ from django.views.static import serve
 from dotenv import load_dotenv
 
 from core import settings
-from frontend.views import InstructorDetailView, IndexView, KVKKView
+from frontend.views import InstructorDetailView, IndexView, KVKKView, AlumniDetailView
 from frontend.views import handler404, handler500
 
 
@@ -28,12 +28,12 @@ urlpatterns = [
 
 
     re_path(r'^index', IndexView.as_view(), name="index"),
-    re_path(r'^home/$', IndexView.as_view(), name='home'),
-    re_path(r'^index', IndexView.as_view(), name="index"),
-    re_path(r'^home/$', IndexView.as_view(), name='home'),
+    re_path(r'^home', IndexView.as_view(), name='home'),
     path('kvkk', KVKKView.as_view(), name="kvkk"),
 
     path('instructors/<slug:slug>', InstructorDetailView.as_view(), name="instructor_detail_view"),
+    path('alumni/<slug:slug>', AlumniDetailView.as_view(), name="alumni_detail_view"),
+    path('mezunlarimiz/<slug:slug>', AlumniDetailView.as_view(), name="mezunlarimiz_detail_view"),
     re_path(r'^$', IndexView.as_view(), name="index_view"),
 
 ] + debug_toolbar_urls()

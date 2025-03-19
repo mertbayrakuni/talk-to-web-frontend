@@ -1,0 +1,16 @@
+<form id="let_call_you_form">
+    {{ csrf_exempt }}
+    <input type="text" hidden="hidden" name="from_url" value="{{ request.path }}">
+    <div class="mb-3">
+        <input type="text" class="form-control custom-input" name="name" id="let_call_you_form_name" placeholder="Ad Soyad" required>
+    </div>
+    <div class="mb-3">
+        <input type="text" class="form-control custom-input" name="phone" id="let_call_you_form_phone" placeholder="Telefon" required>
+    </div>
+    <div class="mb-3">
+        <textarea class="form-control custom-input" name="message" id="let_call_you_form_message" placeholder="Mesajınız" rows="1" style="resize: none;"></textarea>
+    </div>
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary custom-button" id="let_call_you_submit_btn">Gönder</button>
+    </div>
+</form>

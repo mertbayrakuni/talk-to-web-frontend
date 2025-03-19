@@ -59,6 +59,8 @@ CONTENT_TYPES = ['image', 'video']
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1024000
 
 INSTALLED_APPS = [
+    "admin_interface",
+    "colorfield",
     "whitenoise.runserver_nostatic",
     'django.contrib.admin',
     'django.contrib.auth',
@@ -72,6 +74,9 @@ INSTALLED_APPS = [
     'frontend.apps.FrontendConfig',
     'corsheaders'
 ]
+
+X_FRAME_OPTIONS = "SAMEORIGIN"
+SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
 CHANNEL_LAYERS = {
     'default': {

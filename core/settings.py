@@ -61,6 +61,7 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 1024000
 INSTALLED_APPS = [
     "admin_interface",
     "colorfield",
+    'log_viewer.apps.LogViewerConfig',
     "whitenoise.runserver_nostatic",
     'django.contrib.admin',
     'django.contrib.auth',

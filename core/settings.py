@@ -101,12 +101,14 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = [
     "https://talktoweb.com",
     "https://panel.talktoweb.com",
+    "https://frontend.talktoweb.com",
     "http://localhost:8000",
     "http://127.0.0.1:8000"
 ]
 CORS_ALLOWED_ORIGINS = [
     "https://talktoweb.com",
     "https://panel.talktoweb.com",
+    "https://frontend.talktoweb.com",
     "http://localhost:8000",
     "http://127.0.0.1:8000"
 ]
@@ -132,6 +134,7 @@ CORS_ALLOW_HEADERS = [
 CSRF_TRUSTED_ORIGINS = [
     "https://talktoweb.com",
     "https://panel.talktoweb.com",
+    "https://frontend.talktoweb.com",
     "http://167.99.244.71",
     "http://localhost:8000",
     "http://localhost:8001",

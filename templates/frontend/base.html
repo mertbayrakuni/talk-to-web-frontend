@@ -538,10 +538,9 @@
 
 
     {%  include "frontend/footer.html"%}
-    <!-- core js file -->
     <script src="{%static  'frontend/js/bootstrap.bundle.js' %}"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
+    <script src="{%static  'frontend/plugins/jquery/dist/jquery.min.js' %}"></script>
     <script src="{%static  'frontend/plugins/fontawesome/js/all.min.js' %}"></script>
     <script src="{%static  'frontend/plugins/sweetalert2/dist/sweetalert2.all.min.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
@@ -571,7 +570,7 @@
 
                         let jsonData = JSON.stringify(formObject); // Convert to JSON string
                         $.ajax({
-                            url: "{{ API_ROOT }}/api/messages-from-frontend",
+                            url: "{{ API_ROOT }}/api/student-applications",
                             data: jsonData,
                             type: 'POST',
                             contentType: "application/json",

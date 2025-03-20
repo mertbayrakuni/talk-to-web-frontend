@@ -70,9 +70,26 @@ def get_instructors_data(slug=None):
         else:
             logger.error("get_instructors return None")
     else:
-        instructors = my_request(f"instructors?slug={slug}")["data"]
-        if instructors and isinstance(instructors, list):
-            cache.set(f"instructor-{slug}", instructors[0], timeout=3600)
+        instructor = my_request(f"instructors/{slug}")
+        if instructor:
+            cache.set(f"instructor-{slug}", instructor, timeout=3600)
+        else:
+            logger.error(f"get_instructor_with_slug={slug} return None")
+
+
+def get_course_groups_data(slug=None):
+    if slug is None:
+        resp_json = my_request("course-groups")
+        course_groups = resp_json["data"]
+
+        if course_groups:
+            cache.set("course-groups", course_groups, timeout=3600)
+        else:
+            logger.error("get_course_groups return None")
+    else:
+        course_group = my_request(f"course-groups/{slug}")
+        if course_group:
+            cache.set(f"course-group-{slug}", course_group, timeout=3600)
         else:
             logger.error(f"get_instructor_with_slug={slug} return None")
 
@@ -150,45 +167,6 @@ def update_services():
     t2 = timezone.now()
     logging.info(f"get_services is worked successfully in {(t2 - t1).total_seconds()}")
 
-
-@shared_task
-def update_service_packets():
-    t1 = timezone.now()
-    get_service_packets()
-    t2 = timezone.now()
-    logging.info(f"get_service_packets is worked successfully in {(t2 - t1).total_seconds()}")
-
-
-@shared_task
-def update_blog_posts():
-    t1 = timezone.now()
-    get_blog_posts()
-    t2 = timezone.now()
-    logging.info(f"get_blog_posts is worked successfully in {(t2 - t1).total_seconds()}")
-
-
-@shared_task
-def update_popular_blog_posts():
-    t1 = timezone.now()
-    get_popular_blog_posts()
-    t2 = timezone.now()
-    logging.info(f"get_popular_blog_posts is worked successfully in {(t2 - t1).total_seconds()}")
-
-
-@shared_task
-def update_blog_posts_by_groups():
-    t1 = timezone.now()
-    get_blog_posts_by_groups()
-    t2 = timezone.now()
-    logging.info(f"get_blog_posts_by_groups is worked successfully in {(t2 - t1).total_seconds()}")
-
-
-@shared_task
-def update_blog_tags():
-    t1 = timezone.now()
-    get_blog_tags()
-    t2 = timezone.now()
-    logging.info(f"get_blog_tags is worked successfully in {(t2 - t1).total_seconds()}")
 
 
 @shared_task

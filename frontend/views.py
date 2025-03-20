@@ -8,7 +8,8 @@ from django.template import loader
 from django.views.generic.base import View
 from dotenv import load_dotenv
 
-from frontend.tasks import get_frontend_data, get_testimonials_data, get_instructors_data, get_alumni_data
+from frontend.tasks import get_frontend_data, get_testimonials_data, get_instructors_data, get_alumni_data, \
+    get_course_groups_data
 from utils.util import get_file_handler
 
 load_dotenv()
@@ -73,17 +74,76 @@ class InstructorDetailView(View):
             'instructor': instructor,
         }
 
-        template = loader.get_template(f'frontend/instructor_detail.html')
+        template = loader.get_template(f'frontend/instructor.html')
         return HttpResponse(template.render(context, request))
 
 
-class KVKKView(LoginRequiredMixin, View):
+class CourseGroupDetailView(View):
+    def get(self, request, slug):
+        course_group = cache.get(f"course-group-{slug}", get_course_groups_data(slug))
+        if course_group is None:
+            raise Http404
+
+        context = {
+            'course_group': course_group,
+        }
+
+        template = loader.get_template(f'frontend/course_groups.html')
+        return HttpResponse(template.render(context, request))
+
+
+class KVKKView(View):
     def get(self, request, page_name=None):
         context = {
             "active": ["#kvkk_li"]
         }
 
         template = loader.get_template(f'frontend/kvkk.html')
+        return HttpResponse(template.render(context, request))
+
+class BusinessLearningView(View):
+    def get(self, request, page_name=None):
+        context = {
+            "active": ["#business_learning"]
+        }
+
+        template = loader.get_template(f'frontend/business_learning.html')
+        return HttpResponse(template.render(context, request))
+
+class ContractedInstitutionsView(View):
+    def get(self, request, page_name=None):
+        context = {
+            "active": ["#business_learning"]
+        }
+
+        template = loader.get_template(f'frontend/contracted_institutions.html')
+        return HttpResponse(template.render(context, request))
+
+class FQAView(View):
+    def get(self, request, page_name=None):
+        context = {
+            "active": ["#business_learning"]
+        }
+
+        template = loader.get_template(f'frontend/fqa.html')
+        return HttpResponse(template.render(context, request))
+
+class HumanResourcesView(View):
+    def get(self, request, page_name=None):
+        context = {
+            "active": ["#business_learning"]
+        }
+
+        template = loader.get_template(f'frontend/human_resources.html')
+        return HttpResponse(template.render(context, request))
+
+class WriteToUsView(View):
+    def get(self, request, page_name=None):
+        context = {
+            "active": ["#business_learning"]
+        }
+
+        template = loader.get_template(f'frontend/write_to_us.html')
         return HttpResponse(template.render(context, request))
 
 

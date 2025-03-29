@@ -162,3 +162,9 @@ class AlumniDetailView(View):
         template = loader.get_template(f'frontend/alumni.html')
         return HttpResponse(template.render(context, request))
 
+
+
+class BlogSitemap(View):
+    def get(self, request):
+        my_response = request.get(f"{PANEL_URL}/")
+        return HttpResponse(output.getvalue(), content_type='application/xml')

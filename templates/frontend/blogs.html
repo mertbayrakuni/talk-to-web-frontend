@@ -1,0 +1,44 @@
+{% extends "frontend/base.html" %}
+{% load  static %}
+{% load l10n %}
+
+{% block title %}<title> Blog | Talk to Web ile Kariyerini Tasarla</title>{% endblock %}
+
+
+{% block main_content %}
+
+    <div class="container-fluid info-section">
+        <div class="banner-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="banner-title">
+                            <p class="title">Talk To Web Tüm Blog Yazıları</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            {% for blog_post in blog_posts %}
+                <div class="col-lg-3 col-md-3">
+                    <div class="card h-100" style="background-color: #0b0b0b">
+                        <img src="{{ blog_post.image.original  }}" class="card-img-top" alt="{{ blog_post.slug  }}">
+                        <div class="card-body">
+                            <h5 class="card-title text-white">
+                                <a href="{{ ROOT }}/blogs/{{ blog_post.slug  }}" class="text-white text-decoration-none">
+                                   {{ blog_post.title | safe  }}
+                                </a>
+                            </h5>
+                            <p class="card-text text-white">{{ blog_post.published_by  }}| {{ blog_post.published_at  }} | İş Hayatı</p>
+                            <p class="card-preview text-white">{{ blog_post.summary | safe  }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

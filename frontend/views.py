@@ -8,8 +8,9 @@ from django.template import loader
 from django.views.generic.base import View
 from dotenv import load_dotenv
 
+from core.settings import API_ROOT
 from frontend.tasks import get_frontend_data, get_testimonials_data, get_instructors_data, get_alumni_data, \
-    get_course_groups_data
+    get_course_groups_data, get_blog_posts
 from utils.util import get_file_handler
 
 load_dotenv()
@@ -77,6 +78,24 @@ class InstructorDetailView(View):
         template = loader.get_template(f'frontend/instructor.html')
         return HttpResponse(template.render(context, request))
 
+class BlogPostsView(View):
+    def get(self, request, slug=None):
+        if slug is None:
+            blog_posts = cache.get(f"blog_posts", get_blog_posts())
+            context = {
+                'blog_posts': blog_posts,
+            }
+
+            template = loader.get_template(f'frontend/blogs.html')
+            return HttpResponse(template.render(context, request))
+        else:
+            blog_post = cache.get(f"blog_post-{slug}", get_blog_posts(slug))
+            context = {
+                'blog_post': blog_post,
+            }
+
+            template = loader.get_template(f'frontend/blog_private.html')
+            return HttpResponse(template.render(context, request))
 
 class CourseGroupDetailView(View):
     def get(self, request, slug):
@@ -166,5 +185,5 @@ class AlumniDetailView(View):
 
 class BlogSitemap(View):
     def get(self, request):
-        my_response = request.get(f"{PANEL_URL}/")
-        return HttpResponse(output.getvalue(), content_type='application/xml')
+        my_response = request.get(f"{API_ROOT}/sitemap.xm")
+        return HttpResponse(my_response.getvalue(), content_type='application/xml')

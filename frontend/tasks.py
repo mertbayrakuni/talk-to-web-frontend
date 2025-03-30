@@ -30,14 +30,21 @@ def my_request(endpoint):
         return None
 
 
-def get_blog_posts_by_groups():
-    blog_posts = my_request("blog-post/by-groups")
+def get_blog_posts(slug=None):
+    if slug is None:
+        resp_json = my_request("blog-posts")
+        blog_posts = resp_json["data"]
 
-    if blog_posts:
-        cache.set("blog_posts_by_groups", blog_posts, timeout=3600)
+        if blog_posts:
+            cache.set("blog_posts", blog_posts, timeout=3600)
+        else:
+            logger.error("get_blog_posts return None")
     else:
-        logger.error("get_blog_posts_by_groups return None")
-
+        blog_post = my_request(f"blog-posts/{slug}")
+        if blog_post:
+            cache.set(f"blog_post-{slug}", blog_post, timeout=3600)
+        else:
+            logger.error(f"get_blog_post_with_slug={slug} return None")
 
 
 def get_slides():

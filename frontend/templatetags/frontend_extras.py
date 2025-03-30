@@ -8,6 +8,14 @@ register = template.Library()
 
 
 @register.filter
+def my_split(my_str):
+    if my_str is None:
+        return []
+
+    return [s.strip() for s in my_str.split(",")]
+
+
+@register.filter
 def addstr(arg1, arg2):
     """concatenate arg1 & arg2"""
     concatenated = f"{arg1}{arg2}"

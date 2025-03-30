@@ -8,7 +8,8 @@ from dotenv import load_dotenv
 
 from core import settings
 from frontend.views import InstructorDetailView, IndexView, KVKKView, AlumniDetailView, BusinessLearningView, \
-    ContractedInstitutionsView, FQAView, HumanResourcesView, WriteToUsView, CourseGroupDetailView, BlogSitemap
+    ContractedInstitutionsView, FQAView, HumanResourcesView, WriteToUsView, CourseGroupDetailView, BlogSitemap, \
+    BlogPostsView
 from frontend.views import handler404, handler500
 
 
@@ -44,8 +45,6 @@ urlpatterns = [
     path("security-policy", KVKKView.as_view(), name="kvkk"),
     path("cookie-policy", KVKKView.as_view(), name="kvkk"),
     path("terms-and-conditions", KVKKView.as_view(), name="kvkk"),
-    path("blogs", KVKKView.as_view(), name="kvkk"),
-
 
     path("kvkk", KVKKView.as_view(), name="kvkk"),
     path("business-learning", BusinessLearningView.as_view(), name="business_learning"),
@@ -54,6 +53,8 @@ urlpatterns = [
     path("human-resources", HumanResourcesView.as_view(), name="human_resources"),
     path("write-to-us", WriteToUsView.as_view(), name="write_to_us"),
 
+    path("blogs", BlogPostsView.as_view(), name="blogs_view"),
+    path("blogs/<slug:slug>", BlogPostsView.as_view(), name="blog_private_view"),
     path("instructors/<slug:slug>", InstructorDetailView.as_view(), name="instructor_detail_view"),
     path("egitmenlerimiz/<slug:slug>", InstructorDetailView.as_view(), name="instructor_detail_view2"),
 

@@ -24,16 +24,16 @@
         <div class="row justify-content-center">
             {% for blog_post in blog_posts %}
                 <div class="col-lg-3 col-md-3">
-                    <div class="card h-100" style="background-color: #0b0b0b">
-                        <img src="{{ blog_post.image.original  }}" class="card-img-top" alt="{{ blog_post.slug  }}">
-                        <div class="card-body">
-                            <h5 class="card-title text-white">
-                                <a href="{{ ROOT }}/blogs/{{ blog_post.slug  }}" class="text-white text-decoration-none">
+                    <div class="card h-100" style="background-color: white;color:black">
+                        <img src="{{ blog_post.image.original  }}" class="card-img-top" alt="{{ blog_post.slug  }}" height="150">
+                        <div class="card-body" >
+                            <h5 class="card-title">
+                                <a href="{{ ROOT }}/blogs/{{ blog_post.slug  }}">
                                    {{ blog_post.title | safe  }}
                                 </a>
                             </h5>
-                            <p class="card-text text-white">{{ blog_post.published_by  }}| {{ blog_post.published_at  }} | İş Hayatı</p>
-                            <p class="card-preview text-white">{{ blog_post.summary | safe  }}</p>
+                            <span class="card-sub-title" style="font-size: smaller">{{ blog_post.published_by  }}| {{ blog_post.published_at  }} | İş Hayatı</span>
+                            <span class="card-details" style="font-size: smaller">{{ blog_post.summary | safe  }}</span>
                         </div>
                     </div>
                 </div>

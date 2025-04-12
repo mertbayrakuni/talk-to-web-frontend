@@ -1,4 +1,5 @@
 import logging
+import pprint
 import sys
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -10,7 +11,7 @@ from dotenv import load_dotenv
 
 from core.settings import API_ROOT
 from frontend.tasks import get_frontend_data, get_testimonials_data, get_instructors_data, get_alumni_data, \
-    get_course_groups_data, get_blog_posts
+    get_course_groups_data, get_blog_posts, get_recent_blog_posts, get_all_course_groups_data
 from utils.util import get_file_handler
 
 load_dotenv()
@@ -54,6 +55,7 @@ def handler501(request, exception="", template_name='frontend/errorPage501.html'
 class IndexView(View):
     def get(self, request):
         context = {
+            "all_course_groups": cache.get("all-course-groups", get_all_course_groups_data()),
             "frontend": cache.get("frontend", get_frontend_data()),
             "news": cache.get("news", get_frontend_data()),
             "testimonials": cache.get("testimonials", get_testimonials_data()),
@@ -82,33 +84,98 @@ class BlogPostsView(View):
     def get(self, request, slug=None):
         if slug is None:
             blog_posts = cache.get(f"blog_posts", get_blog_posts())
+            recent_blog_posts = cache.get(f"recent_blog_posts", get_recent_blog_posts())
             context = {
                 'blog_posts': blog_posts,
+                'recent_blog_posts': recent_blog_posts,
             }
 
             template = loader.get_template(f'frontend/blogs.html')
             return HttpResponse(template.render(context, request))
         else:
             blog_post = cache.get(f"blog_post-{slug}", get_blog_posts(slug))
+            recent_blog_posts = cache.get(f"recent_blog_posts", get_recent_blog_posts())
             context = {
                 'blog_post': blog_post,
+                'recent_blog_posts': recent_blog_posts,
             }
-
+            print(context)
             template = loader.get_template(f'frontend/blog_private.html')
             return HttpResponse(template.render(context, request))
 
 class CourseGroupDetailView(View):
-    def get(self, request, slug):
-        course_group = cache.get(f"course-group-{slug}", get_course_groups_data(slug))
-        if course_group is None:
-            raise Http404
+    def get(self, request, slug=None):
+        if slug is None:
+            course_groups = cache.get(f"course-groups", get_course_groups_data())
 
-        context = {
-            'course_group': course_group,
-        }
+            context = {
+                'course_groups': course_groups,
+            }
 
-        template = loader.get_template(f'frontend/course_groups.html')
-        return HttpResponse(template.render(context, request))
+            template = loader.get_template(f'frontend/course_groups.html')
+            return HttpResponse(template.render(context, request))
+
+        else:
+            course_group = cache.get(f"course-group-{slug}", get_course_groups_data(slug))
+            if course_group is None:
+                raise Http404
+
+            context = {
+                'course_group': course_group,
+            }
+
+            template = loader.get_template(f'frontend/course_groups.html')
+            return HttpResponse(template.render(context, request))
+
+
+class UpcomingEducationView(View):
+    def get(self, request, slug=None):
+        if slug is None:
+            course_groups = cache.get(f"course-groups", get_course_groups_data())
+
+            context = {
+                'course_groups': course_groups,
+            }
+
+            template = loader.get_template(f'frontend/course_groups.html')
+            return HttpResponse(template.render(context, request))
+
+        else:
+            course_group = cache.get(f"course-group-{slug}", get_course_groups_data(slug))
+            if course_group is None:
+                raise Http404
+
+            context = {
+                'course_group': course_group,
+            }
+
+            template = loader.get_template(f'frontend/course_groups.html')
+            return HttpResponse(template.render(context, request))
+
+
+class OldEducationView(View):
+    def get(self, request, slug=None):
+        if slug is None:
+            course_groups = cache.get(f"course-groups", get_course_groups_data())
+
+            context = {
+                'course_groups': course_groups,
+            }
+
+            template = loader.get_template(f'frontend/course_groups.html')
+            return HttpResponse(template.render(context, request))
+
+        else:
+            course_group = cache.get(f"course-group-{slug}", get_course_groups_data(slug))
+            if course_group is None:
+                raise Http404
+
+            context = {
+                'course_group': course_group,
+            }
+
+            template = loader.get_template(f'frontend/course_groups.html')
+            return HttpResponse(template.render(context, request))
 
 
 class KVKKView(View):

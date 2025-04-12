@@ -66,33 +66,23 @@
                         <div class="card-body">
                             <h5 class="card-title">Son Gönderiler</h5>
                             <ul class="list-unstyled">
-                                <li class="d-flex mb-3 border-bottom pb-3">
-                                    <div class="me-3">
-                                        <a href="#">
-                                            <img src="https://talktoweb.com/wp-content/uploads/2023/12/sam_altman-150x150.webp"
-                                                 class="img-fluid rounded" alt="Post Thumbnail" width="71"
-                                                 height="71">
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <a href="#" class="text fw-bold">DARBEYİ PÜSKÜRTEN CEO: SAM ALTMAN</a>
-                                        <p class="text-muted mb-0">8 Ara, 2023</p>
-                                    </div>
-                                </li>
-                                <li class="d-flex mb-3 border-bottom pb-3">
-                                    <div class="me-3">
-                                        <a href="#">
-                                            <img src="https://talktoweb.com/wp-content/uploads/2023/11/tasarim-ve-yazilim-dunyasinda-isbirligi-150x150.png"
-                                                 class="img-fluid rounded" alt="Post Thumbnail" width="71"
-                                                 height="71">
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <a href="#" class="text fw-bold">TASARIM VE YAZILIM DÜNYASINDA İŞ
-                                            BİRLİĞİ</a>
-                                        <p class="text-muted mb-0">3 Kas, 2023</p>
-                                    </div>
-                                </li>
+                                {% for recent_blog_post in recent_blog_posts %}
+                                    {% if recent_blog_post.id != blog_post.id %}
+                                        <li class="d-flex mb-3 border-bottom pb-3">
+                                            <div class="me-3">
+                                                <a href="{{ ROOT }}/blogs/{{ recent_blog_post.slug }}">
+                                                    <img src="{{ recent_blog_post.image.original }}"
+                                                         class="img-fluid rounded" alt="{{ recent_blog_post.image.slug }}" width="71"
+                                                         height="71">
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <a href="{{ ROOT }}/blogs/{{ recent_blog_post.slug }}" class="text fw-bold">{{ recent_blog_post.title }}</a>
+                                                <p class="text-muted mb-0">{{ recent_blog_post.published_at }}</p>
+                                            </div>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>

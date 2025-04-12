@@ -521,7 +521,7 @@ if (window.innerWidth >= 768) {
         const formattedBlogName = formatName(blog.BlogName);
 
         const titleLink = document.createElement('a');
-        titleLink.href = `https://test.talktoweb.com/blog/${formattedBlogName}`;
+        titleLink.href = `{{ROOT}}/blog/${formattedBlogName}`;
         titleLink.classList.add('text-white', 'text-decoration-none');
         titleLink.textContent = capitalizeWords(blog.BlogName);
         title.appendChild(titleLink);

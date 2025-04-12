@@ -30,6 +30,18 @@ def my_request(endpoint):
         return None
 
 
+def get_recent_blog_posts():
+
+    resp_json = my_request("blog-posts/recent-posts")
+    recent_posts = resp_json["data"]
+
+    if recent_posts:
+        cache.set("recent_blog_posts", recent_posts, timeout=3600)
+    else:
+        logger.error("get_recent_blog_posts return None")
+
+
+
 def get_blog_posts(slug=None):
     if slug is None:
         resp_json = my_request("blog-posts")
@@ -119,6 +131,20 @@ def get_alumni_data(slug=None):
                 cache.set(f"alumni-{slug}", alumni, timeout=3600)
         else:
             logger.error(f"get_alumni_with_slug={slug} return None")
+
+def get_all_course_groups_data():
+    resp_json = my_request("course-groups")
+    if resp_json is None:
+        logger.error("all_course_groups_data return None")
+        return
+
+    all_course_groups = resp_json["data"]
+
+    if all_course_groups:
+        cache.set("all-course-groups", all_course_groups, timeout=3600)
+    else:
+        logger.error("get_all_course_groups_data return None")
+
 
 def get_frontend_data():
     resp_json = my_request("frontend")

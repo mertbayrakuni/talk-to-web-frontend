@@ -157,6 +157,22 @@
                     <div id="educations" class="content-section d-none">
                         <h3 class="col-lg-9">Güncel Eğitimler</h3>
                         <div class="row" id="trueEducationsRow">
+                            {% for blog_post in recent_blog_posts %}
+                                <div class="col-lg-3 col-md-3 col-sm-12 mb-4 blog-item">
+                                    <div class="card h-100">
+                                        <img src="{{ blog_post.image.original }}" class="card-img-top" alt="{{ blog_post.image.slug }}">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-white">
+                                                <a href="{{ ROOT }}/blogs/{{ blog_post.slug }}" class="text-white text-decoration-none">
+                                                    {{ blog_post.title | safe }}
+                                                </a>
+                                            </h5>
+                                            <p class="card-text text-white"> {{ blog_post.published_by }} | {{ blog_post.published_at }} </p>
+                                            <p class="card-preview text-white">{{ blog_post.summary | safe}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
                             <div class="col-lg-3 col-md-6 mb-4 to-all-button" id="trueAllButton">
                                 <div class="all-education-card">
                                     <img src="{{ frontend.logo_white.original }}" alt="TalkToWeb Logo" width="120" id="navbarLogo1">
@@ -224,8 +240,8 @@
                         <h3 class="col-lg-9">Son Bloglar</h3>
 
                         <div class="row" id='blogRow'>
-                            {% for blog_post in frontend.last_blog_posts %}
-                                <div class="col-lg-4 col-md-6 col-sm-12 mb-4 blog-item">
+                            {% for blog_post in recent_blog_posts %}
+                                <div class="col-lg-3 col-md-3 col-sm-12 mb-4 blog-item">
                                     <div class="card h-100">
                                         <img src="{{ blog_post.image.original }}" class="card-img-top" alt="{{ blog_post.image.slug }}">
                                         <div class="card-body">

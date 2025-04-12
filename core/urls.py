@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from core import settings
 from frontend.views import InstructorDetailView, IndexView, KVKKView, AlumniDetailView, BusinessLearningView, \
     ContractedInstitutionsView, FQAView, HumanResourcesView, WriteToUsView, CourseGroupDetailView, BlogSitemap, \
-    BlogPostsView
+    BlogPostsView, UpcomingEducationView, OldEducationView
 from frontend.views import handler404, handler500
 
 
@@ -58,7 +58,11 @@ urlpatterns = [
     path("instructors/<slug:slug>", InstructorDetailView.as_view(), name="instructor_detail_view"),
     path("egitmenlerimiz/<slug:slug>", InstructorDetailView.as_view(), name="instructor_detail_view2"),
 
-    path("upcoming-courses/<slug:slug>", CourseGroupDetailView.as_view(), name="course_group_detail_view2"),
+
+    path("tum-egitimler", CourseGroupDetailView.as_view(), name="all_education"),
+    path("yaklasan-egitimler", UpcomingEducationView.as_view(), name="upcoming_education"),
+    path("gecmis-egitimler", OldEducationView.as_view(), name="old_education"),
+
     path("egitimler/<slug:slug>", CourseGroupDetailView.as_view(), name="course_group_detail_view2"),
 
     path("alumni/<slug:slug>", AlumniDetailView.as_view(), name="alumni_detail_view"),

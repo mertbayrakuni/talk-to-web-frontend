@@ -54,7 +54,7 @@ def handler501(request, exception="", template_name='frontend/errorPage501.html'
 
 class IndexView(View):
     def get(self, request):
-        all_course_groups = cache.get("all-course-groups", get_all_course_groups_data()),
+        all_course_groups = cache.get("all-course-groups", get_all_course_groups_data())
         context = {
             "all_course_groups": all_course_groups,
             "frontend": cache.get("frontend", get_frontend_data()),

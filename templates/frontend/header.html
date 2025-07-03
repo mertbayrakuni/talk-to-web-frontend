@@ -164,10 +164,11 @@
                                         <div class="card-body">
                                             <h5 class="card-title text-white">
                                                 <a href="{{ ROOT }}/egitimler/{{ course_group.slug }}" class="text-white text-decoration-none">
-                                                    {{ course_group.course.name | safe }} - {{ course_group.name | safe }}
+                                                    {{ course_group.course.name | safe }}
                                                 </a>
                                             </h5>
-                                            <p class="card-text text-white"> {{ course_group.start_date }} - {{ course_group.end_date }} </p>
+                                            <p class="card-text text-white">Başlama Tarihi: {{ course_group.start_date }} </p>
+                                            <p class="card-text text-white">Bitiş Tarihi: {{ course_group.end_date }} </p>
                                         </div>
                                     </div>
                                 </div>

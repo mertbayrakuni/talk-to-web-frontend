@@ -54,14 +54,16 @@ def handler501(request, exception="", template_name='frontend/errorPage501.html'
 
 class IndexView(View):
     def get(self, request):
+        all_course_groups = cache.get("all-course-groups", get_all_course_groups_data()),
         context = {
-            "all_course_groups": cache.get("all-course-groups", get_all_course_groups_data()),
+            "all_course_groups": all_course_groups,
             "frontend": cache.get("frontend", get_frontend_data()),
             "news": cache.get("news", get_frontend_data()),
             "testimonials": cache.get("testimonials", get_testimonials_data()),
             "instructors": cache.get("instructors", get_instructors_data()),
             "alumni": cache.get("alumni", get_alumni_data()),
         }
+
 
         template = loader.get_template(f'frontend/index.html')
         return HttpResponse(template.render(context, request))
@@ -85,9 +87,11 @@ class BlogPostsView(View):
         if slug is None:
             blog_posts = cache.get(f"blog_posts", get_blog_posts())
             recent_blog_posts = cache.get(f"recent_blog_posts", get_recent_blog_posts())
+
             context = {
                 'blog_posts': blog_posts,
-                'recent_blog_posts': recent_blog_posts,
+                'recent_blog_posts': recent_blog_posts
+
             }
 
             template = loader.get_template(f'frontend/blogs.html')

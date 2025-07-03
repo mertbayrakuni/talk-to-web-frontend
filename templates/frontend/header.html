@@ -157,18 +157,17 @@
                     <div id="educations" class="content-section d-none">
                         <h3 class="col-lg-9">Güncel Eğitimler</h3>
                         <div class="row" id="trueEducationsRow">
-                            {% for blog_post in recent_blog_posts %}
+                            {% for course_group in last_three_course_groups %}
                                 <div class="col-lg-3 col-md-3 col-sm-12 mb-4 blog-item">
                                     <div class="card h-100">
-                                        <img src="{{ blog_post.image.original }}" class="card-img-top" alt="{{ blog_post.image.slug }}">
+                                        <img src="{{ course_group.main_image.original }}" class="card-img-top" alt="{{ course_group.main_image.id }}-{{ course_group.slug }}">
                                         <div class="card-body">
                                             <h5 class="card-title text-white">
-                                                <a href="{{ ROOT }}/blogs/{{ blog_post.slug }}" class="text-white text-decoration-none">
-                                                    {{ blog_post.title | safe }}
+                                                <a href="{{ ROOT }}/egitimler/{{ course_group.slug }}" class="text-white text-decoration-none">
+                                                    {{ course_group.course.name | safe }} - {{ course_group.name | safe }}
                                                 </a>
                                             </h5>
-                                            <p class="card-text text-white"> {{ blog_post.published_by }} | {{ blog_post.published_at }} </p>
-                                            <p class="card-preview text-white">{{ blog_post.summary | safe}}</p>
+                                            <p class="card-text text-white"> {{ course_group.start_date }} - {{ course_group.end_date }} </p>
                                         </div>
                                     </div>
                                 </div>

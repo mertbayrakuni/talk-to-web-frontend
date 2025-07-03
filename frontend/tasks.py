@@ -29,6 +29,15 @@ def my_request(endpoint):
         logger.error(f"Error in endpoint {endpoint}. {e}")
         return None
 
+def get_last_three_course_groups():
+
+    recent_posts = my_request("course-groups/last-three")
+
+    if recent_posts:
+        cache.set("last_three_course_groups", recent_posts, timeout=3600)
+    else:
+        logger.error("get_last_three_course_groups return None")
+
 
 def get_recent_blog_posts():
 

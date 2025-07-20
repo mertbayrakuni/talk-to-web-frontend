@@ -11,7 +11,8 @@ from frontend.views import InstructorDetailView, IndexView, KVKKView, AlumniDeta
     ContractedInstitutionsView, FQAView, HumanResourcesView, WriteToUsView, CourseGroupDetailView, BlogSitemap, \
     BlogPostsView, UpcomingEducationView, OldEducationView, WhyTalkToWebView, OnBasvuruFormuView, TumEgitimlerView, \
     KurumsalEgitimCozumleriView, KalitePolitikamizView, MusteriPolitikamizView, \
-    BilgiGuvenligiPolitikamizView, GizlilikVeCerezPolitikamizView, KosullarVeSartlarView, AboutUsView
+    BilgiGuvenligiPolitikamizView, GizlilikVeCerezPolitikamizView, KosullarVeSartlarView, AboutUsView, \
+    TumEtkinliklerlerView, AnlasmaliKurumlarView
 from frontend.views import handler404, handler500
 
 load_dotenv()
@@ -41,9 +42,11 @@ urlpatterns = [
     path("index", IndexView.as_view(), name="index"),
     path("home", IndexView.as_view(), name="home"),
     path("hakkimizda/", AboutUsView.as_view(), name="about_us"),
+    path("anlasmali-kurumlar/",AnlasmaliKurumlarView.as_view(), name="anlasmali_kurumlar"),
     path("neden-talk-to-web/", WhyTalkToWebView.as_view(), name="why_talk_to_web_view"),
     path("on-basvuru-formu/", OnBasvuruFormuView.as_view(), name="on_basvuru_formu_view"),
     path("tum-egitimler/", TumEgitimlerView.as_view(), name="tum_egitimler_view"),
+    path("tum-etkinlikler/", TumEtkinliklerlerView.as_view(), name="tum_etkinlikler_view"),
     path("kurumsal-egitim-cozumleri/", KurumsalEgitimCozumleriView.as_view(), name="kurumsal_egitim_cozumleri_view"),
     path("kurumsal-basvuru/", WriteToUsView.as_view(), name="bize_yazin_view"),
     path("insan-kaynaklari/", HumanResourcesView.as_view(), name="insan_kaynaklari_view"),
@@ -56,7 +59,7 @@ urlpatterns = [
     path("kvkk/", KVKKView.as_view(), name="kvkk"),
     path("business-learning/", BusinessLearningView.as_view(), name="business_learning"),
     path("contracted-institutions/", ContractedInstitutionsView.as_view(), name="contracted_institutions"),
-    path("fqa/", FQAView.as_view(), name="fqa"),
+    path("sss/", FQAView.as_view(), name="fqa"),
 
 
     path("blogs/", BlogPostsView.as_view(), name="blogs_view"),

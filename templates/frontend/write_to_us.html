@@ -7,14 +7,6 @@
 
 {% block main_content %}
     <div id="content" class="site-content">
-        <header id="header-cont" class="header sticky-top">
-        </header>
-        <div class="whatsapp">
-            <a href="https://wa.me/5456688801" target="_blank" class="btn btn-success btn-circle"
-                id="whatsappButton">
-                <i class="bi bi-whatsapp"></i>
-            </a>
-        </div>
         <div class="container-fluid info-section">
             <div class="banner-section">
                 <div class="container">
@@ -53,38 +45,44 @@
                                     <div class="col-lg-6 mb-3">
                                         <label for="phoneForm" class="form-label">Telefon<span
                                                 class="asterisk">*</span></label>
-                                        <input type="tel" class="form-control" id="phoneForm" placeholder="Telefon"
+                                        <input type="tel" class="form-control" id="phone" placeholder="Telefon"
                                                required>
                                     </div>
                                     <div class="col-lg-6 mb-3">
-                                        <label for="phoneForm" class="form-label">Ünvanınız<span
+                                        <label for="title" class="form-label">Ünvanınız<span
                                                 class="asterisk">*</span></label>
-                                        <input type="text" class="form-control" id="titleForm" placeholder="Ünvanınız"
+                                        <input type="text" class="form-control" id="title" name="title" placeholder="Ünvanınız"
                                                required>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6 mb-3">
-                                        <label for="phoneForm" class="form-label">E-posta<span
+                                        <label for="email" class="form-label">E-posta<span
                                                 class="asterisk">*</span></label>
-                                        <input type="text" class="form-control" id="emailForm"
+                                        <input type="text" class="form-control" id="email" name="email"
                                                placeholder="E posta Adresiniz"
                                                required>
                                     </div>
                                     <div class="col-lg-6 mb-3">
-                                        <label for="educationForm" class="form-label">Hangi Eğitimi Almak İstersiniz?
-                                            <span
-                                                    class="asterisk">*</span></label>
-                                        <select class="form-control" id="educationForm" required>
+                                        <label for="course_group" class="form-label">Hangi Eğitimi Almak İstersiniz?
+                                            <span class="asterisk">*</span>
+                                        </label>
+                                        <select class="form-control" id="course_group" required>
+                                            {% for course_group in all_course_groups %}
+                                                <option value="{{ course_group.id }}">{{ course_group.course.name }}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
 
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-5 mb-3">
-                                        <label for="adSourceForm" class="form-label">Bize Nereden Ulaştınız? <span
+                                        <label for="ad_source" class="form-label">Bize Nereden Ulaştınız? <span
                                                 class="asterisk">*</span></label>
-                                        <select class="form-control" id="adSourceForm" required>
+                                        <select class="form-control" id="ad_source" required>
+                                            <option value="social_media_ads">Sosyal Medya Reklamları</option>
+                                            <option value="google_ads">Google Reklamları</option>
+                                            <option value="individual_recommendation">Kişisel Tavsiye</option>
                                         </select>
                                     </div>
                                 </div>

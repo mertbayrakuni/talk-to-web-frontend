@@ -1,37 +1,26 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Sık Sorulan Sorular</title>
-    <link href="{{ROOT}}/CrmProject/css/bootstrap.css" rel="stylesheet">
-    <link href="{{ROOT}}/CrmProject/node_modules/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="{{ROOT}}/CrmProject/Navbar/Css/Navbar.css" rel="stylesheet">
-</head>
-<body>
-<div id="page-content" class="site">
+{% extends "frontend/base.html" %}
+{% load  static %}
+{% load l10n %}
+
+{% block title %}<title>Anasayfa | Talk to Web ile Kariyerini Tasarla</title>{% endblock %}
+
+
+{% block main_content %}
     <div id="content" class="site-content">
-        <header id="header-cont" class="header sticky-top">
-        </header>
-        <div class="whatsapp">
-            <a href="https://wa.me/5456688801" target="_blank" class="btn btn-success btn-circle"
-                id="whatsappButton">
-                <i class="bi bi-whatsapp"></i>
-            </a>
-        </div>
         <div class="container-fluid info-section">
             <div class="banner-section">
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
                             <div class="banner-title">
-                                <p class="title">Sık Sorulan Sorular</p>
+                                <p class="title">Sıkça Sorulan Sorular</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="container my-4 faq-section">
             <div class="accordion" id="faqAccordion">
                 <div class="accordion-item">
@@ -202,40 +191,5 @@
                 </div>
             </div>
         </div>
-        <div class="container-fluid numaralar-section-static">
-            <div class="container">
-                <div class="row">
-                    <div class="col-7">
-
-                    </div>
-                    <div class="col-1"></div>
-                    <div class="col-4 stats-form">
-                        <div class="card p-4">
-                            <h4 class="mb-4">Biz Sizi Arayalım</h4>
-                            <form>
-                                <div class="mb-3">
-                                    <input type="text" class="form-control custom-input" placeholder="Ad Soyad"
-                                           required>
-                                </div>
-                                <div class="mb-3">
-                                    <input type="text" class="form-control custom-input" placeholder="Telefon" required>
-                                </div>
-                                <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary custom-button">Gönder</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-</div>
-
-<footer id="footer-cont"></footer>
-
-<script src="{{ROOT}}/CrmProject/js/bootstrap.bundle.js"></script>
-<script src="{{ROOT}}/CrmProject/node_modules/fontawesome/js/all.min.js"></script>
-<script src="{{ROOT}}/CrmProject/Navbar/Js/Navbar.js"></script>
-</body>
-</html>
+{% endblock %}

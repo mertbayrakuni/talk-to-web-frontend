@@ -1,24 +1,12 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>İnsan Kaynakları</title>
-    <link href="{{ROOT}}/CrmProject/css/bootstrap.css" rel="stylesheet">
-    <link href="{{ROOT}}/CrmProject/node_modules/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="{{ROOT}}/CrmProject/Navbar/Css/Navbar.css" rel="stylesheet">
-</head>
-<body>
-<div id="page-content" class="site hr-page-wrapper">
+{% extends "frontend/base.html" %}
+{% load  static %}
+{% load l10n %}
+
+{% block title %}<title>Anasayfa | İnsan Kaynaklari</title>{% endblock %}
+
+
+{% block main_content %}
     <div id="content" class="site-content">
-        <header id="header-cont" class="header sticky-top">
-        </header>
-        <div class="whatsapp">
-            <a href="https://wa.me/5456688801" target="_blank" class="btn btn-success btn-circle"
-                id="whatsappButton">
-                <i class="bi bi-whatsapp"></i>
-            </a>
-        </div>
         <div class="container-fluid info-section">
             <div class="banner-section">
                 <div class="container">
@@ -88,13 +76,4 @@
             </div>
         </div>
     </div>
-</div>
-
-<footer id="footer-cont"></footer>
-
-<script src="{{ROOT}}/CrmProject/js/bootstrap.bundle.js"></script>
-<script src="{{ROOT}}/CrmProject/node_modules/fontawesome/js/all.min.js"></script>
-<script src="{{ROOT}}/CrmProject/Navbar/Js/Navbar.js"></script>
-<script src="{{ROOT}}/CrmProject/Navbar/Js/Preliminary.js"></script>
-</body>
-</html>
+{% endblock %}

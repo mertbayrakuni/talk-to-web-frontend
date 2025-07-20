@@ -73,6 +73,14 @@ class AboutUsView(View):
         template = loader.get_template(f'frontend/hakkimizda.html')
         return HttpResponse(template.render(context, request))
 
+
+class AnlasmaliKurumlarView(View):
+    def get(self, request):
+        context = {}
+        template = loader.get_template(f'frontend/anlasmali_kurumlar.html')
+        return HttpResponse(template.render(context, request))
+
+
 class WhyTalkToWebView(View):
     def get(self, request):
         context = {}
@@ -80,16 +88,17 @@ class WhyTalkToWebView(View):
         return HttpResponse(template.render(context, request))
 
 
-class OnBasvuruFormuView(View):
+class TumEtkinliklerlerView(View):
     def get(self, request):
         context = {}
-        template = loader.get_template(f'frontend/why_talk_to_web.html')
+        template = loader.get_template(f'frontend/tum_etkinlikler.html')
         return HttpResponse(template.render(context, request))
+
 
 class OnBasvuruFormuView(View):
     def get(self, request):
         context = {}
-        template = loader.get_template(f'frontend/why_talk_to_web.html')
+        template = loader.get_template(f'frontend/write_to_us.html')
         return HttpResponse(template.render(context, request))
 
 class TumEgitimlerView(View):
@@ -113,18 +122,24 @@ class InsanKaynaklariView(View):
 class KalitePolitikamizView(View):
     def get(self, request):
         context = {}
-        template = loader.get_template(f'frontend/why_talk_to_web.html')
+        template = loader.get_template(f'frontend/kalite_politikasi.html')
         return HttpResponse(template.render(context, request))
+
+
 class MusteriPolitikamizView(View):
     def get(self, request):
         context = {}
-        template = loader.get_template(f'frontend/why_talk_to_web.html')
+        template = loader.get_template(f'frontend/musteri_politikasi.html')
         return HttpResponse(template.render(context, request))
+
+
 class BilgiGuvenligiPolitikamizView(View):
     def get(self, request):
         context = {}
-        template = loader.get_template(f'frontend/why_talk_to_web.html')
+        template = loader.get_template(f'frontend/bilgi_guvenligi_politikasi.html')
         return HttpResponse(template.render(context, request))
+
+
 class GizlilikVeCerezPolitikamizView(View):
     def get(self, request):
         context = {}
@@ -170,7 +185,7 @@ class BlogPostsView(View):
                 'blog_post': blog_post,
                 'recent_blog_posts': recent_blog_posts,
             }
-            print(context)
+
             template = loader.get_template(f'frontend/blog_private.html')
             return HttpResponse(template.render(context, request))
 

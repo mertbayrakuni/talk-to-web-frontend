@@ -2,7 +2,11 @@
 {% load  static %}
 {% load l10n %}
 {% block met_description %}
-    <meta name="description" content="{{ course_group.meta_description }}">{% endblock %}
+    <meta name="description" content="{{ course_group.meta_description }}">
+{% endblock %}
+    {% block meta_keywords %}
+        <meta name="keywords" content="{{ course_group.meta_keywords }}">
+    {% endblock %}
 
 {% block title %}<title>Kurumsal Eğitim Çözümleri | Talk to Web ile Kariyerini Tasarla</title>{% endblock %}
 

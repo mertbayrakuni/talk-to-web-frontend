@@ -239,107 +239,12 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid numaralar-section my-5">
-        <div class="inner-wrapper">
-            <div class="container student-video-style">
-                <div class="col-7 d-flex flex-column justify-content-center stats-numbers">
-                    <h5 class="section-title text-center mb-4">Kariyeriniz İçin En Doğru Adım</h5>
-                    <div class="d-flex justify-content-between w-100">
-                        <div class="text-center number-box">
-                            <h2>{{ frontend.completed_educations |localize}}</h2>
-                            <p>Tamamlanan Eğitim</p>
-                        </div>
-                        <div class="text-center number-box">
-                            <h2>{{ frontend.approved_educations |localize}}</h2>
-                            <p>Onaylanmış Eğitim</p>
-                        </div>
-                        <div class="text-center number-box">
-                            <h2>{{ frontend.total_alumni|localize }}+</h2>
-                            <p>Mezun Öğrenci</p>
-                        </div>
-                        <div class="text-center number-box">
-                            <h2>{{ frontend.pleasure|localize}}%</h2>
-                            <p>Memnuniyet</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-1"></div>
-                <div class="col-4 stats-form">
-                    <div class="card p-4">
-                        <h4 class="mb-4">Biz Sizi Arayalım</h4>
-                        {% include 'frontend/biz_sizi_arayalim2.html' %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container my-5">
-        <h4 class="text-center mb-4">Öğrencilerimiz hakkımızda ne düşünüyor?</h4>
-        <div class="row">
-            <swiper-container class="testimonialSwiper" init="false" autoplay-delay="2500">
-                {% for testimonial in testimonials %}
-                    <swiper-slide style="border-radius: 10px;">
-                        <div class="card p-3 text-center px-4 testimonial-item">
 
-                            <div class="testimonial-content" >
-                                <h5 class="mb-0 testimonial-title">{{ testimonial.title }}</h5>
-                                <p class="testimonial-message">{{ testimonial.message }}</p>
-                            </div>
-
-                            <div class="ratings">
-                                <span class="{% if testimonial.rate >= 1 %}checked{% endif %}"><i class="fa fa-star"></i></span>
-                                <span class="{% if testimonial.rate >= 2 %}checked{% endif %}"><i class="fa fa-star"></i></span>
-                                <span class="{% if testimonial.rate >= 3 %}checked{% endif %}"><i class="fa fa-star"></i></span>
-                                <span class="{% if testimonial.rate >= 4 %}checked{% endif %}"><i class="fa fa-star"></i></span>
-                                <span class="{% if testimonial.rate >= 5 %}checked{% endif %}"><i class="fa fa-star"></i></span>
-
-                            </div>
-                            <div class="user-image" style="text-align: center">
-                                <img src="{{ testimonial.avatar.original }}" alt="{{ testimonial.slug }}"  class="rounded-circle" width="60">
-                            </div>
-                            <div class="user-content">
-                                <h5 class="mb-0">{{ testimonial.profession }}</h5>
-                                <span>{{ testimonial.name }}</span>
-                            </div>
-
-
-
-                        </div>
-
-                    </swiper-slide>
-                {% endfor %}
-            </swiper-container>
-        </div>
-    </div>
 {% endblock %}
 
 
 {% block js %}
-    <script>
-        const swiperEl = document.querySelector('.testimonialSwiper')
-        Object.assign(swiperEl, {
-          slidesPerView: 1,
-          spaceBetween: 4,
-          pagination: {
-            clickable: true,
-          },
-          breakpoints: {
-            640: {
-              slidesPerView: 2,
-              spaceBetween: 10,
-            },
-            768: {
-              slidesPerView: 3,
-              spaceBetween: 10,
-            },
-            1024: {
-              slidesPerView: 4,
-              spaceBetween: 10,
-            },
-          },
-        });
-        swiperEl.initialize();
-    </script>
+
 {% endblock %}
 
 

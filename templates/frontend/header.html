@@ -75,7 +75,7 @@
                             <span class="d-none d-sm-block logo-font-style">talktoweb</span>
                         </a>
                         <div class="d-flex align-items-center">
-                            <a href="{{API_ROOT}}/login">
+                            <a href="{{API_ROOT}}/login/">
                                 <button class="btn btn-student d-none d-sm-block float-end" type="button">
                                 <i class="fa-solid fa-user"></i> Öğrenci Girişi
                                 </button>
@@ -124,7 +124,7 @@
                             <a href="#" class="header-link" data-content="technology" id="technologyLink">Teknoloji</a>
                         </li>
                         <li class="d-flex align-items-center mt-3 w-100 li-style">
-                            <a class="w-100 student-login-style" href="{{ROOT}}/login">
+                            <a class="w-100 student-login-style" href="{{API_ROOT}}/login/">
                                 <button class="btn btn-student-mobile d-sm-block w-100 float-end" type="button">
                                 <i class="fa-solid fa-user"></i> Öğrenci Girişi
                                 </button>
@@ -132,7 +132,7 @@
                         </li>
                         <li class="d-flex align-items-center border-bottom li-style"><i
                                 class="fa-solid fa-caret-right menu-caret"></i> <a
-                                href="#" class="header-link" data-content="contact">İletişim</a>
+                                href="{{ ROOT }}/iletisim/" class="header-link" data-content="contact">İletişim</a>
                         </li>
                     </ul>
                     <div class="social-icons d-flex justify-content-between w-100">
@@ -163,7 +163,7 @@
                                         <img src="{{ course_group.main_image.original }}" class="card-img-top" alt="{{ course_group.main_image.id }}-{{ course_group.slug }}">
                                         <div class="card-body">
                                             <h5 class="card-title text-white">
-                                                <a href="{{ ROOT }}/egitimler/{{ course_group.slug }}" class="text-white text-decoration-none">
+                                                <a href="{{ ROOT }}/egitimler/{{ course_group.slug }}/" class="text-white text-decoration-none">
                                                     {{ course_group.course.name | safe }}
                                                 </a>
                                             </h5>
@@ -176,7 +176,7 @@
                             <div class="col-lg-3 col-md-6 mb-4 to-all-button" id="trueAllButton">
                                 <div class="all-education-card">
                                     <img src="{{ frontend.logo_white.original }}" alt="TalkToWeb Logo" width="120" id="navbarLogo1">
-                                    <a href="{{ROOT}}/tum-egitimler" class="text-decoration-none">
+                                    <a href="{{ROOT}}/tum-egitimler/" class="text-decoration-none">
                                         <div class="card-title all-education-button">TÜM EĞİTİMLER</div>
                                     </a>
                                 </div>
@@ -189,7 +189,7 @@
                             <div class="col-lg-3 col-md-6 mb-4 to-all-button" id="activityButton">
                                 <div class="all-education-card">
                                     <img src="{{ frontend.logo_white.original }}" alt="TalkToWeb Logo" width="120" id="navbarLogo2">
-                                    <a href="{{ROOT}}/tum-etkinlikler" class="text-decoration-none">
+                                    <a href="{{ROOT}}/tum-etkinlikler/" class="text-decoration-none">
                                         <div class="card-title all-education-button">TÜM ETKİNLİKLER</div>
                                     </a>
                                 </div>
@@ -202,11 +202,11 @@
                                 <div class="widget widget--list">
                                     <h3 class="widget__title">Hakkımızda</h3>
                                     <ul class="list-unstyled">
-                                        <li> <a href="{{ROOT}}/about-us">Hakkımızda</a></li>
-                                        <li><a href="{{ROOT}}/why-talk-toweb">Neden Talk to Web?</a></li>
-                                        <li><a href="{{ROOT}}/preliminary">Ön Başvuru</a> </li>
-                                        <li><a href="{{ROOT}}/all-blogs">Blog</a> </li>
-                                        <li><a href="{{ROOT}}/tum-egitimler">Tüm Eğitimler</a> </li>
+                                        <li> <a href="{{ROOT}}/hakkimizda/">Hakkımızda</a></li>
+                                        <li><a href="{{ROOT}}/neden-talk-to-web/">Neden Talk to Web?</a></li>
+                                        <li><a href="{{ROOT}}/on-basvuru-formu/">Ön Başvuru</a> </li>
+                                        <li><a href="{{ROOT}}/blogs/">Blog</a> </li>
+                                        <li><a href="{{ROOT}}/tum-egitimler/">Tüm Eğitimler</a> </li>
                                     </ul>
                                 </div>
                             </div>
@@ -214,11 +214,11 @@
                                 <div class="widget widget--list">
                                     <h3 class="widget__title">Kurumsal</h3>
                                     <ul class="list-unstyled">
-                                        <li><a href="{{ROOT}}/business-learning">Kurumsal Eğitim Çözümleri</a></li>
-                                        <li><a href="{{ROOT}}/contracted-institutions">Anlaşmalı Kurumlar</a></li>
-                                        <li><a href="{{ROOT}}/faq">Sıkça Sorulan Sorular</a></li>
-                                        <li><a href="{{ROOT}}/write-to-us">Bize Yazın</a></li>
-                                        <li><a href="{{ROOT}}/hr">İnsan Kaynakları</a> </li>
+                                        <li><a href="{{ROOT}}/kurumsal-egitim-cozumleri/">Kurumsal Eğitim Çözümleri</a></li>
+                                        <li><a href="{{ROOT}}/anlasmali-kurumlar/">Anlaşmalı Kurumlar</a></li>
+                                        <li><a href="{{ROOT}}/sss/">Sıkça Sorulan Sorular</a></li>
+                                        <li><a href="{{ROOT}}/kurumsal-basvuru/">Bize Yazın</a></li>
+                                        <li><a href="{{ROOT}}/insan-kaynaklari/">İnsan Kaynakları</a> </li>
                                     </ul>
                                 </div>
                             </div>
@@ -226,11 +226,11 @@
                                 <div class="widget widget--list">
                                     <h3 class="widget__title">Politikalarımız</h3>
                                     <ul class="list-unstyled">
-                                        <li><a href="{{ROOT}}/quality-policy">Kalite Politikamız</a></li>
-                                        <li><a href="{{ROOT}}/customer-policy">Müşteri Politikası</a></li>
-                                        <li><a href="{{ROOT}}/security-policy">Bilgi Güvenliği Politikamız</a></li>
-                                        <li><a href="{{ROOT}}/cookie-policy">Gizlilik ve Çerez Politikamız</a></li>
-                                        <li><a href="{{ROOT}}/terms-and-conditions">Koşullar ve Şartlar</a> </li>
+                                        <li><a href="{{ROOT}}/kalite-politikamiz/">Kalite Politikamız</a></li>
+                                        <li><a href="{{ROOT}}/müşteri-politikamiz/">Müşteri Politikası</a></li>
+                                        <li><a href="{{ROOT}}/bilgi-guvenligi-politikamiz/">Bilgi Güvenliği Politikamız</a></li>
+                                        <li><a href="{{ROOT}}/gizlilik-ve-cerez-politikamiz/">Gizlilik ve Çerez Politikamız</a></li>
+                                        <li><a href="{{ROOT}}/kosullar-ve-sartlar/">Koşullar ve Şartlar</a> </li>
                                     </ul>
                                 </div>
                             </div>
@@ -246,7 +246,7 @@
                                         <img src="{{ blog_post.image.original }}" class="card-img-top" alt="{{ blog_post.image.slug }}">
                                         <div class="card-body">
                                             <h5 class="card-title text-white">
-                                                <a href="{{ ROOT }}/blogs/{{ blog_post.slug }}" class="text-white text-decoration-none">
+                                                <a href="{{ ROOT }}/blogs/{{ blog_post.slug }}/" class="text-white text-decoration-none">
                                                     {{ blog_post.title | safe }}
                                                 </a>
                                             </h5>

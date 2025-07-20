@@ -21,24 +21,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-sentry_sdk.init(
-    dsn=os.getenv("SENTRY_KEY"),
-    integrations=[
-        DjangoIntegration(),
-    ],
-
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    # We recommend adjusting this value in production.
-    traces_sample_rate=1.0,
-
-    # If you wish to associate users to errors (assuming you are using
-    # django.contrib.auth) you may enable sending PII data.
-    send_default_pii=True
-)
 DJANGO_ENCRYPTED_FIELD_KEY = os.getenv("DJANGO_SECRET_KEY")
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
-APPEND_SLASH = os.getenv("APPEND_SLASH") in [True, "True", "true"]
+APPEND_SLASH = True
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DJANGO_DEBUG") in [True, "True", "true"]
@@ -46,8 +31,6 @@ DEBUG = os.getenv("DJANGO_DEBUG") in [True, "True", "true"]
 mimetypes.add_type("text/css", ".css")
 
 ALLOWED_HOSTS = ['*']
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 os.environ['BASE_DIR'] = str(BASE_DIR)
@@ -107,6 +90,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = [
     "https://talktoweb.com",
     "https://panel.talktoweb.com",
+    "https://admin.talktoweb.com",
     "https://frontend.talktoweb.com",
     "http://localhost:8000",
     "http://127.0.0.1:8000"
@@ -114,6 +98,7 @@ CORS_ORIGIN_WHITELIST = [
 CORS_ALLOWED_ORIGINS = [
     "https://talktoweb.com",
     "https://panel.talktoweb.com",
+    "https://admin.talktoweb.com",
     "https://frontend.talktoweb.com",
     "http://localhost:8000",
     "http://127.0.0.1:8000"
@@ -140,6 +125,7 @@ CORS_ALLOW_HEADERS = [
 CSRF_TRUSTED_ORIGINS = [
     "https://talktoweb.com",
     "https://panel.talktoweb.com",
+    "https://admin.talktoweb.com",
     "https://frontend.talktoweb.com",
     "http://167.99.244.71",
     "http://localhost:8000",
@@ -260,8 +246,6 @@ STATIC_URL = os.getenv("STATIC_URL")
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = os.getenv("MEDIA_URL")
-
-X_FRAME_OPTIONS = "SAMEORIGIN"
 
 LOGIN_REDIRECT_URL = reverse_lazy('frontend_admin')
 LOGIN_URL = reverse_lazy('frontend_login')

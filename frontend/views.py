@@ -56,18 +56,85 @@ class IndexView(View):
     def get(self, request):
         all_course_groups = cache.get("all-course-groups", get_all_course_groups_data())
         context = {
-            "all_course_groups": all_course_groups,
-            "frontend": cache.get("frontend", get_frontend_data()),
-            "news": cache.get("news", get_frontend_data()),
-            "testimonials": cache.get("testimonials", get_testimonials_data()),
-            "instructors": cache.get("instructors", get_instructors_data()),
-            "alumni": cache.get("alumni", get_alumni_data()),
+
         }
 
 
         template = loader.get_template(f'frontend/index.html')
         return HttpResponse(template.render(context, request))
 
+class AboutUsView(View):
+    def get(self, request):
+        all_course_groups = cache.get("all-course-groups", get_all_course_groups_data())
+        context = {
+
+        }
+
+        template = loader.get_template(f'frontend/hakkimizda.html')
+        return HttpResponse(template.render(context, request))
+
+class WhyTalkToWebView(View):
+    def get(self, request):
+        context = {}
+        template = loader.get_template(f'frontend/why_talk_to_web.html')
+        return HttpResponse(template.render(context, request))
+
+
+class OnBasvuruFormuView(View):
+    def get(self, request):
+        context = {}
+        template = loader.get_template(f'frontend/why_talk_to_web.html')
+        return HttpResponse(template.render(context, request))
+
+class OnBasvuruFormuView(View):
+    def get(self, request):
+        context = {}
+        template = loader.get_template(f'frontend/why_talk_to_web.html')
+        return HttpResponse(template.render(context, request))
+
+class TumEgitimlerView(View):
+    def get(self, request):
+        context = {}
+        template = loader.get_template(f'frontend/why_talk_to_web.html')
+        return HttpResponse(template.render(context, request))
+
+
+class KurumsalEgitimCozumleriView(View):
+    def get(self, request):
+        context = {}
+        template = loader.get_template(f'frontend/kurumsal_egitim_cozumleri.html')
+        return HttpResponse(template.render(context, request))
+
+class InsanKaynaklariView(View):
+    def get(self, request):
+        context = {}
+        template = loader.get_template(f'frontend/why_talk_to_web.html')
+        return HttpResponse(template.render(context, request))
+class KalitePolitikamizView(View):
+    def get(self, request):
+        context = {}
+        template = loader.get_template(f'frontend/why_talk_to_web.html')
+        return HttpResponse(template.render(context, request))
+class MusteriPolitikamizView(View):
+    def get(self, request):
+        context = {}
+        template = loader.get_template(f'frontend/why_talk_to_web.html')
+        return HttpResponse(template.render(context, request))
+class BilgiGuvenligiPolitikamizView(View):
+    def get(self, request):
+        context = {}
+        template = loader.get_template(f'frontend/why_talk_to_web.html')
+        return HttpResponse(template.render(context, request))
+class GizlilikVeCerezPolitikamizView(View):
+    def get(self, request):
+        context = {}
+        template = loader.get_template(f'frontend/why_talk_to_web.html')
+        return HttpResponse(template.render(context, request))
+class KosullarVeSartlarView(View):
+    def get(self, request):
+        context = {}
+        template = loader.get_template(f'frontend/why_talk_to_web.html')
+        return HttpResponse(template.render(context, request))
 
 class InstructorDetailView(View):
     def get(self, request, slug):
@@ -230,7 +297,7 @@ class HumanResourcesView(View):
 class WriteToUsView(View):
     def get(self, request, page_name=None):
         context = {
-            "active": ["#business_learning"]
+            "active": ["#write_to_us"]
         }
 
         template = loader.get_template(f'frontend/write_to_us.html')

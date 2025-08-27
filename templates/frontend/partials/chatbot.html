@@ -1,0 +1,29 @@
+<!-- templates/frontend/partials/chatbot.html -->
+<div class="ttw-chatbot" data-ttw-chatbot role="region" aria-labelledby="ttw-chatbot-title">
+    <header class="ttw-header">
+        <h2 id="ttw-chatbot-title">AI Chatbot</h2>
+        <div class="subtitle">Size yardımcı olmak için buradayım</div>
+    </header>
+
+    <!-- chat log -->
+    <div id="chat" class="ttw-chat" role="log" aria-live="polite"></div>
+
+    <!-- input (form submit handled by TTWChatbot.mount) -->
+    <form class="ttw-input input-container" id="ttw-form" autocomplete="off">
+        <input
+                id="msgInput"
+                class="ttw-input-field"
+                type="text"
+                placeholder="Mesajınızı yazın..."
+                aria-label="Mesajınızı yazın"
+        />
+        <button class="ttw-send" type="submit">Gönder</button>
+    </form>
+
+    <!-- optional template hook (safe to keep) -->
+    <template id="ttw-msg-template">
+        <div class="msg"><span class="text"></span>
+            <div class="timestamp"></div>
+        </div>
+    </template>
+</div>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Chatbot</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    header {
+      text-align: center;
+      padding: 20px;
+      background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+      color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 5px;
+    }
+    
+    .subtitle {
+      font-weight: 300;
+      opacity: 0.9;
+    }
+    
+    #chat {
+      border: none;
+      padding: 20px;
+      height: 500px;
+      overflow-y: auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .msg {
+      margin: 5px 0;
+      padding: 15px 20px;
+      border-radius: 18px;
+      max-width: 80%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      position: relative;
+      animation: fadeIn 0.3s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .user {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      color: white;
+      margin-left: auto;
+      border-bottom-right-radius: 5px;
+    }
+    
+    .bot {
+      background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+      color: #333;
+      margin-right: auto;
+      border-bottom-left-radius: 5px;
+    }
+    
+    .images {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 12px;
+    }
+    
+    .images img {
+      width: 140px;
+      height: 90px;
+      object-fit: cover;
+      cursor: pointer;
+      border-radius: 10px;
+      border: 3px solid transparent;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .images img:hover {
+      border-color: #4b6cb7;
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .input-container {
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    
+    #msgInput {
+      flex: 1;
+      padding: 15px 20px;
+      border: 2px solid #e1e5eb;
+      border-radius: 30px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    
+    #msgInput:focus {
+      outline: none;
+      border-color: #4b6cb7;
+      box-shadow: 0 0 0 3px rgba(75, 108, 183, 0.2);
+    }
+    
+    button {
+      padding: 15px 30px;
+      background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    .timestamp {
+      font-size: 0.7rem;
+      opacity: 0.8;
+      margin-top: 8px;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h2>AI Chatbot</h2>
+      <div class="subtitle">Size yardımcı olmak için buradayım</div>
+    </header>
+    
+    <div id="chat"></div>
+    
+    <div class="input-container">
+      <input id="msgInput" type="text" placeholder="Mesajınızı yazın..." autocomplete="off">
+      <button onclick="sendMsg()">Gönder</button>
+    </div>
+  </div>
+
+  <script>
+    const ws = new WebSocket("ws://localhost:8000/ws");
+    const chat = document.getElementById("chat");
+    const input = document.getElementById("msgInput");
+
+    ws.onmessage = (e) => {
+      const data = JSON.parse(e.data);
+
+      addMessage(data.reply, "bot");
+
+      if (data.urls && data.urls.length > 0) {
+        const imgContainer = document.createElement("div");
+        imgContainer.className = "images";
+
+        data.urls.forEach(u => {
+          const img = document.createElement("img");
+          img.src = u.image;
+          img.title = u.adres;
+
+          img.onclick = () => {
+            addMessage("Seçilen adres: " + u.adres, "user");
+            ws.send(u.adres);
+          };
+
+          imgContainer.appendChild(img);
+        });
+
+        chat.appendChild(imgContainer);
+        chat.scrollTop = chat.scrollHeight;
+      }
+    };
+
+    function sendMsg() {
+      const msg = input.value.trim();
+      if (!msg) return;
+      addMessage(msg, "user");
+      ws.send(msg);
+      input.value = "";
+    }
+
+    function addMessage(text, who) {
+      const div = document.createElement("div");
+      div.className = "msg " + who;
+      div.innerText = text;
+      
+      // Add timestamp
+      const now = new Date();
+      const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
+                         now.getMinutes().toString().padStart(2, '0');
+      const timestamp = document.createElement("div");
+      timestamp.className = "timestamp";
+      timestamp.innerText = timeString;
+      div.appendChild(timestamp);
+      
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+  </script>
+</body>
+</html>
+

@@ -1,4 +1,4 @@
-{% load  static %}
+{% load static %}
 {% load l10n %}
 <!DOCTYPE html>
 <html lang="tr">
@@ -18,11 +18,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <link rel="canonical" href="https://talktoweb.com/">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- keep Bootstrap JS once (CDN); removed duplicate local bundle at bottom -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="{% static  'frontend/bootstrap-icons/font/bootstrap-icons.min.css' %}" rel="stylesheet">
-    <link href="{% static  'frontend/plugins/sweetalert2/dist/sweetalert2.min.css' %}" rel="stylesheet">
-    <link href="{% static  'frontend/css/main.css' %}" rel="stylesheet">
+    <link href="{% static 'frontend/bootstrap-icons/font/bootstrap-icons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'frontend/plugins/sweetalert2/dist/sweetalert2.min.css' %}" rel="stylesheet">
+    <link href="{% static 'frontend/css/main.css' %}" rel="stylesheet">
 
     <style>
         body {
@@ -241,13 +240,10 @@
             height: auto; /* override default fixed height */
         }
     </style>
-    <!-- Global override for the WebSocket endpoint (use WSS on HTTPS/ngrok) -->
     <script>
-        // prod/ngrok:
+        // Note: You must update this URL whenever your ngrok tunnel address changes.
         window.TTW_WS = "wss://f5a97f8b9272.ngrok-free.app/ws";
-        // local dev (optional): comment the line above and the widget will auto-compute ws://127.0.0.1:8000/ws from :9000
     </script>
-
 </head>
 <body>
 <div id="page-content" class="site">
@@ -272,11 +268,11 @@
                             <h5 class="section-title text-center mb-4">Kariyeriniz İçin En Doğru Adım</h5>
                             <div class="d-flex justify-content-between w-100">
                                 <div class="text-center number-box">
-                                    <h2>{{ frontend.completed_educations |localize }}</h2>
+                                    <h2>{{ frontend.completed_educations|localize }}</h2>
                                     <p>Tamamlanan Eğitim</p>
                                 </div>
                                 <div class="text-center number-box">
-                                    <h2>{{ frontend.approved_educations |localize }}</h2>
+                                    <h2>{{ frontend.approved_educations|localize }}</h2>
                                     <p>Onaylanmış Eğitim</p>
                                 </div>
                                 <div class="text-center number-box">
@@ -352,12 +348,9 @@
 
 {% include "frontend/footer.html" %}
 
-<!-- removed duplicate local Bootstrap bundle include -->
-<!-- <script src="{% static  'frontend/js/bootstrap.bundle.js' %}"></script> -->
-
-<script src="{% static  'frontend/plugins/jquery/dist/jquery.min.js' %}"></script>
-<script src="{% static  'frontend/plugins/fontawesome/js/all.min.js' %}"></script>
-<script src="{% static  'frontend/plugins/sweetalert2/dist/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'frontend/plugins/jquery/dist/jquery.min.js' %}"></script>
+<script src="{% static 'frontend/plugins/fontawesome/js/all.min.js' %}"></script>
+<script src="{% static 'frontend/plugins/sweetalert2/dist/sweetalert2.all.min.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
 <script src="https://www.google.com/recaptcha/api.js?render=6LdvUOcqAAAAAMTkthljNCSeYCDlpgZwBo38Mfon"></script>
 <script>
@@ -396,7 +389,7 @@
                             $("#loading").show();
                             if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
                                 // Only send the token to relative URLs i.e. locally.
-                                xhr.setRequestHeader("X-CSRFToken", '{{csrf_token  }}');
+                                xhr.setRequestHeader("X-CSRFToken", '{{csrf_token }}');
                             }
                         },
                         success: function (response) { // handle a successful response
@@ -784,53 +777,120 @@
             titleLink.href = `{{ROOT}}/blog/${formattedBlogName}`;
             titleLink.classList.add('text-white', 'text-decoration-none');
             titleLink.textContent = capitalizeWords(blog.BlogName);
+
+            const categoryBadge = document.createElement('span');
+            categoryBadge.classList.add('badge', 'bg-secondary', 'mb-2');
+            categoryBadge.textContent = blog.CategoryName;
+
+            cardBody.appendChild(categoryBadge);
             title.appendChild(titleLink);
-
-            titleLink.addEventListener('click', function () {
-                event.preventDefault(); // Varsayılan davranışı durdur
-                const fullHref = `${titleLink.href}?id=${blog._id}`;
-                window.location.href = fullHref; // Güncellenmiş href ile yönlendirme
-            });
-
-
-            const topic = document.createElement('p');
-            topic.classList.add('card-text', 'text-white');
-            topic.textContent = `${blog.WriterName} | ${blog.date} | ${category.Name}`;
-
-            const desc = document.createElement('p');
-            desc.classList.add('card-preview', 'text-white');
-            desc.textContent = truncateHtmlContent(blog.Content, 50);
-
-            // Append elements to card body
             cardBody.appendChild(title);
-            cardBody.appendChild(topic);
-            cardBody.appendChild(desc);
 
-            // Append image and body to the card
+            const text = document.createElement('p');
+            text.classList.add('card-text');
+            text.innerHTML = blog.BlogTopic.length > 150 ? blog.BlogTopic.slice(0, 150) + '...' : blog.BlogTopic;
+
+            cardBody.appendChild(text);
+
+            const readMoreLink = document.createElement('a');
+            readMoreLink.href = `{{ROOT}}/blog/${formattedBlogName}`;
+            readMoreLink.classList.add('btn', 'btn-primary', 'mt-3');
+            readMoreLink.textContent = 'Devamını Oku';
+
+            cardBody.appendChild(readMoreLink);
+
             blogCard.appendChild(img);
             blogCard.appendChild(cardBody);
-
-            // Append card to the main blog div
             blogDiv.appendChild(blogCard);
 
-            // Append the blog card to the row in the DOM
-            const announcementsRow = document.getElementById('blogRow');
-            const allEducationCard = document.getElementById('blogButton');
-            announcementsRow.insertBefore(blogDiv, allEducationCard);
-        }
-
-        function truncateHtmlContent(htmlString, maxLength) {
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = htmlString;
-
-            let plainText = tempDiv.textContent || tempDiv.innerText || "";
-
-            if (plainText.length > maxLength) {
-                plainText = plainText.substring(0, maxLength) + '...';
+            const blogRow = document.getElementById('blogRow');
+            if (blogRow) {
+                blogRow.appendChild(blogDiv);
             }
-
-            return plainText;
         }
+
+
+        const apiUrl = "{{ API_ROOT }}";
+        const csrfToken = "{{ csrf_token }}";
+
+
+        async function fetchNotices() {
+            try {
+                const response = await fetch(`${apiUrl}/api/notice`, {
+                    headers: {
+                        'X-CSRFToken': csrfToken
+                    }
+                });
+                const notices = await response.json();
+                if (notices) {
+                    notices.forEach(createNoticeCard);
+                }
+            } catch (error) {
+                console.error("Duyurular getirilirken bir hata oluştu:", error);
+            }
+        }
+
+        async function fetchBlogs() {
+            try {
+                const response = await fetch(`${apiUrl}/api/blog`, {
+                    headers: {
+                        'X-CSRFToken': csrfToken
+                    }
+                });
+                const blogs = await response.json();
+                if (blogs) {
+                    blogs.forEach(createBlogCard);
+                }
+            } catch (error) {
+                console.error("Bloglar getirilirken bir hata oluştu:", error);
+            }
+        }
+
+        async function getEducationList() {
+            const formData = new FormData(CourseSelect);
+            const selectedCourseType = formData.get('course_type');
+            try {
+                const educationListResponse = await fetch(`${apiUrl}/api/education-list?course_type=${selectedCourseType}`, {
+                    headers: {
+                        'X-CSRFToken': csrfToken
+                    }
+                });
+                if (!educationListResponse.ok) {
+                    throw new Error('Eğitim listesi getirilirken bir hata oluştu.');
+                }
+                const educationList = await educationListResponse.json();
+                renderEducationList(educationList);
+            } catch (error) {
+                console.error("Eğitim listesi getirilirken bir hata oluştu:", error);
+            }
+        }
+
+
+        function renderEducationList(educationList) {
+            container.innerHTML = '';
+            educationList.forEach(course_group => {
+                const div = document.createElement('div');
+                div.classList.add('col-lg-3', 'col-md-6');
+                div.innerHTML = `
+                    <div class="card shadow-lg h-100 course-card">
+                        <div class="card-body">
+                            ${course_group.label ? `<div class="course-group">${course_group.label}</div>` : ''}
+                            <a href="{{ ROOT }}/egitimler/${course_group.slug}">
+                                <img class="card-img-top" alt="${course_group.slug}"
+                                     src="${course_group.main_image.original}" data-no-retina=""
+                                     style="height: 200px">
+                            </a>
+                            <h5 class="card-title">${course_group.name}</h5>
+                            <div style="max-font-size: 200px;height: 200px;overflow-y: scroll">
+                                ${course_group.description}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
 
         function capitalizeWords(str) {
             // Veriyi küçük harfe çevirir ve sonra her kelimenin baş harfini büyük yapar
@@ -864,13 +924,17 @@
 
     function detectIdType(id) {
         if (/^[0-9a-fA-F]{24}$/.test(id)) {
-            return id.toString();
-        } else if (!isNaN(id) && Number.isInteger(parseFloat(id))) {
-            return parseInt(id);
+            return 'Mongo ObjectId';
         }
-        return null; // Geçersiz ID
+        if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(id)) {
+            return 'UUID';
+        }
+        if (id.includes('.')) {
+            return 'File with extension';
+        }
+        return 'Other';
     }
-
 </script>
+{% block js %}{% endblock %}
 </body>
 </html>

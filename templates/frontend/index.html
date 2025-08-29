@@ -64,7 +64,6 @@
                         </button>
                     </form>
 
-                    <!-- optional: a host for inline chat if you want it -->
                     <div id="chatContainer" class="chat-container"></div>
                 </div>
             </div>
@@ -214,40 +213,29 @@
 {% block js %}
     <script>
         (function () {
-            const ready = (fn) => (document.readyState !== 'loading')
-                ? fn()
-                : document.addEventListener('DOMContentLoaded', fn);
+            function ready(fn) {
+                if (document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn);
+            }
 
-            ready(() => {
-                // elements
-                const form = document.getElementById('miniChatForm');
-                const input = document.getElementById('minichatInput');
-                const btn = document.getElementById('startChatBtn') || document.querySelector('#miniChatForm button');
+            ready(function () {
+                const btn = document.getElementById('startChatBtn');
+                const area = document.getElementById('minichatInput');
 
-                // never let the form navigate/reload
-                form && form.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
+                btn?.addEventListener('click', function (ev) {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    const initialText = (area?.value || '').trim();
+
+                    if (window.TTWChatbot && typeof window.TTWChatbot.openModal === 'function') {
+                        window.TTWChatbot.openModal({initialText: initialText});
+                    } else {
+                        console.warn('Chatbot modal function not found.');
+                    }
                 });
 
-                // open chatbot on click (single, clean handler)
-                btn && btn.addEventListener('click', (e) => {
+                document.getElementById('miniChatForm')?.addEventListener('submit', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
-
-                    const text = (input?.value || '').trim();
-                    if (!window.TTWChatbot || typeof window.TTWChatbot.open !== 'function') {
-                        console.warn('[TTW] Chatbot script not loaded yet');
-                        alert('Sohbet yüklenemedi. Lütfen sayfayı yenileyin.');
-                        return;
-                    }
-
-                    window.TTWChatbot.open({
-                        // set in base.html, e.g.:
-                        // window.TTW_WS = "wss://122689b28922.ngrok-free.app/ws";
-                        endpoint: window.TTW_WS,
-                        initialText: text || undefined
-                    });
                 });
             });
         })();

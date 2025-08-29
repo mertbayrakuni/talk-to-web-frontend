@@ -1,0 +1,446 @@
+<!-- Chatbot (single-file include) -->
+<style>
+    /* === Chatbot (scoped) ==================================================== */
+    .ttw-chatbot {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+    }
+
+    .ttw-header {
+        padding: 14px 18px;
+        color: #fff;
+        border-radius: 12px;
+        background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%)
+    }
+
+    .ttw-header h2 {
+        margin: 0 0 2px 0;
+        font-size: 20px
+    }
+
+    .ttw-header .subtitle {
+        opacity: .9;
+        font-weight: 300;
+        font-size: 14px
+    }
+
+    .ttw-chat {
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px;
+        height: 460px;
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, .05)
+    }
+
+    .ttw-msg {
+        padding: 12px 14px;
+        border-radius: 16px;
+        max-width: 80%;
+        position: relative;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, .05);
+        animation: ttw-fade .3s ease-out
+    }
+
+    .ttw-msg.is-user {
+        margin-left: auto;
+        color: #fff;
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        border-bottom-right-radius: 6px
+    }
+
+    .ttw-msg.is-bot {
+        margin-right: auto;
+        color: #333;
+        background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+        border-bottom-left-radius: 6px
+    }
+
+    @keyframes ttw-fade {
+        from {
+            opacity: 0;
+            transform: translateY(8px)
+        }
+        to {
+            opacity: 1;
+            transform: none
+        }
+    }
+
+    .ttw-timestamp {
+        font-size: 11px;
+        opacity: .75;
+        margin-top: 6px;
+        text-align: right
+    }
+
+    .ttw-images {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 10px
+    }
+
+    .ttw-images img {
+        width: 140px;
+        height: 90px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 3px solid transparent;
+        cursor: pointer;
+        transition: all .25s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, .1)
+    }
+
+    .ttw-images img:hover {
+        transform: translateY(-3px);
+        border-color: #4b6cb7
+    }
+
+    .ttw-input {
+        display: flex;
+        gap: 10px;
+        align-items: center
+    }
+
+    input.ttw-input-field, textarea.ttw-input-field {
+        flex: 1;
+        padding: 14px 16px;
+        border: 2px solid #e1e5eb;
+        border-radius: 30px;
+        font-size: 15px;
+        outline: none
+    }
+
+    input.ttw-input-field:focus, textarea.ttw-input-field:focus {
+        border-color: #4b6cb7;
+        box-shadow: 0 0 0 3px rgba(75, 108, 183, .18)
+    }
+
+    .ttw-send {
+        padding: 12px 22px;
+        border: 0;
+        border-radius: 30px;
+        font-weight: 600;
+        cursor: pointer;
+        color: #fff;
+        background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, .1)
+    }
+
+    .ttw-send:active {
+        transform: translateY(0)
+    }
+
+    /* Modal scaffolding (overlay + grow panel) */
+    body.tw-modal-open {
+        overflow: hidden
+    }
+
+    .tw-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 16, 30, .45);
+        backdrop-filter: saturate(120%) blur(2px);
+        opacity: 0;
+        transition: opacity .25s ease;
+        z-index: 10000
+    }
+
+    .tw-overlay.open {
+        opacity: 1
+    }
+
+    .tw-grow-panel {
+        position: fixed;
+        z-index: 10001;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 16px 48px rgba(0, 0, 0, .24);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        transition: left .35s ease, top .35s ease, width .35s ease, height .35s ease, border-radius .35s ease, transform .35s ease
+    }
+
+    .tw-panel-header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        padding: 14px 56px 14px 16px;
+        color: #fff;
+        font-weight: 600;
+        background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%)
+    }
+
+    .tw-panel-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 3;
+        width: 40px;
+        height: 40px;
+        border-radius: 999px;
+        border: 0;
+        cursor: pointer;
+        background: rgba(0, 0, 0, .45);
+        color: #fff;
+        display: grid;
+        place-items: center;
+        font-size: 22px;
+        line-height: 1;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        pointer-events: auto
+    }
+
+    .tw-panel-body {
+        flex: 1;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 12px;
+        background: #f7f9fc
+    }
+
+    .tw-panel-body .ttw-chatbot {
+        gap: 12px;
+        width: 100%
+    }
+
+    .tw-panel-body .ttw-chat {
+        min-height: 40vh;
+        height: auto
+    }
+
+    @media (max-width: 767.98px) {
+        .tw-grow-panel {
+            left: 2vw !important;
+            top: calc(env(safe-area-inset-top) + 10px) !important;
+            width: 96vw !important;
+            height: calc(92vh - env(safe-area-inset-bottom)) !important;
+            border-radius: 16px !important
+        }
+
+        .tw-panel-close {
+            width: 44px;
+            height: 44px;
+            font-size: 24px
+        }
+
+        .tw-panel-header {
+            padding: 12px 58px 12px 14px
+        }
+
+        .tw-panel-body {
+            padding-bottom: calc(env(safe-area-inset-bottom) + 12px)
+        }
+
+        .ttw-input-field {
+            font-size: 16px;
+            border-radius: 22px;
+            padding: 12px 14px
+        }
+
+        .ttw-send {
+            padding: 12px 16px;
+            border-radius: 22px
+        }
+    }
+</style>
+
+<div class="ttw-chatbot" data-ttw-chatbot data-autoinit="1"
+     role="region" aria-labelledby="ttw-chatbot-title"
+        {% comment %} set this if WS has a different host/port {% endcomment %}
+        {% if ws_endpoint %} data-endpoint="{{ ws_endpoint }}"{% endif %}>
+    <header class="ttw-header">
+        <h2 id="ttw-chatbot-title">AI Chatbot</h2>
+        <div class="subtitle">Size yardımcı olmak için buradayım</div>
+    </header>
+
+    <div class="ttw-chat" role="log" aria-live="polite"></div>
+
+    <form class="ttw-input" autocomplete="off">
+        <input class="ttw-input-field" type="text" placeholder="Mesajınızı yazın..." aria-label="Mesajınızı yazın"/>
+        <button class="ttw-send" type="button">Sohbet Et</button>
+    </form>
+</div>
+
+<script>
+    /* global window, document, location */
+    (function () {
+        function h(tag, attrs) {
+            var el = document.createElement(tag);
+            var a = attrs || {};
+            Object.keys(a).forEach(function (k) {
+                var v = a[k];
+                if (k === 'class') el.className = v;
+                else if (k.indexOf('on') === 0 && typeof v === 'function') el.addEventListener(k.slice(2), v);
+                else el.setAttribute(k, v);
+            });
+            for (var i = 2; i < arguments.length; i += 1) el.append(arguments[i]);
+            return el;
+        }
+
+        function addMsg(chatEl, text, who) {
+            var wrap = h('div', {'class': 'ttw-msg ' + (who === 'user' ? 'is-user' : 'is-bot')}, text);
+            wrap.append(h('div', {'class': 'ttw-timestamp'}, new Date().toTimeString().slice(0, 5)));
+            chatEl.append(wrap);
+            chatEl.scrollTop = chatEl.scrollHeight;
+        }
+
+        function computeEndpoint(root, opts) {
+            var scheme = location.protocol === 'https:' ? 'wss' : 'ws';
+            if (opts && opts.endpoint) return opts.endpoint;
+            var attrEp = root && root.getAttribute('data-endpoint');
+            if (attrEp) return attrEp;
+            if (opts && opts.wsPort) return scheme + '://' + location.hostname + ':' + String(opts.wsPort) + '/ws';
+            if (location.port === '9000') return scheme + '://' + location.hostname + ':8000/ws';
+            return scheme + '://' + location.host + '/ws';
+        }
+
+        function mount(host, opts) {
+            opts = opts || {};
+            var root = host.querySelector('[data-ttw-chatbot]') || host;
+
+            // ensure structure exists (in case this include is used without markup)
+            var chat = root.querySelector('.ttw-chat');
+            var input = root.querySelector('.ttw-input-field');
+            var form = root.querySelector('.ttw-input');
+            var sendBtn = root.querySelector('.ttw-send');
+
+            // click to send
+            if (sendBtn) sendBtn.addEventListener('click', function (ev) {
+                ev.preventDefault();
+                ev.stopPropagation();
+                send();
+            });
+
+            // submit guard (if someone changes button type)
+            if (form) form.addEventListener('submit', function (ev) {
+                ev.preventDefault();
+                ev.stopPropagation();
+                send();
+            });
+
+            // ENTER to send (Shift+Enter → newline if you switch to <textarea>)
+            if (input) input.addEventListener('keydown', function (ev) {
+                if (ev.key === 'Enter' && !ev.shiftKey) {
+                    ev.preventDefault();
+                    send();
+                }
+            });
+
+            var endpoint = computeEndpoint(root, opts);
+            var ws = null, isOpen = false, pending = [], initialSent = false;
+
+            function connect() {
+                try {
+                    ws = new WebSocket(endpoint);
+                    ws.addEventListener('open', onOpen);
+                    ws.addEventListener('message', onMessage);
+                    ws.addEventListener('close', onClose);
+                    ws.addEventListener('error', onError);
+                } catch (e) {
+                    onClose();
+                }
+            }
+
+            function onOpen() {
+                isOpen = true;
+                while (pending.length) {
+                    try {
+                        ws.send(pending.shift());
+                    } catch (e) {
+                    }
+                }
+                if (opts.initialText && !initialSent && input) {
+                    input.value = opts.initialText;
+                    send();
+                    initialSent = true;
+                }
+            }
+
+            function onError() {/* handled by close */
+            }
+
+            function onClose() {
+                isOpen = false;
+                setTimeout(connect, 800);
+            }
+
+            function sendRaw(s) {
+                if (!s) return;
+                if (ws && ws.readyState === 1 && isOpen) {
+                    try {
+                        ws.send(s);
+                    } catch (e) {
+                    }
+                } else {
+                    pending.push(s);
+                }
+            }
+
+            function send() {
+                var text = (input && input.value ? input.value : '').trim();
+                if (!text) return;
+                addMsg(chat, text, 'user');
+                sendRaw(text);
+                if (input) input.value = '';
+            }
+
+            function onMessage(e) {
+                try {
+                    var data = JSON.parse(e.data);
+                    if (data.reply) addMsg(chat, data.reply, 'bot');
+                    if (data.urls && data.urls.length) {
+                        var imgs = h('div', {'class': 'ttw-images'});
+                        data.urls.forEach(function (u) {
+                            var img = h('img', {src: u.image, title: u.adres});
+                            img.onclick = function () {
+                                addMsg(chat, 'Seçilen adres: ' + u.adres, 'user');
+                                sendRaw(u.adres);
+                            };
+                            imgs.append(img);
+                        });
+                        chat.append(imgs);
+                        chat.scrollTop = chat.scrollHeight;
+                    }
+                } catch (err) {
+                }
+            }
+
+            connect();
+            return {
+                destroy: function () {
+                    try {
+                        if (ws) ws.close();
+                    } catch (e) {
+                    }
+                    host.innerHTML = '';
+                }
+            };
+        }
+
+        // expose to window for external mounts (e.g., your mini-card modal)
+        window.TTWChatbot = {mount: mount};
+
+        // autoinit if data-autoinit is set
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('[data-ttw-chatbot][data-autoinit]').forEach(function (root) {
+                // You can pass endpoint via data-endpoint on the element
+                mount(root.parentNode || document.body, {});
+            });
+        });
+    })();
+</script>

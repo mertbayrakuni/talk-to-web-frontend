@@ -241,10 +241,6 @@
             height: auto; /* override default fixed height */
         }
     </style>
-    {% block css %}
-        <link rel="stylesheet" href="{% static 'chatbot/css/chatbot.css' %}">
-        {{ block.super }}
-    {% endblock %}
 </head>
 <body>
 <div id="page-content" class="site">
@@ -869,9 +865,5 @@
     }
 
 </script>
-{% block js %}
-    {{ block.super }}
-    <script src="{% static 'chatbot/js/chatbot.js' %}"></script>
-{% endblock %}
 </body>
 </html>

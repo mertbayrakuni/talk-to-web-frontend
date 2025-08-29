@@ -205,7 +205,7 @@
     </div>
 
     <!-- Optional: Static inline chatbot instance somewhere on the page -->
-    {% include "frontend/partials/chatbot.html" %}
+    {% include "frontend/chatbot.html" %}
     <script>
         (function () {
             // capture synchronously while this script is executing
@@ -278,7 +278,7 @@
       <button class="tw-panel-close" type="button" aria-label="Kapat">&times;</button>
       <div class="tw-panel-body">
         <div class="chatbot-frame">
-          {% include "frontend/partials/chatbot.html" %}
+            {% include "frontend/chatbot.html" with ws_endpoint="wss://YOUR-WS-DOMAIN/ws" %}
         </div>
       </div>
     `;

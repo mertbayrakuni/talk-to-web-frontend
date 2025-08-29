@@ -31,18 +31,5 @@ media/
 staticfiles/
 
 # --- keep our custom static under repo ---
-# ignore all static by default
-/static/*
-
-# but keep our source folders
-!/static/chatbot/
-!/static/admin/
-!/static/admin_interface/
-!/static/ckeditor/
-!/static/colorfield/
-!/static/django_ckeditor_5/
-!/static/frontend/
-!/static/streamfield/
-
-# optional: if you only care about chatbot, just do
-# !/static/chatbot/
+# allow full static folder to be tracked
+!static/

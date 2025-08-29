@@ -14,6 +14,7 @@
                 Ön Başvuru Formu
             </a>
         </div>
+
         <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
              id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
             <div class="offcanvas-header justify-content-between">
@@ -32,6 +33,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="container p-3">
                     <a href="tel:{{ frontend.whatsapp_number }}" class="d-flex justify-content-center mb-3">
                         {% if frontend.web_kampanya %}
@@ -47,21 +49,28 @@
     <div class="container-fluid bg-header biz-sizi-arayalim-section">
         <div class="col-lg-10 d-flex justify-content-center">
             <div class="col-lg-4 col-md-6 d-flex justify-content-center d-sm-flex">
-                <!-- Mini Chat Card (single card) -->
                 <div id="miniChatCard" class="card p-3 mini-chat shadow">
                     <h4 class="info-title mb-2">Kendinden Bahset</h4>
-                    <form id="miniChatForm" class="mini-chat-form">
-                        <textarea id="miniChatInput" name="q"
+
+                    <form id="miniChatForm" class="mini-chat-form" autocomplete="off">
+                        <textarea id="minichatInput"
+                                  name="q"
                                   class="form-control form-control-lg"
                                   placeholder="Sana uygun eğitimi bulalım"
-                                  rows="3" required></textarea>
-                        <button class="btn btn-primary w-100 mt-3" type="submit">Olivia ile Sohbet Başlat</button>
+                                  rows="3"
+                                  required></textarea>
+                        <button id="startChatBtn" class="btn btn-primary w-100 mt-3" type="button">
+                            Olivia ile Sohbet Başlat
+                        </button>
                     </form>
+
+                    <!-- optional: a host for inline chat if you want it -->
                     <div id="chatContainer" class="chat-container"></div>
                 </div>
             </div>
-            <div class="col-lg-3 d-flex justify-content-center d-none d-sm-block">
-            </div>
+
+            <div class="col-lg-3 d-flex justify-content-center d-none d-sm-block"></div>
+
             <div class="col-lg-3 d-flex justify-content-center align-items-end kariyer-header-container">
                 <div class="text-white text-center">
                     <h1 class="kariyer-header">Kariyerinizi<br>Tasarlayın</h1>
@@ -76,6 +85,7 @@
                 <h4 class="text-center mb-4">Güncel Eğitimler</h4>
             </div>
         </div>
+
         <div class="row g-4" id="MainCourses">
             {% for course_group in all_course_groups %}
                 <div class="col-lg-3 col-md-6">
@@ -90,12 +100,15 @@
                                      style="height: 200px">
                             </a>
                             <h5 class="card-title">{{ course_group.name }}</h5>
-                            <div style="max-font-size: 200px;height: 200px;overflow-y: scroll">{{ course_group.description|safe }}</div>
+                            <div style="max-font-size: 200px;height: 200px;overflow-y: scroll">
+                                {{ course_group.description|safe }}
+                            </div>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
+
         <div class="row mt-4">
             <div class="col-12 text-center">
                 <a href="{{ ROOT }}/tum-egitimler" class="btn btn-primary course-button">
@@ -114,7 +127,7 @@
 
         <div class="row g-4">
             {% for instructor in instructors %}
-                <div class="col-6 col-sm-4 col-lg-2" style="text-align: center">
+                <div class="col-6 col-sm-4 col-lg-2 text-center">
                     <a href="{{ ROOT }}/instructors/{{ instructor.slug }}">
                         <img src="{{ instructor.avatar.original }}" class="w-100 instructor-image" height="auto"
                              alt="{{ instructor.slug }}"/>
@@ -148,9 +161,7 @@
                     <figure class="wp-caption mb-0 col-10 mx-auto mx-auto">
                         <img src="https://talktoweb.com/wp-content/uploads/2024/03/certificate.webp"
                              alt="Certificate" class="img-fluid">
-                        <div class="svg-icon-container">
-                            <!-- svg omitted for brevity (unchanged) -->
-                        </div>
+                        <div class="svg-icon-container"></div>
                     </figure>
                     <p class="widget-image-caption wp-caption-text">Üniversite ve Uluslararası Onaylı Sertifika</p>
                     <p class="neden-description">E devlette görülebilen üniversite ve uluslararası onaylı sertifika
@@ -162,12 +173,9 @@
                     <figure class="wp-caption mb-0 col-10 mx-auto">
                         <img src="https://talktoweb.com/wp-content/uploads/2024/03/lecturer.webp" alt="Lecturer"
                              class="img-fluid">
-                        <div class="svg-icon-container">
-                            <!-- svg omitted for brevity (unchanged) -->
-                        </div>
+                        <div class="svg-icon-container"></div>
                     </figure>
-                    <p class="widget-image-caption wp-caption-text">%100 Akademik Müfredat ve Akademisyen
-                        Desteği</p>
+                    <p class="widget-image-caption wp-caption-text">%100 Akademik Müfredat ve Akademisyen Desteği</p>
                     <p class="neden-description">Alacağınız akademik eğitim ile rakiplerinizden çok daha önde
                         olacaksınız.</p>
                 </div>
@@ -177,14 +185,11 @@
                     <figure class="wp-caption mb-0 col-10 mx-auto">
                         <img src="https://talktoweb.com/wp-content/uploads/2024/03/curriculum.webp" alt="Curriculum"
                              class="img-fluid">
-                        <div class="svg-icon-container">
-                            <!-- svg omitted for brevity (unchanged) -->
-                        </div>
+                        <div class="svg-icon-container"></div>
                     </figure>
-                    <p class="widget-image-caption wp-caption-text">Akademisyenler Tarafından Düzenlenen
-                        Webinarlar</p>
-                    <p class="neden-description">Her hafta eğitmenlerimiz tarafından düzenlenen webinarlar ile
-                        online katılım belgesi sahibi olacaksınız.</p>
+                    <p class="widget-image-caption wp-caption-text">Akademisyenler Tarafından Düzenlenen Webinarlar</p>
+                    <p class="neden-description">Her hafta eğitmenlerimiz tarafından düzenlenen webinarlar ile online
+                        katılım belgesi sahibi olacaksınız.</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-6 mb-4">
@@ -192,9 +197,7 @@
                     <figure class="wp-caption mb-0 col-10 mx-auto">
                         <img src="https://talktoweb.com/wp-content/uploads/2024/03/application.webp"
                              alt="Application" class="img-fluid">
-                        <div class="svg-icon-container">
-                            <!-- svg omitted for brevity (unchanged) -->
-                        </div>
+                        <div class="svg-icon-container"></div>
                     </figure>
                     <p class="widget-image-caption wp-caption-text">Uygulama Esasına Dayanan Eğitim Garantisi</p>
                     <p class="neden-description">Sektör ihtiyacına yönelik verilen eğitimlerde uygulamalı projeler
@@ -204,161 +207,49 @@
         </div>
     </div>
 
-    <!-- Optional: Static inline chatbot instance somewhere on the page -->
-    {% include "frontend/chatbot.html" with ws_endpoint="ws://127.0.0.1:8000/ws" %}
-    <script>
-        (function () {
-            // capture synchronously while this script is executing
-            const scriptEl = document.currentScript;
-            const host = scriptEl && scriptEl.previousElementSibling;
-            if (!host) return;
-
-            function onReady(fn) {
-                if (document.readyState !== 'loading') fn();
-                else document.addEventListener('DOMContentLoaded', fn);
-            }
-
-            function tryMount() {
-                if (window.TTWChatbot && typeof TTWChatbot.mount === 'function') {
-                    TTWChatbot.mount(host);
-                } else {
-                    setTimeout(tryMount, 50); // wait until chatbot.js is loaded from base.html
-                }
-            }
-
-            onReady(tryMount);
-        })();
-    </script>
-
+    {# keep the widget include – it provides styles/JS for the chatbot #}
+    {% include "frontend/chatbot.html" %}
 {% endblock %}
 
 {% block js %}
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const miniCard = document.getElementById('miniChatCard');
-            const miniForm = document.getElementById('miniChatForm');
-            const miniInput = document.getElementById('miniChatInput');
+        (function () {
+            const ready = (fn) => (document.readyState !== 'loading')
+                ? fn()
+                : document.addEventListener('DOMContentLoaded', fn);
 
-            function pageRect(el) {
-                const r = el.getBoundingClientRect();
-                return {left: r.left + window.scrollX, top: r.top + window.scrollY, width: r.width, height: r.height};
-            }
+            ready(() => {
+                // elements
+                const form = document.getElementById('miniChatForm');
+                const input = document.getElementById('minichatInput');
+                const btn = document.getElementById('startChatBtn') || document.querySelector('#miniChatForm button');
 
-            function openGrowPanel(initialText) {
-                document.body.classList.add('tw-modal-open');
-
-                // fade out mini card
-                miniCard.classList.remove('tw-fade-in');
-                miniCard.classList.add('tw-fade-out');
-                miniCard.addEventListener('transitionend', () => {
-                    miniCard.style.visibility = 'hidden';
-                }, {once: true});
-
-                // build modal
-                const overlay = document.createElement('div');
-                overlay.className = 'tw-overlay';
-                const panel = document.createElement('div');
-                panel.className = 'tw-grow-panel';
-                panel.setAttribute('role', 'dialog');
-                panel.setAttribute('aria-modal', 'true');
-
-                document.body.appendChild(overlay);
-                document.body.appendChild(panel);
-
-                // start from mini card rect
-                const r = pageRect(miniCard);
-                Object.assign(panel.style, {
-                    left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px',
-                    borderRadius: getComputedStyle(miniCard).borderRadius || '14px'
-                });
-
-                // content
-                panel.innerHTML = `
-      <div class="tw-panel-header">AI Chatbot</div>
-      <button class="tw-panel-close" type="button" aria-label="Kapat">&times;</button>
-      <div class="tw-panel-body">
-        <div class="chatbot-frame">
-            {% include "frontend/chatbot.html" with ws_endpoint="ws://127.0.0.1:8000/ws" %}
-        </div>
-      </div>
-    `;
-
-                const closeBtn = panel.querySelector('.tw-panel-close');
-                const bodyHost = panel.querySelector('.tw-panel-body .chatbot-frame');
-
-                // animate open
-                const targetW = Math.min(820, window.innerWidth * 0.92);
-                const targetH = Math.min(680, window.innerHeight * 0.84);
-                const targetL = window.scrollX + (window.innerWidth - targetW) / 2;
-                const targetT = window.scrollY + (window.innerHeight - targetH) / 2;
-                requestAnimationFrame(() => {
-                    overlay.classList.add('open');
-                    Object.assign(panel.style, {
-                        left: targetL + 'px', top: targetT + 'px', width: targetW + 'px', height: targetH + 'px',
-                        borderRadius: '16px'
-                    });
-                });
-
-                // mount chatbot with explicit WS endpoint
-                let instance = null;
-                if (bodyHost && window.TTWChatbot) {
-                    instance = TTWChatbot.mount(bodyHost, {
-                        initialText,
-                        endpoint: "ws://127.0.0.1:8000/ws"
-                    });
-                }
-
-                function closePanel() {
-                    const rr = pageRect(miniCard);
-                    overlay.classList.remove('open');
-                    Object.assign(panel.style, {
-                        left: rr.left + 'px', top: rr.top + 'px', width: rr.width + 'px', height: rr.height + 'px',
-                        borderRadius: getComputedStyle(miniCard).borderRadius || '14px'
-                    });
-
-                    panel.addEventListener('transitionend', () => {
-                        try {
-                            instance && instance.destroy && instance.destroy();
-                        } catch (_) {
-                        }
-                        panel.remove();
-                        overlay.remove();
-                        document.body.classList.remove('tw-modal-open');
-
-                        // restore mini card
-                        miniCard.style.visibility = 'visible';
-                        miniCard.classList.remove('tw-fade-out');
-                        void miniCard.offsetWidth;
-                        miniCard.classList.add('tw-fade-in');
-                        miniCard.scrollIntoView({behavior: 'smooth', block: 'nearest'});
-                    }, {once: true});
-                }
-
-                closeBtn.addEventListener('click', (e) => {
+                // never let the form navigate/reload
+                form && form.addEventListener('submit', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    closePanel();
                 });
-                overlay.addEventListener('click', (e) => {
-                    if (e.target === overlay) closePanel();
-                });
-                const onEsc = (e) => {
-                    if (e.key === 'Escape') closePanel();
-                };
-                document.addEventListener('keydown', onEsc, {once: true});
 
-                return {overlay, panel, closePanel};
-            }
-
-            // open from mini card
-            if (miniForm) {
-                miniForm.addEventListener('submit', (e) => {
+                // open chatbot on click (single, clean handler)
+                btn && btn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const q = (miniInput.value || '').trim();
-                    if (!q) return;
-                    openGrowPanel(q);
+                    e.stopPropagation();
+
+                    const text = (input?.value || '').trim();
+                    if (!window.TTWChatbot || typeof window.TTWChatbot.open !== 'function') {
+                        console.warn('[TTW] Chatbot script not loaded yet');
+                        alert('Sohbet yüklenemedi. Lütfen sayfayı yenileyin.');
+                        return;
+                    }
+
+                    window.TTWChatbot.open({
+                        // set in base.html, e.g.:
+                        // window.TTW_WS = "wss://122689b28922.ngrok-free.app/ws";
+                        endpoint: window.TTW_WS,
+                        initialText: text || undefined
+                    });
                 });
-            }
-        });
+            });
+        })();
     </script>
 {% endblock %}

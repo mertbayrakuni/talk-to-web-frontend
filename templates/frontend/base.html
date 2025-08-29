@@ -241,6 +241,13 @@
             height: auto; /* override default fixed height */
         }
     </style>
+    <!-- Global override for the WebSocket endpoint (use WSS on HTTPS/ngrok) -->
+    <script>
+        // prod/ngrok:
+        window.TTW_WS = "wss://f5a97f8b9272.ngrok-free.app/ws";
+        // local dev (optional): comment the line above and the widget will auto-compute ws://127.0.0.1:8000/ws from :9000
+    </script>
+
 </head>
 <body>
 <div id="page-content" class="site">

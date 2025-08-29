@@ -205,7 +205,7 @@
     </div>
 
     <!-- Optional: Static inline chatbot instance somewhere on the page -->
-    {% include "frontend/chatbot.html" %}
+    {% include "frontend/chatbot.html" with ws_endpoint="ws://127.0.0.1:8000/ws" %}
     <script>
         (function () {
             // capture synchronously while this script is executing
@@ -278,7 +278,7 @@
       <button class="tw-panel-close" type="button" aria-label="Kapat">&times;</button>
       <div class="tw-panel-body">
         <div class="chatbot-frame">
-            {% include "frontend/chatbot.html" with ws_endpoint="wss://YOUR-WS-DOMAIN/ws" %}
+            {% include "frontend/chatbot.html" with ws_endpoint="ws://127.0.0.1:8000/ws" %}
         </div>
       </div>
     `;
@@ -299,10 +299,13 @@
                     });
                 });
 
-                // mount chatbot
+                // mount chatbot with explicit WS endpoint
                 let instance = null;
                 if (bodyHost && window.TTWChatbot) {
-                    instance = TTWChatbot.mount(bodyHost, {initialText});
+                    instance = TTWChatbot.mount(bodyHost, {
+                        initialText,
+                        endpoint: "ws://127.0.0.1:8000/ws"
+                    });
                 }
 
                 function closePanel() {
@@ -331,7 +334,6 @@
                     }, {once: true});
                 }
 
-                // SAFE handlers (no bubbling to outer forms, no default)
                 closeBtn.addEventListener('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();

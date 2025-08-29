@@ -46,7 +46,7 @@
 
     <div class="container-fluid bg-header biz-sizi-arayalim-section">
         <div class="col-lg-10 d-flex justify-content-center">
-            <div class="col-lg-4 col-md-6 d-flex justify-content-center d-none d-sm-flex">
+            <div class="col-lg-4 col-md-6 d-flex justify-content-center d-sm-flex">
                 <!-- Mini Chat Card (single card) -->
                 <div id="miniChatCard" class="card p-3 mini-chat shadow">
                     <h4 class="info-title mb-2">Kendinden Bahset</h4>
@@ -247,46 +247,46 @@
             function openGrowPanel(initialText) {
                 document.body.classList.add('tw-modal-open');
 
-                // fade out mini card first
+                // fade out mini card
                 miniCard.classList.remove('tw-fade-in');
                 miniCard.classList.add('tw-fade-out');
                 miniCard.addEventListener('transitionend', () => {
                     miniCard.style.visibility = 'hidden';
                 }, {once: true});
 
-                // overlay + panel
+                // build modal
                 const overlay = document.createElement('div');
                 overlay.className = 'tw-overlay';
                 const panel = document.createElement('div');
                 panel.className = 'tw-grow-panel';
+                panel.setAttribute('role', 'dialog');
+                panel.setAttribute('aria-modal', 'true');
+
                 document.body.appendChild(overlay);
                 document.body.appendChild(panel);
 
-                // start at mini card rect
+                // start from mini card rect
                 const r = pageRect(miniCard);
                 Object.assign(panel.style, {
-                    left: r.left + 'px',
-                    top: r.top + 'px',
-                    width: r.width + 'px',
-                    height: r.height + 'px',
+                    left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px',
                     borderRadius: getComputedStyle(miniCard).borderRadius || '14px'
                 });
 
-                // panel content: embed chatbot partial container
+                // content
                 panel.innerHTML = `
-          <div class="tw-panel-header">AI Chatbot</div>
-          <button class="tw-panel-close" aria-label="Kapat">&times;</button>
-          <div class="tw-panel-body">
-            <div class="chatbot-frame">
-              {% include "frontend/partials/chatbot.html" %}
-            </div>
-          </div>
-        `;
+      <div class="tw-panel-header">AI Chatbot</div>
+      <button class="tw-panel-close" type="button" aria-label="Kapat">&times;</button>
+      <div class="tw-panel-body">
+        <div class="chatbot-frame">
+          {% include "frontend/partials/chatbot.html" %}
+        </div>
+      </div>
+    `;
 
                 const closeBtn = panel.querySelector('.tw-panel-close');
                 const bodyHost = panel.querySelector('.tw-panel-body .chatbot-frame');
 
-                // animate to center
+                // animate open
                 const targetW = Math.min(820, window.innerWidth * 0.92);
                 const targetH = Math.min(680, window.innerHeight * 0.84);
                 const targetL = window.scrollX + (window.innerWidth - targetW) / 2;
@@ -294,29 +294,22 @@
                 requestAnimationFrame(() => {
                     overlay.classList.add('open');
                     Object.assign(panel.style, {
-                        left: targetL + 'px',
-                        top: targetT + 'px',
-                        width: targetW + 'px',
-                        height: targetH + 'px',
+                        left: targetL + 'px', top: targetT + 'px', width: targetW + 'px', height: targetH + 'px',
                         borderRadius: '16px'
                     });
                 });
 
-                // MOUNT CHATBOT (no iframe, no postMessage)
+                // mount chatbot
                 let instance = null;
                 if (bodyHost && window.TTWChatbot) {
                     instance = TTWChatbot.mount(bodyHost, {initialText});
                 }
 
                 function closePanel() {
-                    // back to mini rect
                     const rr = pageRect(miniCard);
                     overlay.classList.remove('open');
                     Object.assign(panel.style, {
-                        left: rr.left + 'px',
-                        top: rr.top + 'px',
-                        width: rr.width + 'px',
-                        height: rr.height + 'px',
+                        left: rr.left + 'px', top: rr.top + 'px', width: rr.width + 'px', height: rr.height + 'px',
                         borderRadius: getComputedStyle(miniCard).borderRadius || '14px'
                     });
 
@@ -329,26 +322,33 @@
                         overlay.remove();
                         document.body.classList.remove('tw-modal-open');
 
-                        // restore mini card with fade-in
+                        // restore mini card
                         miniCard.style.visibility = 'visible';
                         miniCard.classList.remove('tw-fade-out');
-                        void miniCard.offsetWidth; // reflow
+                        void miniCard.offsetWidth;
                         miniCard.classList.add('tw-fade-in');
                         miniCard.scrollIntoView({behavior: 'smooth', block: 'nearest'});
                     }, {once: true});
                 }
 
-                closeBtn.addEventListener('click', closePanel);
+                // SAFE handlers (no bubbling to outer forms, no default)
+                closeBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closePanel();
+                });
                 overlay.addEventListener('click', (e) => {
                     if (e.target === overlay) closePanel();
                 });
-                document.addEventListener('keydown', (e) => {
+                const onEsc = (e) => {
                     if (e.key === 'Escape') closePanel();
-                }, {once: true});
+                };
+                document.addEventListener('keydown', onEsc, {once: true});
 
                 return {overlay, panel, closePanel};
             }
 
+            // open from mini card
             if (miniForm) {
                 miniForm.addEventListener('submit', (e) => {
                     e.preventDefault();

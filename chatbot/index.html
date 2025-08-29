@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="tr">
+    <head>
+        <meta charset="UTF-8">
+        <title>Chatbot</title>
+        <style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        margin: 0;
+        padding: 20px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 800px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    header {
+        text-align: center;
+        padding: 20px;
+        background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+        color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        font-size: 2rem;
+        margin-bottom: 5px;
+    }
+
+    .subtitle {
+        font-weight: 300;
+        opacity: 0.9;
+    }
+
+    #chat {
+        border: none;
+        padding: 20px;
+        height: 500px;
+        overflow-y: auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .msg {
+        margin: 5px 0;
+        padding: 15px 20px;
+        border-radius: 18px;
+        max-width: 80%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        position: relative;
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .user {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+        margin-left: auto;
+        border-bottom-right-radius: 5px;
+    }
+
+    .bot {
+        background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+        color: #333;
+        margin-right: auto;
+        border-bottom-left-radius: 5px;
+    }
+
+    .images {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-top: 15px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 12px;
+    }
+
+    .images img {
+        width: 140px;
+        height: 90px;
+        object-fit: cover;
+        cursor: pointer;
+        border-radius: 10px;
+        border: 3px solid transparent;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .images img:hover {
+        border-color: #4b6cb7;
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .input-container {
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    #msgInput {
+        flex: 1;
+        padding: 15px 20px;
+        border: 2px solid #e1e5eb;
+        border-radius: 30px;
+        font-size: 1rem;
+        transition: border-color 0.3s;
+    }
+
+    #msgInput:focus {
+        outline: none;
+        border-color: #4b6cb7;
+        box-shadow: 0 0 0 3px rgba(75, 108, 183, 0.2);
+    }
+
+    button {
+        padding: 15px 30px;
+        background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    button:active {
+        transform: translateY(0);
+    }
+
+    .timestamp {
+        font-size: 0.7rem;
+        opacity: 0.8;
+        margin-top: 8px;
+        text-align: right;
+    }
+
+    .thinking {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 15px 20px;
+        background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+        color: #333;
+        border-radius: 18px;
+        max-width: 80%;
+        margin-right: auto;
+        border-bottom-left-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .dot {
+        width: 8px;
+        height: 8px;
+        background-color: #666;
+        border-radius: 50%;
+        animation: bounce 1.5s infinite ease-in-out;
+    }
+
+    .dot:nth-child(1) {
+        animation-delay: 0s;
+    }
+
+    .dot:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .dot:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-5px);
+        }
+    }
+        </style>
+
+        <!-- Markdown desteği için marked.js -->
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <h2>AI Chatbot</h2>
+                <div class="subtitle">Size yardımcı olmak için buradayım</div>
+            </header>
+
+            <div id="chat"></div>
+
+            <div class="input-container">
+                <input id="msgInput" type="text" placeholder="Mesajınızı yazın..." autocomplete="off">
+                <button onclick="sendMsg()">Gönder</button>
+            </div>
+        </div>
+
+        <script>
+            const ws = new WebSocket("ws://localhost:8000/ws");
+            const chat = document.getElementById("chat");
+            const input = document.getElementById("msgInput");
+            let thinkingElement = null;
+
+            ws.onmessage = (e) => {
+                // Düşünme animasyonunu kaldır
+                if (thinkingElement) {
+                    chat.removeChild(thinkingElement);
+                    thinkingElement = null;
+                }
+
+                const data = JSON.parse(e.data);
+                addMessage(data.reply, "bot");
+
+                if (data.urls && data.urls.length > 0) {
+                    const imgContainer = document.createElement("div");
+                    imgContainer.className = "images";
+
+                    data.urls.forEach(u => {
+                        // Kart
+                        const card = document.createElement("div");
+                        card.style.cssText =
+                            "display:flex; flex-direction:column; align-items:center; gap:8px; width:140px";
+
+                        // Resim
+                        const img = document.createElement("img");
+                        img.src = u.image;
+                        img.title = u.adres;
+                        img.onclick = () => {
+                            addMessage("Eğitim hakkında bilgi ver: " + u.adres, "user");
+                            ws.send("Eğitim hakkında bilgi ver : " + u.adres);
+                        };
+
+                        // Buton
+                        const btn = document.createElement("button");
+                        btn.textContent = "Eğitimi İncele";
+                        btn.style.cssText =
+                            "padding:6px 10px; font-size:0.75rem; border-radius:15px; cursor:pointer;";
+
+                        btn.onclick = () => {
+                            addMessage("Eğitim hakkında bilgi ver: " + u.adres, "user");
+                            ws.send("Eğitim hakkında bilgi ver:" + u.adres);
+                        };
+
+                        // Kart içine yerleştir
+                        card.appendChild(img);
+                        card.appendChild(btn);
+                        imgContainer.appendChild(card);
+                    });
+
+                    chat.appendChild(imgContainer);
+                    chat.scrollTop = chat.scrollHeight;
+                }
+            };
+
+            function sendMsg() {
+                const msg = input.value.trim();
+                if (!msg) return;
+                addMessage(msg, "user");
+                ws.send(msg);
+                input.value = "";
+                showThinkingAnimation();
+            }
+
+            function showThinkingAnimation() {
+                // Önceki düşünme animasyonunu kaldır
+                if (thinkingElement) {
+                    chat.removeChild(thinkingElement);
+                }
+
+                thinkingElement = document.createElement("div");
+                thinkingElement.className = "thinking";
+                thinkingElement.innerHTML = `
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                `;
+                chat.appendChild(thinkingElement);
+                chat.scrollTop = chat.scrollHeight;
+            }
+
+            function addMessage(text, who) {
+                const div = document.createElement("div");
+                div.className = "msg " + who;
+
+                // Zaman damgası
+                const now = new Date();
+                const timeString = now.getHours().toString().padStart(2, '0') + ':' +
+                    now.getMinutes().toString().padStart(2, '0');
+                const timestamp = document.createElement("div");
+                timestamp.className = "timestamp";
+                timestamp.innerText = timeString;
+
+                if (who === "bot") {
+                    // Bot mesajları için karakter karakter yazma efekti
+                    div.innerHTML = marked.parse(""); // Önce boş içerik
+                    chat.appendChild(div);
+                    div.appendChild(timestamp);
+                    chat.scrollTop = chat.scrollHeight;
+                    typeWriterEffect(div, text, 0);
+                } else {
+                    // Kullanıcı mesajı doğrudan gösterilir
+                    div.innerHTML = marked.parse(text);
+                    div.appendChild(timestamp);
+                    chat.appendChild(div);
+                    chat.scrollTop = chat.scrollHeight;
+                }
+            }
+
+            function typeWriterEffect(element, text, index) {
+                if (index < text.length) {
+                    // HTML tag'leri atlanacak şekilde ilerle
+                    let nextIndex = index + 1;
+                    if (text.charAt(index) === '<') {
+                        nextIndex = text.indexOf('>', index) + 1;
+                        if (nextIndex === 0) nextIndex = text.length; // > bulunamazsa sona git
+                    }
+                    
+                    const parsedText = marked.parse(text.substring(0, nextIndex));
+                    element.innerHTML = parsedText;
+                    chat.scrollTop = chat.scrollHeight;
+                    
+                    // Rastgele küçük bir gecikme (yaklaşık 10-30ms)
+                    setTimeout(() => typeWriterEffect(element, text, nextIndex), 10 + Math.random() * 20);
+                } else {
+                    // Yazma tamamlandığında zaman damgasını ekle
+                    const timestamp = document.createElement("div");
+                    timestamp.className = "timestamp";
+                    const now = new Date();
+                    const timeString = now.getHours().toString().padStart(2, '0') + ':' +
+                        now.getMinutes().toString().padStart(2, '0');
+                    timestamp.innerText = timeString;
+                    element.appendChild(timestamp);
+                    chat.scrollTop = chat.scrollHeight;
+                }
+            }
+        </script>
+    </body>
+</html>
+
+

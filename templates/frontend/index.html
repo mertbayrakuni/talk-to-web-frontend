@@ -49,16 +49,13 @@
     <div class="container-fluid bg-header biz-sizi-arayalim-section">
         <div class="col-lg-10 d-flex justify-content-center">
             <div class="col-lg-4 col-md-6 d-flex justify-content-center d-sm-flex">
-                <div id="miniChatCard" class="card p-3 mini-chat shadow">
+                <!-- CLEANED: removed fade classes; simple static card -->
+                <div id="miniChatCard" class="card p-3 shadow">
                     <h4 class="info-title mb-2">Kendinden Bahset</h4>
 
                     <form id="miniChatForm" class="mini-chat-form" autocomplete="off">
-                        <textarea id="minichatInput"
-                                  name="q"
-                                  class="form-control form-control-lg"
-                                  placeholder="Sana uygun eğitimi bulalım"
-                                  rows="3"
-                                  required></textarea>
+                        <textarea id="minichatInput" name="q" class="form-control form-control-lg"
+                                  placeholder="Sana uygun eğitimi bulalım" rows="3" required></textarea>
                         <button id="startChatBtn" class="btn btn-primary w-100 mt-3" type="button">
                             Olivia ile Sohbet Başlat
                         </button>
@@ -78,6 +75,7 @@
         </div>
     </div>
 
+    <!-- other sections unchanged -->
     <div class="container my-5 course-list">
         <div class="row">
             <div class="col-12">
@@ -96,10 +94,10 @@
                             <a href="{{ ROOT }}/egitimler/{{ course_group.slug }}">
                                 <img class="card-img-top" alt="{{ course_group.slug }}"
                                      src="{{ course_group.main_image.original }}" data-no-retina=""
-                                     style="height: 200px">
+                                     style="height:200px">
                             </a>
                             <h5 class="card-title">{{ course_group.name }}</h5>
-                            <div style="max-font-size: 200px;height: 200px;overflow-y: scroll">
+                            <div style="max-font-size:200px;height:200px;overflow-y:scroll">
                                 {{ course_group.description|safe }}
                             </div>
                         </div>
@@ -110,20 +108,15 @@
 
         <div class="row mt-4">
             <div class="col-12 text-center">
-                <a href="{{ ROOT }}/tum-egitimler" class="btn btn-primary course-button">
-                    Tüm Eğitimler için tıklayın
-                </a>
+                <a href="{{ ROOT }}/tum-egitimler" class="btn btn-primary course-button">Tüm Eğitimler için tıklayın</a>
             </div>
         </div>
     </div>
 
     <div class="container my-5 instructor-list">
         <div class="row">
-            <div class="col-12">
-                <h4 class="text-center mb-4">Eğitmen Kadromuz</h4>
-            </div>
+            <div class="col-12"><h4 class="text-center mb-4">Eğitmen Kadromuz</h4></div>
         </div>
-
         <div class="row g-4">
             {% for instructor in instructors %}
                 <div class="col-6 col-sm-4 col-lg-2 text-center">
@@ -139,27 +132,22 @@
 
     <div class="container-fluid my-5 mezunlarimiz-section">
         <div class="container student-video-style">
-            <div class="col-12 text-center">
-                <h4 class="mb-4">Mezunlarımız</h4>
-            </div>
+            <div class="col-12 text-center"><h4 class="mb-4">Mezunlarımız</h4></div>
         </div>
-        <div class="container student-video-style">
-            {% include 'frontend/alumni_div.html' %}
-        </div>
+        <div class="container student-video-style">{% include 'frontend/alumni_div.html' %}</div>
     </div>
 
     <div class="container my-5 neden-talk-to-web-section">
         <div class="container student-video-style">
-            <div class="col-12 text-center">
-                <h4 class="mb-4">Neden Talk to Web?</h4>
-            </div>
+            <div class="col-12 text-center"><h4 class="mb-4">Neden Talk to Web?</h4></div>
         </div>
         <div class="container student-video-style">
+            <!-- kept as-is -->
             <div class="col-lg-3 col-md-3 col-sm-6 mb-4">
                 <div class="card neden-card p-3">
-                    <figure class="wp-caption mb-0 col-10 mx-auto mx-auto">
-                        <img src="https://talktoweb.com/wp-content/uploads/2024/03/certificate.webp"
-                             alt="Certificate" class="img-fluid">
+                    <figure class="wp-caption mb-0 col-10 mx-auto">
+                        <img src="https://talktoweb.com/wp-content/uploads/2024/03/certificate.webp" alt="Certificate"
+                             class="img-fluid">
                         <div class="svg-icon-container"></div>
                     </figure>
                     <p class="widget-image-caption wp-caption-text">Üniversite ve Uluslararası Onaylı Sertifika</p>
@@ -194,8 +182,8 @@
             <div class="col-lg-3 col-md-3 col-sm-6 mb-4">
                 <div class="card neden-card p-3">
                     <figure class="wp-caption mb-0 col-10 mx-auto">
-                        <img src="https://talktoweb.com/wp-content/uploads/2024/03/application.webp"
-                             alt="Application" class="img-fluid">
+                        <img src="https://talktoweb.com/wp-content/uploads/2024/03/application.webp" alt="Application"
+                             class="img-fluid">
                         <div class="svg-icon-container"></div>
                     </figure>
                     <p class="widget-image-caption wp-caption-text">Uygulama Esasına Dayanan Eğitim Garantisi</p>
@@ -206,7 +194,6 @@
         </div>
     </div>
 
-    {# keep the widget include – it provides styles/JS for the chatbot #}
     {% include "frontend/chatbot.html" %}
 {% endblock %}
 
@@ -220,16 +207,17 @@
             ready(function () {
                 const btn = document.getElementById('startChatBtn');
                 const area = document.getElementById('minichatInput');
+                const card = document.getElementById('miniChatCard'); // animation origin
 
                 btn?.addEventListener('click', function (ev) {
                     ev.preventDefault();
                     ev.stopPropagation();
                     const initialText = (area?.value || '').trim();
-
-                    if (window.TTWChatbot && typeof window.TTWChatbot.openModal === 'function') {
-                        window.TTWChatbot.openModal({initialText: initialText});
-                    } else {
-                        console.warn('Chatbot modal function not found.');
+                    if (window.TTWChatbot?.openModal) {
+                        window.TTWChatbot.openModal({
+                            initialText,
+                            animateFrom: card
+                        });
                     }
                 });
 

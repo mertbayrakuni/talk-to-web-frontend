@@ -24,6 +24,7 @@
     <link href="{% static 'frontend/css/main.css' %}" rel="stylesheet">
 
     <style>
+        /* basic page styles kept */
         body {
             position: relative;
             height: 100%;
@@ -32,7 +33,7 @@
             font-size: 14px;
             color: #000;
             margin: 0;
-            padding: 0;
+            padding: 0
         }
 
         h6 {
@@ -41,14 +42,13 @@
             line-height: 28px;
             letter-spacing: 3px;
             font-weight: 600;
-            font-style: normal;
             color: #000248;
-            font-size: 16px;
+            font-size: 16px
         }
 
         swiper-container {
             width: 100%;
-            height: 100%;
+            height: 100%
         }
 
         swiper-slide {
@@ -57,192 +57,204 @@
             background: #fff;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: center
         }
 
         swiper-slide img {
             display: block;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: cover
         }
 
         .user-content p {
             margin-top: 5px;
             font-size: 12px;
             min-height: 150px;
-            max-height: 150px;
+            max-height: 150px
         }
 
         .user-image {
             width: 100px;
             display: block;
-            margin-left: auto;
-            margin-right: auto;
-            margin-top: 10px;
+            margin: 10px auto 0
         }
 
         span.checked {
             color: #FFD400;
-            font-size: 18px;
+            font-size: 18px
         }
 
         p.testimonial-message {
             font-size: 18px;
-            line-height: 25px;
+            line-height: 25px
         }
 
         .instructor-image {
-            /* IE6-9 */
             -webkit-filter: grayscale(100%);
-            /* Chrome 19+ & Safari 6+ */
-            -webkit-transition: all .6s ease;
-            /* Fade to color for Chrome and Safari */
-            -webkit-backface-visibility: hidden;
-            /* Fix for transition flickering */
+            -webkit-transition: none;
+            -webkit-backface-visibility: hidden
         }
 
         .instructor-image:hover {
             filter: none;
-            -webkit-filter: grayscale(0%);
+            -webkit-filter: grayscale(0%)
         }
 
+        /* —— CLEANED: remove all chat/overlay animations ——— */
+
+        /* (kept only utility flags) */
+        body.tw-modal-open {
+            overflow: hidden
+        }
+
+        /* overlay without fade */
+        .tw-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 16, 30, .45);
+            z-index: 3000; /* higher than page */
+        }
+
+        /* static panel (no transitions/animations) */
+        .tw-panel {
+            position: fixed;
+            z-index: 3001;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, .24);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            left: calc(50% - 380px);
+            top: 10vh;
+            width: 760px;
+            height: 78vh;
+        }
+
+        .tw-head {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            padding: 12px 56px 12px 16px;
+            color: #fff;
+            font-weight: 600;
+            background: linear-gradient(90deg, #4b6cb7, #182848)
+        }
+
+        .tw-close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 40px;
+            height: 40px;
+            border-radius: 999px;
+            border: 0;
+            background: rgba(0, 0, 0, .45);
+            color: #fff;
+            cursor: pointer;
+            font-size: 22px;
+            display: grid;
+            place-items: center
+        }
+
+        .tw-body {
+            flex: 1;
+            overflow: auto;
+            padding: 10px;
+            background: #f7f9fc;
+            display: flex;
+            flex-direction: column
+        }
+
+        .tw-body .ttw-chatbot {
+            gap: 10px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0
+        }
+
+        .tw-body .ttw-log {
+            height: auto;
+            flex: 1;
+            min-height: 0
+        }
+
+        /* MOBILE: fullscreen without animation */
+        @media (max-width: 768px) {
+            .tw-panel {
+                left: 0;
+                top: 0;
+                width: 100vw;
+                height: 100dvh;
+                border-radius: 0;
+                box-shadow: none
+            }
+
+            .tw-body {
+                padding: 10px env(safe-area-inset-right) calc(10px + env(safe-area-inset-bottom)) env(safe-area-inset-left)
+            }
+
+            .tw-head {
+                padding-left: 16px;
+                padding-right: 56px
+            }
+
+            .tw-close {
+                top: 6px;
+                right: 6px;
+                background: rgba(0, 0, 0, .30)
+            }
+        }
     </style>
     <style>
+        /* ——— Global + Desktop-only layout shifts while modal is open ——— */
+
         /* lock page scroll while open */
         body.tw-modal-open {
             overflow: hidden;
         }
 
-        /* mini card fade in/out */
-        .mini-chat {
-            transition: opacity .6s ease, transform .6s ease;
-        }
+        /* Only apply layout nudge on desktop */
+        /* Desktop only */
+        @media (min-width: 769px) {
+            /* tunable, resolution-aware shifts */
+            :root {
+                /* how far Olivia’s image slides in */
+                --olivia-shift: clamp(80px, 10vw, 200px);
+                /* how far the “Kariyerinizi Tasarlayın” column follows her */
+                --header-shift: clamp(160px, 20vw, 400px);
+            }
 
-        .mini-chat.tw-fade-out {
-            opacity: 0;
-            transform: scale(.98);
-        }
+            /* smooth both moves */
+            .kariyer-header-container {
+                transition: transform .42s cubic-bezier(.2, .7, .2, 1);
+                will-change: transform;
+                /* make sure the heading can slide a bit beyond its column visually */
+                overflow: visible;
+            }
 
-        .mini-chat.tw-fade-in {
-            opacity: 1;
-            transform: none;
-        }
+            .bg-header {
+                background-size: cover;
+                background-position: right center; /* base state */
+                transition: background-position .42s cubic-bezier(.2, .7, .2, 1);
+                will-change: background-position;
+            }
 
-        /* screen focus overlay */
-        .tw-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(10, 14, 25, .55);
-            backdrop-filter: blur(2px);
-            -webkit-backdrop-filter: blur(2px);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity .40s ease;
-            z-index: 3000;
-        }
+            /* when the modal is open: only translate, don't change widths */
+            body.tw-modal-open .kariyer-header-container {
+                transform: translateX(var(--header-shift)); /* → move with Olivia */
+            }
 
-        .tw-overlay.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        /* animated panel */
-        .tw-grow-panel {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 100px;
-            height: 100px;
-            background: #fff;
-            border-radius: 14px;
-            box-shadow: 0 16px 36px rgba(0, 0, 0, .2), 0 4px 12px rgba(0, 0, 0, .08);
-            overflow: hidden;
-            transition: left .60s ease, top .60s ease,
-            width .60s ease, height .60s ease,
-            border-radius .60s ease;
-            z-index: 3001;
-
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* inside panel */
-        .tw-panel-header {
-            padding: 14px 18px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #4f73ff, #0a1a44);
-            color: #fff;
-            position: relative;
-        }
-
-        .tw-panel-close {
-            position: absolute;
-            top: 8px;
-            right: 10px;
-            width: 40px;
-            height: 40px;
-            border: 0;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, .25);
-            color: #fff;
-            font-size: 22px;
-            cursor: pointer;
-        }
-
-        .tw-panel-body {
-            flex: 1;
-            overflow: auto; /* show what’s inside instead of hiding it */
-            display: flex; /* stack the chatbot vertically */
-            flex-direction: column;
-        }
-
-        /* let the chatbot fill the panel nicely */
-        .tw-panel-body .ttw-chatbot {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-
-        .tw-panel-body .ttw-chat {
-            flex: 1;
-            height: auto;
-        }
-
-        /* use flexible height, not fixed */
-
-
-        .tw-panel-body {
-            flex: 1;
-            overflow: auto;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Make the chatbot actually fill the panel */
-        .tw-panel-body .chatbot-frame { /* the wrapper you render the partial into */
-            display: flex;
-            flex: 1;
-            min-height: 0; /* critical for flex children to shrink properly */
-        }
-
-        .tw-panel-body .ttw-chatbot {
-            display: flex;
-            flex-direction: column;
-            flex: 1; /* stretch to fill panel height */
-            min-height: 0;
-        }
-
-        /* Let the chat log take remaining space even when empty */
-        .tw-panel-body .ttw-chat {
-            flex: 1;
-            min-height: 320px; /* so you see a real area even before messages */
-            height: auto; /* override default fixed height */
+            body.tw-modal-open .bg-header {
+                background-position: calc(100% + var(--olivia-shift)) center; /* → slide Olivia in */
+            }
         }
     </style>
     <script>
         // Note: You must update this URL whenever your ngrok tunnel address changes.
-        window.TTW_WS = "wss://f5a97f8b9272.ngrok-free.app/ws";
+        window.TTW_WS = "wss://d4309705e9b4.ngrok-free.app/ws";
     </script>
 </head>
 <body>

@@ -1,4 +1,6 @@
+<!-- chatbot.html — popup grows from an origin element (mini card) -->
 <style>
+    /* core chat UI (unchanged) */
     .ttw-chatbot {
         box-sizing: border-box;
         width: 100%;
@@ -7,7 +9,7 @@
         display: flex;
         flex-direction: column;
         gap: 12px;
-        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif
+        font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif
     }
 
     .ttw-h {
@@ -45,8 +47,7 @@
         border-radius: 14px;
         max-width: 80%;
         position: relative;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, .05);
-        animation: ttw-in .2s ease-out
+        box-shadow: 0 2px 4px rgba(0, 0, 0, .05)
     }
 
     .ttw-b.u {
@@ -61,17 +62,6 @@
         color: #222;
         background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
         border-bottom-left-radius: 6px
-    }
-
-    @keyframes ttw-in {
-        from {
-            opacity: 0;
-            transform: translateY(6px)
-        }
-        to {
-            opacity: 1;
-            transform: none
-        }
     }
 
     .ttw-ts {
@@ -112,21 +102,23 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, .1)
     }
 
-    /* Modal */
+    /* modal chrome */
+    body.tw-modal-open {
+        overflow: hidden
+    }
+
     .tw-overlay {
         position: fixed;
         inset: 0;
         background: rgba(15, 16, 30, .45);
         backdrop-filter: blur(2px);
-        opacity: 0;
-        transition: opacity .2s ease;
         z-index: 10000;
-        pointer-events: none
+        opacity: 0;
+        transition: opacity .38s ease;
     }
 
     .tw-overlay.open {
-        opacity: 1;
-        pointer-events: auto
+        opacity: 1
     }
 
     .tw-panel {
@@ -142,14 +134,10 @@
         top: 10vh;
         width: 760px;
         height: 78vh;
-        transform: translateY(10px);
-        opacity: .98;
-        transition: transform .25s ease, opacity .25s ease
-    }
-
-    .tw-panel.open {
-        transform: none;
-        opacity: 1
+        transform-origin: top left;
+        transition: transform .38s cubic-bezier(.2, .7, .2, 1), opacity .38s ease;
+        will-change: transform, opacity;
+        opacity: 0;
     }
 
     .tw-head {
@@ -159,7 +147,8 @@
         padding: 12px 56px 12px 16px;
         color: #fff;
         font-weight: 600;
-        background: linear-gradient(90deg, #4b6cb7, #182848)
+        background: linear-gradient(90deg, #4b6cb7, #182848);
+        padding-right: 72px
     }
 
     .tw-close {
@@ -175,290 +164,313 @@
         cursor: pointer;
         font-size: 22px;
         display: grid;
-        place-items: center
+        place-items: center;
+        z-index: 9
     }
 
     .tw-body {
         flex: 1;
         overflow: auto;
         padding: 10px;
-        background: #f7f9fc
+        background: #f7f9fc;
+        display: flex;
+        flex-direction: column
     }
 
     .tw-body .ttw-chatbot {
-        gap: 10px
+        gap: 10px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0
     }
 
     .tw-body .ttw-log {
         height: auto;
-        min-height: 40vh
+        flex: 1;
+        min-height: 0
     }
 
-    @media (max-width: 860px) {
+    /* MOBILE fullscreen */
+    @media (max-width: 768px) {
         .tw-panel {
-            left: 2vw;
-            top: 6vh;
-            width: 96vw;
-            height: 86vh
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100dvh;
+            border-radius: 0;
+            box-shadow: none
         }
-    }
 
-    /* Debug overlay */
-    .ttw-debug {
-        position: fixed;
-        right: 10px;
-        bottom: 10px;
-        width: 420px;
-        max-height: 46vh;
-        background: #0b1020;
-        color: #cde;
-        z-index: 11000;
-        border-radius: 8px;
-        box-shadow: 0 8px 28px rgba(0, 0, 0, .5);
-        display: none
-    }
+        .tw-body {
+            padding: 10px env(safe-area-inset-right) calc(10px + env(safe-area-inset-bottom)) env(safe-area-inset-left)
+        }
 
-    .ttw-debug.open {
-        display: block
-    }
+        .tw-head {
+            padding-left: 16px;
+            padding-right: 72px
+        }
 
-    .ttw-debug .hd {
-        padding: 8px 10px;
-        border-bottom: 1px solid #2a3558;
-        font-weight: 600
-    }
-
-    .ttw-debug .bd {
-        font-family: ui-monospace, Consolas, monospace;
-        font-size: 12px;
-        line-height: 1.35;
-        padding: 8px 10px;
-        max-height: 38vh;
-        overflow: auto;
-        white-space: pre-wrap
+        .tw-close {
+            top: 6px;
+            right: 6px;
+            background: rgba(0, 0, 0, .30)
+        }
     }
 </style>
 
 <script>
     (function () {
-        // ---------- tiny debug bus ----------
-        const state = {overlay: null, body: null, enabled: true, history: []};
-
-        function ts() {
-            return new Date().toLocaleTimeString();
-        }
-
-        function ensureOverlay() {
-            if (state.overlay) return;
-            const box = document.createElement('div');
-            box.className = 'ttw-debug';
-            box.innerHTML = '<div class="hd">TTW Debug (F9 toggles)</div><div class="bd"></div>';
-            document.body.appendChild(box);
-            state.overlay = box;
-            state.body = box.querySelector('.bd');
-        }
-
-        function log() {
-            const args = [...arguments];
-            console.log('[TTW]', ...args);
-            ensureOverlay();
-            const line = `[${ts()}] ` + args.map(x => {
-                try {
-                    return typeof x === 'string' ? x : JSON.stringify(x);
-                } catch (e) {
-                    return String(x);
+        /* ---------------- Debug (F9) ---------------- */
+        const DBG = {box: null, body: null, lines: []};
+        const dlog = (...a) => {
+            try {
+                if (!DBG.box) {
+                    const el = document.createElement('div');
+                    el.className = 'ttw-debug';
+                    el.innerHTML = '<div class="hd">TTW Debug (F9)</div><div class="bd"></div>';
+                    document.body.appendChild(el);
+                    DBG.box = el;
+                    DBG.body = el.querySelector('.bd');
+                    window.addEventListener('keydown', e => {
+                        if (e.key === 'F9') DBG.box.classList.toggle('open')
+                    });
                 }
-            }).join(' ');
-            state.history.push(line);
-            if (state.history.length > 400) state.history.shift();
-            state.body.textContent = state.history.join('\n');
-            state.body.scrollTop = state.body.scrollHeight;
-        }
-
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'F9') {
-                ensureOverlay();
-                state.overlay.classList.toggle('open');
-            }
-        });
-        window.TTW_DEBUG = {
-            log, open: () => {
-                ensureOverlay();
-                state.overlay.classList.add('open');
+                const line = '[' + new Date().toLocaleTimeString() + '] ' + a.map(x => {
+                    try {
+                        return typeof x === 'string' ? x : JSON.stringify(x)
+                    } catch {
+                        return String(x)
+                    }
+                }).join(' ');
+                DBG.lines.push(line);
+                if (DBG.lines.length > 400) DBG.lines.shift();
+                DBG.body.textContent = DBG.lines.join('\n');
+                DBG.body.scrollTop = DBG.body.scrollHeight;
+                console.log('[TTW]', ...a);
+            } catch {
             }
         };
 
-        // ---------- UI helpers ----------
-        function h(tag, attrs) {
-            const el = document.createElement(tag);
-            if (attrs) Object.keys(attrs).forEach(k => {
-                const v = attrs[k];
-                if (k === 'class') el.className = v; else if (k === 'text') el.textContent = v; else el.setAttribute(k, v);
-            });
-            for (let i = 2; i < arguments.length; i++) el.append(arguments[i]);
-            return el;
+        function getSid() {
+            try {
+                let sid = localStorage.getItem('ttw_sid');
+                if (!sid) {
+                    sid = (crypto?.randomUUID?.() || Math.random().toString(36).slice(2));
+                    localStorage.setItem('ttw_sid', sid);
+                }
+                return sid;
+            } catch {
+                return Math.random().toString(36).slice(2);
+            }
         }
 
         function addBubble(chatEl, text, who) {
-            const b = h('div', {class: 'ttw-b ' + (who === 'user' ? 'u' : 'a')}, text);
-            b.append(h('div', {class: 'ttw-ts', text: ts()}));
-            chatEl.append(b);
+            if (!chatEl) return;
+            const w = document.createElement('div');
+            w.className = 'ttw-b ' + (who === 'user' ? 'u' : 'a');
+            w.textContent = text;
+            const ts = document.createElement('div');
+            ts.className = 'ttw-ts';
+            ts.textContent = new Date().toLocaleTimeString();
+            w.appendChild(ts);
+            chatEl.appendChild(w);
             chatEl.scrollTop = chatEl.scrollHeight;
         }
 
-        // ---------- endpoint resolver ----------
         function resolveEndpoint(root, opts) {
             const scheme = location.protocol === 'https:' ? 'wss' : 'ws';
-            if (opts && opts.endpoint) {
-                log('endpoint via opts:', opts.endpoint);
+            if (opts?.endpoint) {
+                dlog('endpoint via opts', opts.endpoint);
                 return opts.endpoint;
             }
-            if (root && root.getAttribute('data-endpoint')) {
-                const ep = root.getAttribute('data-endpoint');
-                log('endpoint via data-endpoint:', ep);
-                return ep;
+            if (root?.dataset.endpoint) {
+                dlog('endpoint via data-endpoint', root.dataset.endpoint);
+                return root.dataset.endpoint;
             }
             if (window.TTW_WS) {
-                log('endpoint via window.TTW_WS:', window.TTW_WS);
+                dlog('endpoint via window.TTW_WS', window.TTW_WS);
                 return window.TTW_WS;
             }
             if (location.port === '9000') {
                 const ep = `${scheme}://${location.hostname}:8000/ws`;
-                log('endpoint via 9000→8000 rule:', ep);
+                dlog('endpoint 9000→8000', ep);
                 return ep;
             }
             const ep = `${scheme}://${location.host}/ws`;
-            log('endpoint default same-origin:', ep);
+            dlog('endpoint default', ep);
             return ep;
         }
 
-        // ---------- modal factory ----------
-        function openModal(opts) {
-            log('openModal called', opts || {});
-            let overlay = document.querySelector('.tw-overlay');
-            let panel = document.querySelector('.tw-panel');
-            if (!overlay) {
-                overlay = h('div', {class: 'tw-overlay'});
-                document.body.appendChild(overlay);
-            }
-            if (!panel) {
-                panel = h('div', {class: 'tw-panel'},
-                    h('div', {class: 'tw-head'}, 'Olivia · Canlı Sohbet'),
-                    h('button', {class: 'tw-close', type: 'button'}, '×'),
-                    h('div', {class: 'tw-body'},
-                        h('div', {class: 'ttw-chatbot', 'data-ttw-chatbot': '', 'data-autoinit': '1'},
-                            h('header', {class: 'ttw-h'},
-                                h('h2', {text: 'AI Chatbot'}),
-                                h('div', {class: 's', text: 'Size yardımcı olmak için buradayım'})),
-                            h('div', {class: 'ttw-log', role: 'log', 'aria-live': 'polite'}),
-                            h('form', {class: 'ttw-row', autocomplete: 'off'},
-                                h('input', {
-                                    class: 'ttw-inp',
-                                    type: 'text',
-                                    placeholder: 'Mesajınızı yazın...',
-                                    'aria-label': 'Mesajınızı yazın'
-                                }),
-                                h('button', {class: 'ttw-send', type: 'button'}, 'Gönder')))));
-                document.body.appendChild(panel);
-                panel.querySelector('.tw-close').onclick = () => {
-                    overlay.classList.remove('open');
-                    panel.classList.remove('open');
-                };
-                overlay.onclick = () => {
-                    overlay.classList.remove('open');
-                    panel.classList.remove('open');
-                };
-            }
-            requestAnimationFrame(() => {
-                overlay.classList.add('open');
-                panel.classList.add('open');
-            });
-            const root = panel.querySelector('[data-ttw-chatbot]');
-            mount(root, opts || {});
+        /* ---- utility: rect in page coords ---- */
+        function pageRect(el) {
+            const r = el.getBoundingClientRect();
+            return {left: r.left + window.scrollX, top: r.top + window.scrollY, width: r.width, height: r.height};
         }
 
-        // ---------- core mount ----------
-        function mount(root, opts) {
-            opts = opts || {};
-            if (!root) {
-                log('mount: no root');
-                return;
+        /* ---------------- Modal with grow-from-origin ---------------- */
+        function openModal(opts) {
+            const overlay = document.createElement('div');
+            overlay.className = 'tw-overlay';
+            const panel = document.createElement('div');
+            panel.className = 'tw-panel';
+            panel.innerHTML = `
+      <div class="tw-head">Olivia · Canlı Sohbet<button class="tw-close" type="button">×</button></div>
+      <div class="tw-body">
+        <div class="ttw-chatbot" data-ttw-chatbot data-autoinit="1">
+          <header class="ttw-h"><h2>AI Chatbot</h2><div class="s">Size yardımcı olmak için buradayım</div></header>
+          <div class="ttw-log" role="log" aria-live="polite"></div>
+          <form class="ttw-row" autocomplete="off">
+            <input class="ttw-inp" type="text" placeholder="Mesajınızı yazın..." aria-label="Mesajınızı yazın">
+            <button class="ttw-send" type="button">Gönder</button>
+          </form>
+        </div>
+      </div>`;
+
+            document.body.append(overlay, panel);
+            document.body.classList.add('tw-modal-open');
+
+            /* FLIP: set initial transform so panel overlaps origin, then transition to identity */
+            const originEl = typeof opts?.animateFrom === 'string' ? document.querySelector(opts.animateFrom) : (opts?.animateFrom || null);
+            const doGrow = originEl && originEl.getBoundingClientRect().width > 0 && originEl.getBoundingClientRect().height > 0;
+
+            // compute transforms with origin top-left
+            function setFromOrigin() {
+                const t = panel.getBoundingClientRect();
+                const p = pageRect(panel); // current page pos
+                const o = pageRect(originEl);
+                const sx = Math.max(0.01, o.width / t.width);
+                const sy = Math.max(0.01, o.height / t.height);
+                const dx = (o.left - p.left);
+                const dy = (o.top - p.top);
+                panel.style.transformOrigin = 'top left';
+                panel.style.transform = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
+                panel.style.opacity = '0.001';
             }
+
+            // start animation
+            requestAnimationFrame(() => {
+                if (doGrow) setFromOrigin();
+                requestAnimationFrame(() => {
+                    overlay.classList.add('open');
+                    panel.style.transform = 'none';
+                    panel.style.opacity = '1';
+                });
+            });
+
+            const controller = mount(panel.querySelector('[data-ttw-chatbot]'), opts || {});
+
+            function close() {
+                // reverse animation if origin is still visible
+                if (doGrow) {
+                    setFromOrigin();
+                    overlay.classList.remove('open');
+                    const done = () => {
+                        panel.removeEventListener('transitionend', done);
+                        cleanup();
+                    };
+                    panel.addEventListener('transitionend', done);
+                } else {
+                    cleanup();
+                }
+            }
+
+            function cleanup() {
+                try {
+                    controller?.destroy?.();
+                } catch {
+                }
+                try {
+                    overlay.remove();
+                } catch {
+                }
+                try {
+                    panel.remove();
+                } catch {
+                }
+                document.body.classList.remove('tw-modal-open');
+            }
+
+            panel.querySelector('.tw-close').onclick = e => {
+                e.preventDefault();
+                close();
+            };
+            overlay.onclick = e => {
+                if (e.target === overlay) close();
+            };
+        }
+
+        /* ---------------- Core mount ---------------- */
+        function mount(root, opts) {
+            if (!root) return {
+                destroy() {
+                }
+            };
             const chat = root.querySelector('.ttw-log');
             const input = root.querySelector('.ttw-inp');
             const sendB = root.querySelector('.ttw-send');
             const form = root.querySelector('form');
 
-            form?.addEventListener('submit', (e) => {
+            form?.addEventListener('submit', e => {
                 e.preventDefault();
                 e.stopPropagation();
-                log('form submit prevented');
             });
-            sendB?.addEventListener('click', (e) => {
+            sendB?.addEventListener('click', e => {
                 e.preventDefault();
                 e.stopPropagation();
-                log('send clicked');
                 send();
             });
-            input?.addEventListener('keydown', (e) => {
+            input?.addEventListener('keydown', e => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
-                    log('Enter pressed');
                     send();
                 }
             });
 
-            const endpoint = resolveEndpoint(root, opts);
+            const base = resolveEndpoint(root, opts);
+            const url = base + (base.includes('?') ? '&' : '?') + 'client_id=' + encodeURIComponent(getSid());
             let ws = null, open = false, queue = [];
 
             function connect() {
                 try {
-                    log('WS connecting →', endpoint);
-                    ws = new WebSocket(endpoint);
-                    ws.addEventListener('open', onOpen);
+                    dlog('WS connecting →', url);
+                    ws = new WebSocket(url);
+                    ws.addEventListener('open', () => {
+                        open = true;
+                        dlog('WS open');
+                        while (queue.length) {
+                            try {
+                                ws.send(queue.shift());
+                            } catch {
+                                break;
+                            }
+                        }
+                    });
                     ws.addEventListener('message', onMsg);
-                    ws.addEventListener('error', onErr);
-                    ws.addEventListener('close', onClose);
+                    ws.addEventListener('error', e => dlog('WS error', e));
+                    ws.addEventListener('close', () => {
+                        open = false;
+                        dlog('WS close — retry in 1.2s');
+                        setTimeout(connect, 1200);
+                    });
                 } catch (err) {
-                    log('WS ctor error', err);
+                    dlog('WS ctor error', err);
                     setTimeout(connect, 900);
                 }
             }
 
-            function onOpen() {
-                open = true;
-                log('WS open');
-                while (queue.length) {
-                    try {
-                        ws.send(queue.shift());
-                    } catch (_) {
-                        break;
-                    }
-                }
-            }
-
-            function onErr(e) {
-                log('WS error', e);
-            }
-
-            function onClose() {
-                open = false;
-                log('WS close — retry in 1.2s');
-                setTimeout(connect, 1200);
-            }
-
             function sendRaw(s) {
                 if (!s) return;
-                if (ws && ws.readyState === 1 && open) {
+                if (ws && open && ws.readyState === 1) {
                     try {
                         ws.send(s);
-                        log('WS →', s);
+                        dlog('WS →', s);
                     } catch (e) {
-                        log('WS send err', e);
+                        dlog('WS send err', e);
                     }
                 } else {
                     queue.push(s);
-                    log('WS queued', s);
+                    dlog('WS queued', s);
                 }
             }
 
@@ -471,44 +483,41 @@
             }
 
             function onMsg(ev) {
-                log('WS ← raw', ev.data);
+                dlog('WS ←', ev.data);
                 try {
                     const data = JSON.parse(ev.data);
-                    if (data.reply) {
-                        addBubble(chat, data.reply, 'agent');
-                    }
-                    if (data.urls?.length) {
-                        addBubble(chat, '👉 Görseller geldi (' + data.urls.length + ')', 'agent');
-                    }
-                } catch (err) {
+                    if (data.reply) addBubble(chat, data.reply, 'agent');
+                    if (data.urls?.length) addBubble(chat, '👉 Görseller geldi (' + data.urls.length + ')', 'agent');
+                } catch {
                     addBubble(chat, ev.data, 'agent');
-                    log('WS parse fail (non-JSON msg?)', err);
                 }
             }
 
             connect();
+            const first = (opts.initialText || '').trim();
+            if (first) {
+                addBubble(chat, first, 'user');
+                sendRaw(first);
+            }
             return {
                 destroy() {
                     try {
                         ws?.close();
-                    } catch (_) {
+                    } catch {
                     }
-                    root.innerHTML = '';
                 }
             };
         }
 
+        // expose
         window.TTWChatbot = {openModal, mount};
 
+        // optional auto-init
         document.addEventListener('DOMContentLoaded', () => {
-            const inlines = document.querySelectorAll('[data-ttw-chatbot][data-autoinit]');
-            if (inlines.length) {
-                TTW_DEBUG.log('autoinit count', inlines.length);
-                inlines.forEach(root => mount(root, {}));
-            }
+            document.querySelectorAll('[data-ttw-chatbot][data-autoinit]').forEach(root => mount(root, {}));
         });
 
-        window.addEventListener('error', (e) => TTW_DEBUG.log('window error', e.message || e));
-        window.addEventListener('unhandledrejection', (e) => TTW_DEBUG.log('promise rejection', e.reason || e));
+        window.addEventListener('error', e => dlog('window error', e.message || e));
+        window.addEventListener('unhandledrejection', e => dlog('promise rejection', e.reason || e));
     })();
 </script>

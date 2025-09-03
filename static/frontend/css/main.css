@@ -1,16 +1,16 @@
 body, content-section {
-    overflow-x:hidden!important
+    overflow-x: hidden !important
 }
 
-#btn-close{
-    margin-top:-20px;
-    float:inline-end;
-    display:block;
+#btn-close {
+    margin-top: -20px;
+    float: inline-end;
+    display: block;
 }
 
 .svg-inline--fa.fa-xmark {
-    font-size:25px;
-    color:white;
+    font-size: 25px;
+    color: white;
 }
 
 #contact img {
@@ -103,13 +103,13 @@ body, content-section {
     align-items: center;
     justify-content: center;
     font-size: 1.8rem;
-    background:#25d366;
+    background: #25d366;
 }
 
 .whatsapp {
-    position:fixed;
-    z-index:2;
-    right:20px;
+    position: fixed;
+    z-index: 2;
+    right: 20px;
     bottom: 80px;
     transition: bottom 1s ease;
 }
@@ -119,10 +119,10 @@ body, content-section {
 }
 
 @media (max-width: 768px) {
-    #btn-close{
-        display:none;
+    #btn-close {
+        display: none;
     }
-    
+
     .preliminary-button .floating-button {
         flex-direction: column-reverse;
         align-items: center;
@@ -154,12 +154,12 @@ body, content-section {
     .preliminary-button .btn-close {
         display: block !important;
     }
-    
+
     .fr-view img {
-        width: 100%!important;
-        height:auto;
+        width: 100% !important;
+        height: auto;
     }
-    
+
     .instructor-info .col {
         flex: 0 0 auto;
         width: 50%;
@@ -195,7 +195,7 @@ body, content-section {
     color: #000000;
 }
 
-.header .top-header .info-text.scrolled a{
+.header .top-header .info-text.scrolled a {
     color: #000000;
 }
 
@@ -342,9 +342,9 @@ a.linkedin.scrolled {
         cursor: pointer;
         width: auto;
     }
-    
+
     .student-login-style {
-        padding:0 8px 20px 20px;
+        padding: 0 8px 20px 20px;
     }
 }
 
@@ -376,7 +376,7 @@ a.linkedin.scrolled {
     #menuButton {
         display: flex;
         border-radius: 5px;
-        gap:0.5rem;
+        gap: 0.5rem;
     }
 }
 
@@ -603,10 +603,12 @@ a.linkedin.scrolled {
     margin-bottom: 6px;
     margin-top: 6px;
 }
+
 .btn.btn-primary {
-    background-color:#0D2192FF!important;
-    border-color: #0D2192FF!important;
+    background-color: #0D2192FF !important;
+    border-color: #0D2192FF !important;
 }
+
 .education-card .card-text {
     font-size: 11px;
     color: #ccc;
@@ -957,14 +959,18 @@ a.linkedin.scrolled {
     font-size: 1.2rem;
 }
 
+/* HERO — background driven by a CSS var set via JS */
 .bg-header {
+    position: relative;
+    overflow: hidden;
+    background-image: var(--hero-url, url('https://talktoweb.com/wp-content/uploads/2024/04/bg-1.webp'));
+    background-size: cover;
+    background-position: center;
     min-height: 400px;
     display: flex;
     align-items: center;
-    background-image: url('https://talktoweb.com/wp-content/uploads/2024/04/bg-1.webp');
-    background-size: cover;
-    background-position: center;
 }
+
 
 .kariyer-header {
     font-family: 'Inter', sans-serif;
@@ -980,7 +986,7 @@ a.linkedin.scrolled {
 
 @media (max-width: 768px) {
     .bg-header {
-        margin-top:-35px;
+        margin-top: -35px;
         display: flex;
         align-items: end;
         background-image: url(https://talktoweb.com/wp-content/uploads/2024/04/bg-1.webp);
@@ -988,7 +994,7 @@ a.linkedin.scrolled {
         background-position: -680px !important;
         padding: 0 0 20px 20px !important;
     }
-    
+
     .kariyer-header {
         font-family: 'Inter', sans-serif;
         font-size: 65px !important;
@@ -1005,7 +1011,7 @@ a.linkedin.scrolled {
     .bg-info {
         background-color: transparent !important;
     }
-    
+
     .icon-home-button {
         background: transparent;
         border: none;
@@ -1015,7 +1021,6 @@ a.linkedin.scrolled {
         border-radius: 5px;
     }
 }
-
 
 
 .custom-input {
@@ -1492,7 +1497,7 @@ a.linkedin.scrolled {
     text-align: center;
     font-size: 0.8rem;
     margin-bottom: 0.3rem;
-    text-decoration:none;
+    text-decoration: none;
 }
 
 .ofice-contact {
@@ -1500,12 +1505,12 @@ a.linkedin.scrolled {
     text-align: left;
     font-size: 16px;
     margin-bottom: 0.3rem;
-    text-decoration:none;
+    text-decoration: none;
 }
 
 .ofice-contact a {
-    text-decoration:none;
-    color:white;
+    text-decoration: none;
+    color: white;
 }
 
 .wrapper_footer .footer-logo {
@@ -1911,8 +1916,8 @@ a.linkedin.scrolled {
 }
 
 .tab-section .nav-tabs {
-    position:sticky;
-    background:white;
+    position: sticky;
+    background: white;
     border-bottom: 2px solid #ddd;
     margin-bottom: 20px;
 }
@@ -1946,12 +1951,12 @@ a.linkedin.scrolled {
     transition: width 0.3s ease;
 }
 
-.nav-link.custom-after:after{
-    background-color:rgb(255, 255, 255);
+.nav-link.custom-after:after {
+    background-color: rgb(255, 255, 255);
 }
 
 .no-border-radius {
-    border-radius:0!important;
+    border-radius: 0 !important;
 }
 
 .tab-section .nav-link.active::after {
@@ -1991,7 +1996,7 @@ a.linkedin.scrolled {
 .kayit-ol-card {
     position: fixed;
     width: 450px;
-    height:150px;
+    height: 150px;
     bottom: 0;
     right: 100px;
     padding-bottom: 40px !important;
@@ -2039,7 +2044,7 @@ a.linkedin.scrolled {
     color: #000000;
 }
 
-.kayit-ol-card .card-details .card-instructor{
+.kayit-ol-card .card-details .card-instructor {
     font-size: 14px;
     text-align: left;
     margin-bottom: 10px;
@@ -2048,7 +2053,7 @@ a.linkedin.scrolled {
 .kayit-ol-card .card-details .card-instructor-title {
     font-size: 14px;
     text-align: left;
-    font-weight:bold;
+    font-weight: bold;
 }
 
 .kayit-ol-card .card-details .card-date {
@@ -2077,7 +2082,7 @@ a.linkedin.scrolled {
 
 @media (max-width: 768px) {
     .kayit-ol-card {
-        right:0!important;
+        right: 0 !important;
         padding-left: 30px;
         padding-right: 30px;
         display: flex;
@@ -2098,7 +2103,7 @@ a.linkedin.scrolled {
         flex-direction: column;
         align-items: flex-start;
         height: 100%;
-        padding-left:0!important;
+        padding-left: 0 !important;
         gap: 3px;
     }
 
@@ -2111,17 +2116,17 @@ a.linkedin.scrolled {
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
-    
-    .kayit-ol-card .card-details .card-instructor{
+
+    .kayit-ol-card .card-details .card-instructor {
         font-size: 14px;
         text-align: left;
         margin-bottom: 10px;
     }
-    
+
     .kayit-ol-card .card-details .card-instructor-title {
         font-size: 14px;
         text-align: left;
-        font-weight:bold;
+        font-weight: bold;
     }
 
     .kayit-ol-card .card-details .card-date {
@@ -2140,7 +2145,7 @@ a.linkedin.scrolled {
         display: flex;
         justify-content: center;
         align-items: center;
-        width:80px;
+        width: 80px;
         padding-right: 0;
     }
 }
@@ -2808,11 +2813,11 @@ a.linkedin.scrolled {
 /* SEOSection End*/
 
 .row.navbar-adresses {
-    padding-top:100px;
+    padding-top: 100px;
 }
 
 .to-all-button {
-    align-self:center;
+    align-self: center;
 }
 
 /* Mobile-specific styles */
@@ -2823,7 +2828,7 @@ a.linkedin.scrolled {
 
     .offcanvas-content {
         background-color: #181029;
-        overflow-x:hidden;
+        overflow-x: hidden;
         transition: transform 0.35s ease-in-out;
         z-index: 1041;
         transform: translateX(100%);
@@ -2887,24 +2892,24 @@ a.linkedin.scrolled {
     .banner img {
         height: auto;
     }
-    
+
     .row.navbar-adresses {
         padding-top: 40px;
         gap: 30px;
         padding-bottom: 60px;
     }
-    
+
     .all-education-card {
         display: table;
         padding-bottom: 50px;
     }
-    
+
     .li-style {
-        background: transparent!important;
+        background: transparent !important;
     }
-    
-    .row.video-student{
-        flex-direction:column;
+
+    .row.video-student {
+        flex-direction: column;
     }
 }
 
@@ -2960,16 +2965,16 @@ a.linkedin.scrolled {
 }
 
 .navbar-office {
-    border-bottom:1px solid;
+    border-bottom: 1px solid;
 }
 
-.instructor-page-photo{
-    width:100%;
+.instructor-page-photo {
+    width: 100%;
 }
 
 .instructor-img {
-    border-radius:100%;
-    width:100px;
-    height:100px;
-    object-fit:fill;
+    border-radius: 100%;
+    width: 100px;
+    height: 100px;
+    object-fit: fill;
 }

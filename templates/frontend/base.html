@@ -251,6 +251,12 @@
                 background-position: calc(100% + var(--olivia-shift)) center; /* → slide Olivia in */
             }
         }
+
+        @media (max-width: 769px) {
+            .kariyer-header-container {
+                display: none !important;
+            }
+        }
     </style>
     <script>
         // Note: You must update this URL whenever your ngrok tunnel address changes.
@@ -947,6 +953,8 @@
         return 'Other';
     }
 </script>
-{% block js %}{% endblock %}
+{% load static %}
+<script defer src="{% static 'frontend/js/hero-variant.v5.js' %}?v=5"></script>
+{% block js %}{% endblock js %}
 </body>
 </html>

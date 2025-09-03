@@ -1,6 +1,6 @@
 <!-- chatbot.html — popup grows from an origin element (mini card) -->
 <style>
-    /* core chat UI (unchanged) */
+    /* core chat UI */
     .ttw-chatbot {
         box-sizing: border-box;
         width: 100%;
@@ -102,6 +102,50 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, .1)
     }
 
+    /* image gallery */
+    .ttw-b.has-gallery {
+        max-width: 100%;
+    }
+
+    .ttw-gallery {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr)); /* phones */
+        gap: 10px;
+    }
+
+    @media (min-width: 480px) {
+        .ttw-gallery {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+
+    @media (min-width: 768px) {
+        .ttw-gallery {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+    }
+
+    .ttw-gallery a {
+        display: block;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, .08);
+        transition: box-shadow .15s;
+    }
+
+    .ttw-gallery img {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+        display: block;
+        transition: transform .18s ease
+    }
+
+    .ttw-gallery a:hover img {
+        transform: scale(1.035);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+    }
+
     /* modal chrome */
     body.tw-modal-open {
         overflow: hidden
@@ -114,7 +158,7 @@
         backdrop-filter: blur(2px);
         z-index: 10000;
         opacity: 0;
-        transition: opacity .38s ease;
+        transition: opacity .38s ease
     }
 
     .tw-overlay.open {
@@ -137,7 +181,7 @@
         transform-origin: top left;
         transition: transform .38s cubic-bezier(.2, .7, .2, 1), opacity .38s ease;
         will-change: transform, opacity;
-        opacity: 0;
+        opacity: 0
     }
 
     .tw-head {
@@ -191,7 +235,6 @@
         min-height: 0
     }
 
-    /* MOBILE fullscreen */
     @media (max-width: 768px) {
         .tw-panel {
             left: 0;
@@ -214,13 +257,55 @@
         .tw-close {
             top: 6px;
             right: 6px;
-            background: rgba(0, 0, 0, .30)
+            background: rgba(0, 0, 0, .3)
         }
     }
+
+    /* typing indicator (three bouncing dots) */
+    .ttw-b.ttw-typing {
+        margin-right: auto; /* assistant side */
+        color: #3b4a6b;
+        background: #eef3ff;
+    }
+
+    .ttw-typing .dots {
+        display: inline-flex;
+        gap: 4px;
+        vertical-align: middle;
+    }
+
+    .ttw-typing .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #3b4a6b;
+        opacity: .32;
+        animation: ttw-bounce 1s infinite ease-in-out;
+    }
+
+    .ttw-typing .dot:nth-child(2) {
+        animation-delay: .15s;
+    }
+
+    .ttw-typing .dot:nth-child(3) {
+        animation-delay: .30s;
+    }
+
+    @keyframes ttw-bounce {
+        0%, 80%, 100% {
+            transform: translateY(0);
+            opacity: .32;
+        }
+        40% {
+            transform: translateY(-4px);
+            opacity: .95;
+        }
+    }
+
 </style>
 
 <script>
-    (function () {
+    (() => {
         /* ---------------- Debug (F9) ---------------- */
         const DBG = {box: null, body: null, lines: []};
         const dlog = (...a) => {
@@ -233,14 +318,14 @@
                     DBG.box = el;
                     DBG.body = el.querySelector('.bd');
                     window.addEventListener('keydown', e => {
-                        if (e.key === 'F9') DBG.box.classList.toggle('open')
+                        if (e.key === 'F9') DBG.box.classList.toggle('open');
                     });
                 }
                 const line = '[' + new Date().toLocaleTimeString() + '] ' + a.map(x => {
                     try {
-                        return typeof x === 'string' ? x : JSON.stringify(x)
+                        return typeof x === 'string' ? x : JSON.stringify(x);
                     } catch {
-                        return String(x)
+                        return String(x);
                     }
                 }).join(' ');
                 DBG.lines.push(line);
@@ -265,6 +350,7 @@
             }
         }
 
+        /* Basic bubble (used for user messages and fallback) */
         function addBubble(chatEl, text, who) {
             if (!chatEl) return;
             const w = document.createElement('div');
@@ -275,6 +361,127 @@
             ts.textContent = new Date().toLocaleTimeString();
             w.appendChild(ts);
             chatEl.appendChild(w);
+            chatEl.scrollTop = chatEl.scrollHeight;
+        }
+
+        /* ---- typing indicator bubble ---- */
+        function showTyping(chatEl) {
+            const b = document.createElement('div');
+            b.className = 'ttw-b a ttw-typing';
+            b.innerHTML = '<span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>';
+            chatEl.appendChild(b);
+            chatEl.scrollTop = chatEl.scrollHeight;
+            return () => {
+                try {
+                    b.remove();
+                } catch {
+                }
+            };
+        }
+
+        /* ---- split a reply into "steps" (blank lines & list markers) ---- */
+        function splitSteps(text) {
+            const clean = (text || '').replace(/\r/g, '').trim();
+            if (!clean) return [];
+            const out = [];
+            const lines = clean.split('\n');
+            let buf = [];
+            const isList = s => /^\s*(?:\d+[.)]|[-••])\s+/.test(s);
+
+            for (const ln of lines) {
+                if (!ln.trim()) {
+                    if (buf.length) {
+                        out.push(buf.join(' ').trim());
+                        buf = [];
+                    }
+                    continue;
+                }
+                if (isList(ln) && buf.length) {
+                    out.push(buf.join(' ').trim());
+                    buf = [ln.replace(/^\s*(?:\d+[.)]|[-••])\s+/, '')];
+                } else {
+                    buf.push(ln.replace(/^\s*(?:\d+[.)]|[-••])\s*/, ''));
+                }
+            }
+            if (buf.length) out.push(buf.join(' ').trim());
+            return out.length ? out : [clean];
+        }
+
+        /* ---- typewriter effect for a single bubble ---- */
+        function typeWriter(targetEl, text, speed = 18) {
+            return new Promise(resolve => {
+                let i = 0;
+                const id = setInterval(() => {
+                    targetEl.textContent += text.charAt(i++);
+                    if (i >= text.length) {
+                        clearInterval(id);
+                        resolve();
+                    }
+                }, speed);
+            });
+        }
+
+        /* ---- render Olivia's reply in steps with typing indicator ---- */
+        async function renderAssistantReply(chatEl, fullText) {
+            const steps = splitSteps(fullText).slice(0, 8); // safety cap
+            for (let i = 0; i < steps.length; i++) {
+                const remove = showTyping(chatEl);            // show typing...
+                const w = document.createElement('div');      // ...prepare bubble
+                w.className = 'ttw-b a';
+                chatEl.appendChild(w);
+                chatEl.scrollTop = chatEl.scrollHeight;
+                remove();
+                await typeWriter(w, steps[i]);                // daktilo typing
+                const ts = document.createElement('div');
+                ts.className = 'ttw-ts';
+                ts.textContent = new Date().toLocaleTimeString();
+                w.appendChild(ts);
+            }
+        }
+
+        /* path -> absolute URL */
+        function resolveUrl(u) {
+            if (!u) return null;
+            if (/^https?:\/\//i.test(u)) return u;
+            if (u.startsWith('//')) return location.protocol + u;
+            if (u.startsWith('/')) return location.origin + u;
+            return location.origin + '/' + u.replace(/^\.?\//, '');
+        }
+
+        /* render a responsive gallery; accepts strings or {adres,image} */
+        function addImageGallery(chatEl, items) {
+            if (!chatEl || !items?.length) return;
+            const wrap = document.createElement('div');
+            wrap.className = 'ttw-b a has-gallery';
+            const grid = document.createElement('div');
+            grid.className = 'ttw-gallery';
+
+            items.slice(0, 12).forEach(it => {
+                const imgSrc = resolveUrl(typeof it === 'string' ? it : (it?.image || it?.adres));
+                const href = resolveUrl(typeof it === 'string' ? it : (it?.adres || it?.image));
+                if (!imgSrc) return;
+
+                const a = document.createElement('a');
+                a.href = href || imgSrc;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+
+                const img = document.createElement('img');
+                img.src = imgSrc;
+                img.alt = 'görsel';
+                img.loading = 'lazy';
+
+                a.appendChild(img);
+                grid.appendChild(a);
+            });
+
+            wrap.appendChild(grid);
+            const ts = document.createElement('div');
+            ts.className = 'ttw-ts';
+            ts.textContent = new Date().toLocaleTimeString();
+            wrap.appendChild(ts);
+
+            chatEl.appendChild(wrap);
             chatEl.scrollTop = chatEl.scrollHeight;
         }
 
@@ -302,10 +509,9 @@
             return ep;
         }
 
-        /* ---- utility: rect in page coords ---- */
         function pageRect(el) {
             const r = el.getBoundingClientRect();
-            return {left: r.left + window.scrollX, top: r.top + window.scrollY, width: r.width, height: r.height};
+            return {left: r.left + scrollX, top: r.top + scrollY, width: r.width, height: r.height};
         }
 
         /* ---------------- Modal with grow-from-origin ---------------- */
@@ -326,29 +532,21 @@
           </form>
         </div>
       </div>`;
-
             document.body.append(overlay, panel);
             document.body.classList.add('tw-modal-open');
 
-            /* FLIP: set initial transform so panel overlaps origin, then transition to identity */
             const originEl = typeof opts?.animateFrom === 'string' ? document.querySelector(opts.animateFrom) : (opts?.animateFrom || null);
             const doGrow = originEl && originEl.getBoundingClientRect().width > 0 && originEl.getBoundingClientRect().height > 0;
 
-            // compute transforms with origin top-left
             function setFromOrigin() {
-                const t = panel.getBoundingClientRect();
-                const p = pageRect(panel); // current page pos
-                const o = pageRect(originEl);
-                const sx = Math.max(0.01, o.width / t.width);
-                const sy = Math.max(0.01, o.height / t.height);
-                const dx = (o.left - p.left);
-                const dy = (o.top - p.top);
+                const t = panel.getBoundingClientRect(), p = pageRect(panel), o = pageRect(originEl);
+                const sx = Math.max(0.01, o.width / t.width), sy = Math.max(0.01, o.height / t.height);
+                const dx = (o.left - p.left), dy = (o.top - p.top);
                 panel.style.transformOrigin = 'top left';
-                panel.style.transform = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
+                panel.style.transform = `translate(${dx}px,${dy}px) scale(${sx},${sy})`;
                 panel.style.opacity = '0.001';
             }
 
-            // start animation
             requestAnimationFrame(() => {
                 if (doGrow) setFromOrigin();
                 requestAnimationFrame(() => {
@@ -361,7 +559,6 @@
             const controller = mount(panel.querySelector('[data-ttw-chatbot]'), opts || {});
 
             function close() {
-                // reverse animation if origin is still visible
                 if (doGrow) {
                     setFromOrigin();
                     overlay.classList.remove('open');
@@ -370,9 +567,7 @@
                         cleanup();
                     };
                     panel.addEventListener('transitionend', done);
-                } else {
-                    cleanup();
-                }
+                } else cleanup();
             }
 
             function cleanup() {
@@ -430,6 +625,7 @@
             const base = resolveEndpoint(root, opts);
             const url = base + (base.includes('?') ? '&' : '?') + 'client_id=' + encodeURIComponent(getSid());
             let ws = null, open = false, queue = [];
+            let typingHintRemove = null;
 
             function connect() {
                 try {
@@ -478,18 +674,52 @@
                 const txt = (input?.value || '').trim();
                 if (!txt) return;
                 addBubble(chat, txt, 'user');
+                typingHintRemove?.();  // clear previous
+                typingHintRemove = showTyping(chat);
                 sendRaw(txt);
                 if (input) input.value = '';
             }
 
-            function onMsg(ev) {
+            async function onMsg(ev) {
                 dlog('WS ←', ev.data);
                 try {
-                    const data = JSON.parse(ev.data);
-                    if (data.reply) addBubble(chat, data.reply, 'agent');
-                    if (data.urls?.length) addBubble(chat, '👉 Görseller geldi (' + data.urls.length + ')', 'agent');
+                    typingHintRemove?.();
+                    typingHintRemove = null;
                 } catch {
-                    addBubble(chat, ev.data, 'agent');
+                }
+
+                try {
+                    const data = JSON.parse(ev.data);
+
+                    if (data.reply) {
+                        await renderAssistantReply(chat, data.reply);
+                    }
+
+                    // normalize & show images
+                    let urls = data.urls;
+                    if (typeof urls === 'string') {
+                        try {
+                            urls = JSON.parse(urls);
+                        } catch {
+                        }
+                    }
+                    if (!Array.isArray(urls) && typeof data.reply === 'string') {
+                        const m = data.reply.match(/"urls"\s*:\s*(\[[\s\S]*?\])/);
+                        if (m) {
+                            try {
+                                urls = JSON.parse(m[1]);
+                            } catch {
+                            }
+                        }
+                    }
+                    if (Array.isArray(urls) && urls.length) {
+                        addImageGallery(chat, urls.map(u => (typeof u === 'string') ? u : ({
+                            adres: u?.adres || u?.image || '',
+                            image: u?.image || u?.adres || ''
+                        })));
+                    }
+                } catch {
+                    await renderAssistantReply(chat, ev.data); // plain text fallback
                 }
             }
 
@@ -497,8 +727,11 @@
             const first = (opts.initialText || '').trim();
             if (first) {
                 addBubble(chat, first, 'user');
+                typingHintRemove?.();
+                typingHintRemove = showTyping(chat);
                 sendRaw(first);
             }
+
             return {
                 destroy() {
                     try {

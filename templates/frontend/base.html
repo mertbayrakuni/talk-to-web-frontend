@@ -257,10 +257,33 @@
                 display: none !important;
             }
         }
+
+        @media (max-width: 768px) {
+            #miniChatCard {
+                margin: 0 auto;
+                float: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .floating-button {
+                top: 55% !important; /* pushes below WhatsApp & mini form */
+            }
+        }
+
+        .course-card .card-title {
+            font-size: 16px;
+            margin-top: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
     </style>
     <script>
         // Note: You must update this URL whenever your ngrok tunnel address changes.
-        window.TTW_WS = "wss://8ca9c1c1d58c.ngrok-free.app/ws";
+        window.TTW_WS = "wss://47b717216066.ngrok-free.app/ws";
+        /*window.TTW_WS = "ws://127.0.0.1:8000/ws";*/
     </script>
 </head>
 <body>

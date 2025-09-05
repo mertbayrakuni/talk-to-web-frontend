@@ -1,6 +1,6 @@
 <!-- chatbot.html — popup grows from an origin element (mini card) -->
 <style>
-    /* core chat UI */
+    /* ============ CORE CHAT UI ============ */
     .ttw-chatbot {
         box-sizing: border-box;
         width: 100%;
@@ -9,25 +9,12 @@
         display: flex;
         flex-direction: column;
         gap: 12px;
-        font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif
+        font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
     }
 
+    /* header is hidden per bossman */
     .ttw-h {
-        padding: 12px 16px;
-        color: #fff;
-        border-radius: 12px;
-        background: linear-gradient(90deg, #4b6cb7, #182848)
-    }
-
-    .ttw-h h2 {
-        margin: 0 0 2px;
-        font-size: 18px
-    }
-
-    .ttw-h .s {
-        opacity: .9;
-        font-weight: 300;
-        font-size: 13px
+        display: none !important;
     }
 
     .ttw-log {
@@ -39,7 +26,7 @@
         display: flex;
         flex-direction: column;
         gap: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, .05)
+        box-shadow: 0 4px 12px rgba(0, 0, 0, .05);
     }
 
     .ttw-b {
@@ -47,48 +34,57 @@
         border-radius: 14px;
         max-width: 80%;
         position: relative;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, .05)
+        box-shadow: 0 2px 4px rgba(0, 0, 0, .05);
     }
 
-    .ttw-b.u {
+    /* ===== ChatGPT Light bubbles ===== */
+    .ttw-b.u { /* user */
         margin-left: auto;
-        color: #fff;
-        background: linear-gradient(135deg, #4facfe, #00f2fe);
-        border-bottom-right-radius: 6px
+        background: #dcfce7;
+        color: #0c0c0d;
+        border-bottom-right-radius: 6px;
     }
 
-    .ttw-b.a {
+    .ttw-b.a { /* assistant */
         margin-right: auto;
-        color: #222;
-        background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
-        border-bottom-left-radius: 6px
+        background: #f7f7f8;
+        color: #0c0c0d;
+        border-bottom-left-radius: 6px;
     }
 
     .ttw-ts {
         font-size: 11px;
-        opacity: .75;
+        color: #6b7280;
+        opacity: .9;
         margin-top: 6px;
-        text-align: right
+        text-align: right;
     }
 
     .ttw-row {
         display: flex;
         gap: 10px;
-        align-items: center
+        align-items: center;
     }
 
     .ttw-inp {
         flex: 1;
         padding: 12px 14px;
-        border: 2px solid #e1e5eb;
-        border-radius: 24px;
+        border: 1px solid #d9d9e3; /* ChatGPT input border */
+        border-radius: 22px;
         font-size: 15px;
-        outline: none
+        outline: none;
+        background: #ffffff;
+        color: #0c0c0d;
     }
 
+    .ttw-inp::placeholder {
+        color: #6b7280;
+    }
+
+    /* subtle placeholder */
     .ttw-inp:focus {
-        border-color: #4b6cb7;
-        box-shadow: 0 0 0 3px rgba(75, 108, 183, .18)
+        border-color: #10a37f;
+        box-shadow: 0 0 0 2px rgba(16, 163, 127, .35); /* slightly tighter ring */
     }
 
     .ttw-send {
@@ -97,58 +93,93 @@
         border-radius: 24px;
         font-weight: 600;
         cursor: pointer;
+        background: #10a37f;
         color: #fff;
-        background: linear-gradient(90deg, #4b6cb7, #182848);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, .1)
+        box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
     }
 
-    /* image gallery */
+    .ttw-send:hover {
+        background: #0e8f70;
+    }
+
+    .ttw-send:active {
+        background: #0c7e63;
+    }
+
+    .ttw-send:disabled {
+        background: #a7dacd;
+        cursor: not-allowed;
+    }
+
+    /* ============ GALLERY with optional captions ============ */
     .ttw-b.has-gallery {
         max-width: 100%;
     }
 
     .ttw-gallery {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr)); /* phones */
+        grid-template-columns:repeat(2, minmax(0, 1fr));
         gap: 10px;
     }
 
     @media (min-width: 480px) {
         .ttw-gallery {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns:repeat(3, 1fr);
         }
     }
 
     @media (min-width: 768px) {
         .ttw-gallery {
-            grid-template-columns: repeat(4, minmax(0, 1fr));
+            grid-template-columns:repeat(4, 1fr);
         }
     }
 
-    .ttw-gallery a {
-        display: block;
+    .ttw-gallery .tile {
+        display: flex;
+        flex-direction: column;
         border-radius: 10px;
         overflow: hidden;
-        box-shadow: 0 0 0 0 rgba(0, 0, 0, .08);
+        background: #fff;
         transition: box-shadow .15s;
+        border: 1px solid #efeff1;
+    }
+
+    .ttw-gallery .tile:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+    }
+
+    .ttw-gallery .img-wrap {
+        width: 100%;
+        height: 100px;
+        overflow: hidden;
     }
 
     .ttw-gallery img {
         width: 100%;
-        height: 100px;
+        height: 100%;
         object-fit: cover;
         display: block;
-        transition: transform .18s ease
+        transition: transform .18s ease;
     }
 
-    .ttw-gallery a:hover img {
+    .ttw-gallery .tile:hover .img-wrap img {
         transform: scale(1.035);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
     }
 
-    /* modal chrome */
+    .ttw-gallery .cap {
+        padding: 8px 10px;
+        font-size: 12px;
+        line-height: 1.3;
+        color: #111;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* ============ MODAL CHROME ============ */
     body.tw-modal-open {
-        overflow: hidden
+        overflow: hidden;
     }
 
     .tw-overlay {
@@ -158,11 +189,11 @@
         backdrop-filter: blur(2px);
         z-index: 10000;
         opacity: 0;
-        transition: opacity .38s ease
+        transition: opacity .38s ease;
     }
 
     .tw-overlay.open {
-        opacity: 1
+        opacity: 1;
     }
 
     .tw-panel {
@@ -181,7 +212,7 @@
         transform-origin: top left;
         transition: transform .38s cubic-bezier(.2, .7, .2, 1), opacity .38s ease;
         will-change: transform, opacity;
-        opacity: 0
+        opacity: 0;
     }
 
     .tw-head {
@@ -189,10 +220,11 @@
         top: 0;
         z-index: 2;
         padding: 12px 56px 12px 16px;
-        color: #fff;
+        padding-right: 72px;
         font-weight: 600;
-        background: linear-gradient(90deg, #4b6cb7, #182848);
-        padding-right: 72px
+        background: #ffffff;
+        color: #0c0c0d;
+        border-bottom: 1px solid #e5e7eb;
     }
 
     .tw-close {
@@ -209,32 +241,39 @@
         font-size: 22px;
         display: grid;
         place-items: center;
-        z-index: 9
+        z-index: 9;
     }
 
     .tw-body {
         flex: 1;
         overflow: auto;
         padding: 10px;
-        background: #f7f9fc;
+        background: #ffffff;
         display: flex;
-        flex-direction: column
+        flex-direction: column;
     }
+
 
     .tw-body .ttw-chatbot {
         gap: 10px;
         display: flex;
         flex-direction: column;
         flex: 1;
-        min-height: 0
+        min-height: 0;
     }
 
     .tw-body .ttw-log {
         height: auto;
         flex: 1;
-        min-height: 0
+        min-height: 0;
     }
 
+    /* mobile layout */
+    .ttw-disclaimer {
+        display: none;
+    }
+
+    /* hidden on desktop */
     @media (max-width: 768px) {
         .tw-panel {
             left: 0;
@@ -242,28 +281,52 @@
             width: 100vw;
             height: 100dvh;
             border-radius: 0;
-            box-shadow: none
+            box-shadow: none;
         }
 
         .tw-body {
-            padding: 10px env(safe-area-inset-right) calc(10px + env(safe-area-inset-bottom)) env(safe-area-inset-left)
+            padding: 10px env(safe-area-inset-right) calc(10px + env(safe-area-inset-bottom)) env(safe-area-inset-left);
         }
 
         .tw-head {
             padding-left: 16px;
-            padding-right: 72px
+            padding-right: 72px;
         }
 
         .tw-close {
             top: 6px;
             right: 6px;
-            background: rgba(0, 0, 0, .3)
+            background: rgba(0, 0, 0, .3);
         }
+
+        .ttw-disclaimer {
+            display: block;
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 9999;
+            padding: 8px;
+            background: #f1f3f5;
+            color: #444;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .ttw-row {
+            margin-bottom: 40px;
+        }
+
+        .tw-body {
+            padding-bottom: 64px;
+        }
+
+        /* extra room above disclaimer */
     }
 
-    /* typing indicator (three bouncing dots) */
+    /* ============ Typing indicator ============ */
     .ttw-b.ttw-typing {
-        margin-right: auto; /* assistant side */
+        margin-right: auto;
         color: #3b4a6b;
         background: #eef3ff;
     }
@@ -288,7 +351,7 @@
     }
 
     .ttw-typing .dot:nth-child(3) {
-        animation-delay: .30s;
+        animation-delay: .3s;
     }
 
     @keyframes ttw-bounce {
@@ -301,7 +364,6 @@
             opacity: .95;
         }
     }
-
 </style>
 
 <script>
@@ -350,7 +412,7 @@
             }
         }
 
-        /* Basic bubble (used for user messages and fallback) */
+        /* ---------- bubbles ---------- */
         function addBubble(chatEl, text, who) {
             if (!chatEl) return;
             const w = document.createElement('div');
@@ -364,7 +426,7 @@
             chatEl.scrollTop = chatEl.scrollHeight;
         }
 
-        /* ---- typing indicator bubble ---- */
+        /* typing indicator bubble */
         function showTyping(chatEl) {
             const b = document.createElement('div');
             b.className = 'ttw-b a ttw-typing';
@@ -379,7 +441,7 @@
             };
         }
 
-        /* ---- split a reply into "steps" (blank lines & list markers) ---- */
+        /* split reply into steps */
         function splitSteps(text) {
             const clean = (text || '').replace(/\r/g, '').trim();
             if (!clean) return [];
@@ -387,7 +449,6 @@
             const lines = clean.split('\n');
             let buf = [];
             const isList = s => /^\s*(?:\d+[.)]|[-••])\s+/.test(s);
-
             for (const ln of lines) {
                 if (!ln.trim()) {
                     if (buf.length) {
@@ -407,7 +468,7 @@
             return out.length ? out : [clean];
         }
 
-        /* ---- typewriter effect for a single bubble ---- */
+        /* typewriter for a bubble */
         function typeWriter(targetEl, text, speed = 18) {
             return new Promise(resolve => {
                 let i = 0;
@@ -421,17 +482,17 @@
             });
         }
 
-        /* ---- render Olivia's reply in steps with typing indicator ---- */
+        /* render assistant steps */
         async function renderAssistantReply(chatEl, fullText) {
-            const steps = splitSteps(fullText).slice(0, 8); // safety cap
+            const steps = splitSteps(fullText).slice(0, 8);
             for (let i = 0; i < steps.length; i++) {
-                const remove = showTyping(chatEl);            // show typing...
-                const w = document.createElement('div');      // ...prepare bubble
+                const remove = showTyping(chatEl);
+                const w = document.createElement('div');
                 w.className = 'ttw-b a';
                 chatEl.appendChild(w);
                 chatEl.scrollTop = chatEl.scrollHeight;
                 remove();
-                await typeWriter(w, steps[i]);                // daktilo typing
+                await typeWriter(w, steps[i]);
                 const ts = document.createElement('div');
                 ts.className = 'ttw-ts';
                 ts.textContent = new Date().toLocaleTimeString();
@@ -439,7 +500,7 @@
             }
         }
 
-        /* path -> absolute URL */
+        /* url resolver */
         function resolveUrl(u) {
             if (!u) return null;
             if (/^https?:\/\//i.test(u)) return u;
@@ -448,7 +509,7 @@
             return location.origin + '/' + u.replace(/^\.?\//, '');
         }
 
-        /* render a responsive gallery; accepts strings or {adres,image} */
+        /* ---- responsive gallery; accepts string or {image, adres, title} ---- */
         function addImageGallery(chatEl, items) {
             if (!chatEl || !items?.length) return;
             const wrap = document.createElement('div');
@@ -457,22 +518,30 @@
             grid.className = 'ttw-gallery';
 
             items.slice(0, 12).forEach(it => {
-                const imgSrc = resolveUrl(typeof it === 'string' ? it : (it?.image || it?.adres));
-                const href = resolveUrl(typeof it === 'string' ? it : (it?.adres || it?.image));
+                const obj = (typeof it === 'string') ? {image: it, adres: it} : (it || {});
+                const imgSrc = resolveUrl(obj.image || obj.adres);
+                const href = resolveUrl(obj.adres || obj.image);
                 if (!imgSrc) return;
-
-                const a = document.createElement('a');
-                a.href = href || imgSrc;
-                a.target = '_blank';
-                a.rel = 'noopener noreferrer';
-
+                const tile = document.createElement('a');
+                tile.className = 'tile';
+                tile.href = href || imgSrc;
+                tile.target = '_blank';
+                tile.rel = 'noopener noreferrer';
+                const imgWrap = document.createElement('div');
+                imgWrap.className = 'img-wrap';
                 const img = document.createElement('img');
                 img.src = imgSrc;
-                img.alt = 'görsel';
+                img.alt = (obj.title || 'görsel');
                 img.loading = 'lazy';
-
-                a.appendChild(img);
-                grid.appendChild(a);
+                imgWrap.appendChild(img);
+                tile.appendChild(imgWrap);
+                if (obj.title) {
+                    const cap = document.createElement('div');
+                    cap.className = 'cap';
+                    cap.textContent = obj.title;
+                    tile.appendChild(cap);
+                }
+                grid.appendChild(tile);
             });
 
             wrap.appendChild(grid);
@@ -480,11 +549,11 @@
             ts.className = 'ttw-ts';
             ts.textContent = new Date().toLocaleTimeString();
             wrap.appendChild(ts);
-
             chatEl.appendChild(wrap);
             chatEl.scrollTop = chatEl.scrollHeight;
         }
 
+        /* endpoint resolution */
         function resolveEndpoint(root, opts) {
             const scheme = location.protocol === 'https:' ? 'wss' : 'ws';
             if (opts?.endpoint) {
@@ -530,6 +599,7 @@
             <input class="ttw-inp" type="text" placeholder="Mesajınızı yazın..." aria-label="Mesajınızı yazın">
             <button class="ttw-send" type="button">Gönder</button>
           </form>
+          <div class="ttw-disclaimer">Olivia, TalktoWeb Teknoloji Departmanı tarafından geliştirilen bir yapay zeka robotudur</div>
         </div>
       </div>`;
             document.body.append(overlay, panel);
@@ -674,7 +744,7 @@
                 const txt = (input?.value || '').trim();
                 if (!txt) return;
                 addBubble(chat, txt, 'user');
-                typingHintRemove?.();  // clear previous
+                typingHintRemove?.();
                 typingHintRemove = showTyping(chat);
                 sendRaw(txt);
                 if (input) input.value = '';
@@ -695,7 +765,7 @@
                         await renderAssistantReply(chat, data.reply);
                     }
 
-                    // normalize & show images
+                    // normalize image payloads and keep titles if present
                     let urls = data.urls;
                     if (typeof urls === 'string') {
                         try {
@@ -713,10 +783,15 @@
                         }
                     }
                     if (Array.isArray(urls) && urls.length) {
-                        addImageGallery(chat, urls.map(u => (typeof u === 'string') ? u : ({
-                            adres: u?.adres || u?.image || '',
-                            image: u?.image || u?.adres || ''
-                        })));
+                        addImageGallery(chat, urls.map(u => {
+                            if (typeof u === 'string') return u;
+                            const o = u || {};
+                            return {
+                                adres: o.adres || o.url || o.href || o.image || '',
+                                image: o.image || o.src || o.adres || '',
+                                title: o.title || o.name || o.caption || o.text || ''
+                            };
+                        }));
                     }
                 } catch {
                     await renderAssistantReply(chat, ev.data); // plain text fallback
@@ -745,7 +820,7 @@
         // expose
         window.TTWChatbot = {openModal, mount};
 
-        // optional auto-init
+        // auto-init
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('[data-ttw-chatbot][data-autoinit]').forEach(root => mount(root, {}));
         });

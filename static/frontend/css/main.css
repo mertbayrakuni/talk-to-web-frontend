@@ -992,7 +992,7 @@ a.linkedin.scrolled {
         background-image: url(https://talktoweb.com/wp-content/uploads/2024/04/bg-1.webp);
         background-size: cover;
         background-position: -680px !important;
-        padding: 0 0 20px 20px !important;
+        padding: 20px !important;
     }
 
     .kariyer-header {

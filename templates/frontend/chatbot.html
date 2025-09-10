@@ -12,9 +12,9 @@
         font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
     }
 
-    /* header is hidden per bossman */
+    /* header hidden per bossman */
     .ttw-h {
-        display: none !important;
+        display: none !important
     }
 
     .ttw-log {
@@ -34,22 +34,22 @@
         border-radius: 14px;
         max-width: 80%;
         position: relative;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, .05);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, .05)
     }
 
     /* ===== ChatGPT Light bubbles ===== */
-    .ttw-b.u { /* user */
+    .ttw-b.u {
         margin-left: auto;
         background: #dcfce7;
         color: #0c0c0d;
-        border-bottom-right-radius: 6px;
+        border-bottom-right-radius: 6px
     }
 
-    .ttw-b.a { /* assistant */
+    .ttw-b.a {
         margin-right: auto;
         background: #f7f7f8;
         color: #0c0c0d;
-        border-bottom-left-radius: 6px;
+        border-bottom-left-radius: 6px
     }
 
     .ttw-ts {
@@ -57,34 +57,48 @@
         color: #6b7280;
         opacity: .9;
         margin-top: 6px;
-        text-align: right;
+        text-align: right
     }
 
     .ttw-row {
         display: flex;
         gap: 10px;
-        align-items: center;
+        align-items: center
     }
+
+    @media (max-width: 768px) {
+        .ttw-row {
+            padding: 0 12px; /* adds space on both ends */
+        }
+
+        .ttw-inp {
+            margin-left: 4px; /* slight inner spacing before input */
+        }
+
+        .ttw-send {
+            margin-right: 4px; /* slight inner spacing after button */
+        }
+    }
+
 
     .ttw-inp {
         flex: 1;
         padding: 12px 14px;
-        border: 1px solid #d9d9e3; /* ChatGPT input border */
+        border: 1px solid #d9d9e3;
         border-radius: 22px;
         font-size: 15px;
         outline: none;
-        background: #ffffff;
-        color: #0c0c0d;
+        background: #fff;
+        color: #0c0c0d
     }
 
     .ttw-inp::placeholder {
-        color: #6b7280;
+        color: #6b7280
     }
 
-    /* subtle placeholder */
     .ttw-inp:focus {
         border-color: #10a37f;
-        box-shadow: 0 0 0 2px rgba(16, 163, 127, .35); /* slightly tighter ring */
+        box-shadow: 0 0 0 2px rgba(16, 163, 127, .35)
     }
 
     .ttw-send {
@@ -95,42 +109,42 @@
         cursor: pointer;
         background: #10a37f;
         color: #fff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, .1)
     }
 
     .ttw-send:hover {
-        background: #0e8f70;
+        background: #0e8f70
     }
 
     .ttw-send:active {
-        background: #0c7e63;
+        background: #0c7e63
     }
 
     .ttw-send:disabled {
         background: #a7dacd;
-        cursor: not-allowed;
+        cursor: not-allowed
     }
 
-    /* ============ GALLERY with optional captions ============ */
+    /* ============ GALLERY with captions (max 2 lines) ============ */
     .ttw-b.has-gallery {
-        max-width: 100%;
+        max-width: 100%
     }
 
     .ttw-gallery {
         display: grid;
         grid-template-columns:repeat(2, minmax(0, 1fr));
-        gap: 10px;
+        gap: 10px
     }
 
     @media (min-width: 480px) {
         .ttw-gallery {
-            grid-template-columns:repeat(3, 1fr);
+            grid-template-columns:repeat(3, 1fr)
         }
     }
 
     @media (min-width: 768px) {
         .ttw-gallery {
-            grid-template-columns:repeat(4, 1fr);
+            grid-template-columns:repeat(4, 1fr)
         }
     }
 
@@ -141,17 +155,17 @@
         overflow: hidden;
         background: #fff;
         transition: box-shadow .15s;
-        border: 1px solid #efeff1;
+        border: 1px solid #efeff1
     }
 
     .ttw-gallery .tile:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, .12)
     }
 
     .ttw-gallery .img-wrap {
         width: 100%;
         height: 100px;
-        overflow: hidden;
+        overflow: hidden
     }
 
     .ttw-gallery img {
@@ -159,27 +173,50 @@
         height: 100%;
         object-fit: cover;
         display: block;
-        transition: transform .18s ease;
+        transition: transform .18s ease
     }
 
     .ttw-gallery .tile:hover .img-wrap img {
-        transform: scale(1.035);
+        transform: scale(1.035)
     }
 
+    /* Caption: always max 2 lines with ellipsis, never 3rd line */
     .ttw-gallery .cap {
+        --cap-lh: 1.3; /* keep numbers here in sync with JS fallback below */
         padding: 8px 10px;
         font-size: 12px;
-        line-height: 1.3;
+        line-height: var(--cap-lh);
         color: #111;
+
+        /* Primary (Chromium/Safari): true multi-line ellipsis */
         display: -webkit-box;
-        -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
         overflow: hidden;
+        text-overflow: ellipsis;
+
+        /* Give two-line block its natural space (prevents jitter when 1 line) */
+        min-height: calc(2 * var(--cap-lh) * 1em);
+
+        /* Robust text behavior */
+        white-space: normal !important;
+        overflow-wrap: anywhere;
+        word-break: normal;
+        hyphens: auto;
+    }
+
+    /* Firefox fallback (no -webkit-line-clamp support) */
+    @supports not (-webkit-line-clamp: 2) {
+        .ttw-gallery .cap {
+            display: block;
+            max-height: calc(2 * var(--cap-lh) * 1em);
+            overflow: hidden
+        }
     }
 
     /* ============ MODAL CHROME ============ */
     body.tw-modal-open {
-        overflow: hidden;
+        overflow: hidden
     }
 
     .tw-overlay {
@@ -189,11 +226,11 @@
         backdrop-filter: blur(2px);
         z-index: 10000;
         opacity: 0;
-        transition: opacity .38s ease;
+        transition: opacity .38s ease
     }
 
     .tw-overlay.open {
-        opacity: 1;
+        opacity: 1
     }
 
     .tw-panel {
@@ -212,7 +249,7 @@
         transform-origin: top left;
         transition: transform .38s cubic-bezier(.2, .7, .2, 1), opacity .38s ease;
         will-change: transform, opacity;
-        opacity: 0;
+        opacity: 0
     }
 
     .tw-head {
@@ -222,9 +259,9 @@
         padding: 12px 56px 12px 16px;
         padding-right: 72px;
         font-weight: 600;
-        background: #ffffff;
+        background: #fff;
         color: #0c0c0d;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid #e5e7eb
     }
 
     .tw-close {
@@ -241,39 +278,37 @@
         font-size: 22px;
         display: grid;
         place-items: center;
-        z-index: 9;
+        z-index: 9
     }
 
     .tw-body {
         flex: 1;
         overflow: auto;
         padding: 10px;
-        background: #ffffff;
+        background: #fff;
         display: flex;
-        flex-direction: column;
+        flex-direction: column
     }
-
 
     .tw-body .ttw-chatbot {
         gap: 10px;
         display: flex;
         flex-direction: column;
         flex: 1;
-        min-height: 0;
+        min-height: 0
     }
 
     .tw-body .ttw-log {
         height: auto;
         flex: 1;
-        min-height: 0;
+        min-height: 0
     }
 
-    /* mobile layout */
+    /* mobile only disclaimer & spacing */
     .ttw-disclaimer {
-        display: none;
+        display: none
     }
 
-    /* hidden on desktop */
     @media (max-width: 768px) {
         .tw-panel {
             left: 0;
@@ -281,22 +316,22 @@
             width: 100vw;
             height: 100dvh;
             border-radius: 0;
-            box-shadow: none;
+            box-shadow: none
         }
 
         .tw-body {
-            padding: 10px env(safe-area-inset-right) calc(10px + env(safe-area-inset-bottom)) env(safe-area-inset-left);
+            padding: 10px env(safe-area-inset-right) calc(10px + env(safe-area-inset-bottom)) env(safe-area-inset-left)
         }
 
         .tw-head {
             padding-left: 16px;
-            padding-right: 72px;
+            padding-right: 72px
         }
 
         .tw-close {
             top: 6px;
             right: 6px;
-            background: rgba(0, 0, 0, .3);
+            background: rgba(0, 0, 0, .3)
         }
 
         .ttw-disclaimer {
@@ -310,31 +345,29 @@
             background: #f1f3f5;
             color: #444;
             font-size: 12px;
-            text-align: center;
+            text-align: center
         }
 
         .ttw-row {
-            margin-bottom: 40px;
+            margin-bottom: 40px
         }
 
         .tw-body {
-            padding-bottom: 64px;
+            padding-bottom: 64px
         }
-
-        /* extra room above disclaimer */
     }
 
     /* ============ Typing indicator ============ */
     .ttw-b.ttw-typing {
         margin-right: auto;
         color: #3b4a6b;
-        background: #eef3ff;
+        background: #eef3ff
     }
 
     .ttw-typing .dots {
         display: inline-flex;
         gap: 4px;
-        vertical-align: middle;
+        vertical-align: middle
     }
 
     .ttw-typing .dot {
@@ -343,27 +376,171 @@
         border-radius: 50%;
         background: #3b4a6b;
         opacity: .32;
-        animation: ttw-bounce 1s infinite ease-in-out;
+        animation: ttw-bounce 1s infinite ease-in-out
     }
 
     .ttw-typing .dot:nth-child(2) {
-        animation-delay: .15s;
+        animation-delay: .15s
     }
 
     .ttw-typing .dot:nth-child(3) {
-        animation-delay: .3s;
+        animation-delay: .3s
     }
 
     @keyframes ttw-bounce {
         0%, 80%, 100% {
             transform: translateY(0);
-            opacity: .32;
+            opacity: .32
         }
         40% {
             transform: translateY(-4px);
-            opacity: .95;
+            opacity: .95
         }
     }
+
+    body.tw-modal-open #miniChatCard {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+
+    /* Voice button */
+    .ttw-voice {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border: 0;
+        border-radius: 999px;
+        cursor: pointer;
+        background: #fff;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, .1) inset
+    }
+
+    .ttw-voice svg {
+        display: block
+    }
+
+    .ttw-voice.is-recording {
+        box-shadow: 0 0 0 2px rgba(233, 67, 67, .25) inset;
+        animation: ttw-pulse 1.2s ease-in-out infinite
+    }
+
+    @keyframes ttw-pulse {
+        0% {
+            transform: scale(1)
+        }
+        50% {
+            transform: scale(1.06)
+        }
+        100% {
+            transform: scale(1)
+        }
+    }
+
+    @media (max-width: 768px) {
+        .ttw-row {
+            padding: 0 12px
+        }
+    }
+
+    /* Voice preview bar */
+    .ttw-voicebar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin: 8px 14px 12px;
+        border-radius: 12px;
+        padding: 10px 12px;
+        background: #fafafa;
+        border: 1px solid rgba(0, 0, 0, .08)
+    }
+
+    .ttw-voicebar-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0
+    }
+
+    .ttw-voice-preview {
+        font-size: 14px;
+        color: #444;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 56vw;
+    }
+
+    .ttw-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #e94343;
+        box-shadow: 0 0 0 4px rgba(233, 67, 67, .18)
+    }
+
+    .ttw-voicebar.paused .ttw-dot {
+        background: #bbb;
+        box-shadow: none
+    }
+
+    .ttw-voicebar-right {
+        display: flex;
+        align-items: center;
+        gap: 8px
+    }
+
+    .ttw-voicebar-right button {
+        height: 34px;
+        padding: 0 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(0, 0, 0, .1);
+        cursor: pointer;
+        background: #fff
+    }
+
+    .ttw-voicebar-right .ttw-voice-ok {
+        background: #19a974;
+        color: #fff;
+        border: 0
+    }
+
+    .ttw-voicebar-right .ttw-voice-cancel {
+        background: #fff
+    }
+
+    .tw-tts {
+        position: absolute;
+        top: 8px;
+        right: 52px;
+        z-index: 9;
+        width: 40px;
+        height: 40px;
+        border-radius: 999px;
+        border: 0;
+        cursor: pointer;
+        background: rgba(0, 0, 0, .12);
+        color: #111;
+        font-size: 16px
+    }
+
+    .tw-tts.on {
+        background: #10a37f;
+        color: #fff
+    }
+
+    @media (max-width: 768px) {
+        .tw-tts {
+            top: 6px;
+            right: 52px;
+            background: rgba(0, 0, 0, .2);
+            color: #fff
+        }
+    }
+
 </style>
 
 <script>
@@ -380,37 +557,37 @@
                     DBG.box = el;
                     DBG.body = el.querySelector('.bd');
                     window.addEventListener('keydown', e => {
-                        if (e.key === 'F9') DBG.box.classList.toggle('open');
-                    });
+                        if (e.key === 'F9') DBG.box.classList.toggle('open')
+                    })
                 }
                 const line = '[' + new Date().toLocaleTimeString() + '] ' + a.map(x => {
                     try {
-                        return typeof x === 'string' ? x : JSON.stringify(x);
+                        return typeof x === 'string' ? x : JSON.stringify(x)
                     } catch {
-                        return String(x);
+                        return String(x)
                     }
                 }).join(' ');
                 DBG.lines.push(line);
                 if (DBG.lines.length > 400) DBG.lines.shift();
                 DBG.body.textContent = DBG.lines.join('\n');
                 DBG.body.scrollTop = DBG.body.scrollHeight;
-                console.log('[TTW]', ...a);
+                console.log('[TTW]', ...a)
             } catch {
             }
         };
 
-        function getSid() {
+        const getSid = () => {
             try {
                 let sid = localStorage.getItem('ttw_sid');
                 if (!sid) {
                     sid = (crypto?.randomUUID?.() || Math.random().toString(36).slice(2));
-                    localStorage.setItem('ttw_sid', sid);
+                    localStorage.setItem('ttw_sid', sid)
                 }
-                return sid;
+                return sid
             } catch {
-                return Math.random().toString(36).slice(2);
+                return Math.random().toString(36).slice(2)
             }
-        }
+        };
 
         /* ---------- bubbles ---------- */
         function addBubble(chatEl, text, who) {
@@ -435,7 +612,7 @@
             chatEl.scrollTop = chatEl.scrollHeight;
             return () => {
                 try {
-                    b.remove();
+                    b.remove()
                 } catch {
                 }
             };
@@ -453,15 +630,15 @@
                 if (!ln.trim()) {
                     if (buf.length) {
                         out.push(buf.join(' ').trim());
-                        buf = [];
+                        buf = []
                     }
-                    continue;
+                    continue
                 }
                 if (isList(ln) && buf.length) {
                     out.push(buf.join(' ').trim());
-                    buf = [ln.replace(/^\s*(?:\d+[.)]|[-••])\s+/, '')];
+                    buf = [ln.replace(/^\s*(?:\d+[.)]|[-••])\s+/, '')]
                 } else {
-                    buf.push(ln.replace(/^\s*(?:\d+[.)]|[-••])\s*/, ''));
+                    buf.push(ln.replace(/^\s*(?:\d+[.)]|[-••])\s*/, ''))
                 }
             }
             if (buf.length) out.push(buf.join(' ').trim());
@@ -476,29 +653,12 @@
                     targetEl.textContent += text.charAt(i++);
                     if (i >= text.length) {
                         clearInterval(id);
-                        resolve();
+                        resolve()
                     }
                 }, speed);
-            });
+            })
         }
 
-        /* render assistant steps */
-        async function renderAssistantReply(chatEl, fullText) {
-            const steps = splitSteps(fullText).slice(0, 8);
-            for (let i = 0; i < steps.length; i++) {
-                const remove = showTyping(chatEl);
-                const w = document.createElement('div');
-                w.className = 'ttw-b a';
-                chatEl.appendChild(w);
-                chatEl.scrollTop = chatEl.scrollHeight;
-                remove();
-                await typeWriter(w, steps[i]);
-                const ts = document.createElement('div');
-                ts.className = 'ttw-ts';
-                ts.textContent = new Date().toLocaleTimeString();
-                w.appendChild(ts);
-            }
-        }
 
         /* url resolver */
         function resolveUrl(u) {
@@ -506,7 +666,41 @@
             if (/^https?:\/\//i.test(u)) return u;
             if (u.startsWith('//')) return location.protocol + u;
             if (u.startsWith('/')) return location.origin + u;
-            return location.origin + '/' + u.replace(/^\.?\//, '');
+            return location.origin + '/' + u.replace(/^\.?\//, '')
+        }
+
+        /* ===== HARD CLAMP (post-layout) — guarantees 2 lines, never 3 ===== */
+        function hardClampCaptions(scope) {
+            const doClamp = () => {
+                const caps = (scope || document).querySelectorAll('.ttw-gallery .cap');
+                caps.forEach(el => {
+                    const cs = getComputedStyle(el);
+                    let lh = parseFloat(cs.lineHeight);
+                    if (!isFinite(lh)) {
+                        const fs = parseFloat(cs.fontSize) || 12;
+                        lh = fs * 1.3;
+                    }     // fallback if 'normal'
+                    const maxH = Math.round(lh * 2);                                            // exactly two lines
+                    if (el.scrollHeight > maxH + 1) {                                             // allow tiny rounding
+                        const full = (el.getAttribute('data-full') || el.textContent || '').trim().replace(/\s+/g, ' ');
+                        let lo = 0, hi = full.length, best = '';
+                        while (lo <= hi) {
+                            const mid = (lo + hi) >> 1;
+                            el.textContent = full.slice(0, mid).trim() + '…';
+                            if (el.scrollHeight <= maxH + 1) {
+                                best = el.textContent;
+                                lo = mid + 1;
+                            } else {
+                                hi = mid - 1;
+                            }
+                        }
+                        el.textContent = best || (full.slice(0, 2) + '…');
+                        if (!el.title) el.title = full;
+                    }
+                });
+            };
+            // run after layout settles
+            requestAnimationFrame(() => requestAnimationFrame(doClamp));
         }
 
         /* ---- responsive gallery; accepts string or {image, adres, title} ---- */
@@ -535,12 +729,15 @@
                 img.loading = 'lazy';
                 imgWrap.appendChild(img);
                 tile.appendChild(imgWrap);
-                if (obj.title) {
-                    const cap = document.createElement('div');
-                    cap.className = 'cap';
-                    cap.textContent = obj.title;
-                    tile.appendChild(cap);
-                }
+
+                const cap = document.createElement('div');
+                cap.className = 'cap';
+                const title = (obj.title || '').trim();
+                cap.textContent = title;
+                cap.title = title;
+                cap.setAttribute('data-full', title);
+                tile.appendChild(cap);
+
                 grid.appendChild(tile);
             });
 
@@ -551,6 +748,8 @@
             wrap.appendChild(ts);
             chatEl.appendChild(wrap);
             chatEl.scrollTop = chatEl.scrollHeight;
+
+            hardClampCaptions(wrap);
         }
 
         /* endpoint resolution */
@@ -558,30 +757,30 @@
             const scheme = location.protocol === 'https:' ? 'wss' : 'ws';
             if (opts?.endpoint) {
                 dlog('endpoint via opts', opts.endpoint);
-                return opts.endpoint;
+                return opts.endpoint
             }
             if (root?.dataset.endpoint) {
                 dlog('endpoint via data-endpoint', root.dataset.endpoint);
-                return root.dataset.endpoint;
+                return root.dataset.endpoint
             }
             if (window.TTW_WS) {
                 dlog('endpoint via window.TTW_WS', window.TTW_WS);
-                return window.TTW_WS;
+                return window.TTW_WS
             }
             if (location.port === '9000') {
                 const ep = `${scheme}://${location.hostname}:8000/ws`;
                 dlog('endpoint 9000→8000', ep);
-                return ep;
+                return ep
             }
             const ep = `${scheme}://${location.host}/ws`;
             dlog('endpoint default', ep);
-            return ep;
+            return ep
         }
 
-        function pageRect(el) {
+        const pageRect = el => {
             const r = el.getBoundingClientRect();
-            return {left: r.left + scrollX, top: r.top + scrollY, width: r.width, height: r.height};
-        }
+            return {left: r.left + scrollX, top: r.top + scrollY, width: r.width, height: r.height}
+        };
 
         /* ---------------- Modal with grow-from-origin ---------------- */
         function openModal(opts) {
@@ -590,15 +789,36 @@
             const panel = document.createElement('div');
             panel.className = 'tw-panel';
             panel.innerHTML = `
-      <div class="tw-head">Olivia · Canlı Sohbet<button class="tw-close" type="button">×</button></div>
-      <div class="tw-body">
+        <div class="tw-head">
+            Olivia · Canlı Sohbet
+            <button class="tw-tts" type="button" title="Sesi aç/kapat" aria-pressed="false">🔈</button>
+            <button class="tw-close" type="button">×</button>
+        </div>
+        <div class="tw-body">
         <div class="ttw-chatbot" data-ttw-chatbot data-autoinit="1">
           <header class="ttw-h"><h2>AI Chatbot</h2><div class="s">Size yardımcı olmak için buradayım</div></header>
           <div class="ttw-log" role="log" aria-live="polite"></div>
-          <form class="ttw-row" autocomplete="off">
-            <input class="ttw-inp" type="text" placeholder="Mesajınızı yazın..." aria-label="Mesajınızı yazın">
-            <button class="ttw-send" type="button">Gönder</button>
-          </form>
+            <form class="ttw-row" autocomplete="off">
+                <input class="ttw-inp" type="text" placeholder="Mesajınızı yazın..." aria-label="Mesajınızı yazın">
+                <!-- NEW: Voice button (left of Gönder) -->
+                <button class="ttw-voice" type="button" id="ttwVoice" aria-pressed="false" aria-label="Sesle yaz">
+                    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 14 0h-2zM11 19h2v3h-2v-3z"/>
+                    </svg>
+                </button>
+                <button class="ttw-send" type="button">Gönder</button>
+            </form>
+            <div class="ttw-voicebar" hidden>
+                <div class="ttw-voicebar-left">
+                    <div class="ttw-dot"></div>
+                    <div class="ttw-voice-preview" title="Geçici deşifre"></div>
+                </div>
+                <div class="ttw-voicebar-right">
+                    <button type="button" class="ttw-voice-toggle" aria-pressed="true">Duraklat</button>
+                    <button type="button" class="ttw-voice-ok">OK</button>
+                    <button type="button" class="ttw-voice-cancel">İptal</button>
+                </div>
+            </div>
           <div class="ttw-disclaimer">Olivia, TalktoWeb Teknoloji Departmanı tarafından geliştirilen bir yapay zeka robotudur</div>
         </div>
       </div>`;
@@ -622,8 +842,8 @@
                 requestAnimationFrame(() => {
                     overlay.classList.add('open');
                     panel.style.transform = 'none';
-                    panel.style.opacity = '1';
-                });
+                    panel.style.opacity = '1'
+                })
             });
 
             const controller = mount(panel.querySelector('[data-ttw-chatbot]'), opts || {});
@@ -634,34 +854,39 @@
                     overlay.classList.remove('open');
                     const done = () => {
                         panel.removeEventListener('transitionend', done);
-                        cleanup();
+                        cleanup()
                     };
-                    panel.addEventListener('transitionend', done);
+                    panel.addEventListener('transitionend', done)
                 } else cleanup();
             }
 
             function cleanup() {
                 try {
-                    controller?.destroy?.();
+                    controller?.destroy?.()
                 } catch {
                 }
                 try {
-                    overlay.remove();
+                    overlay.remove()
                 } catch {
                 }
                 try {
-                    panel.remove();
+                    panel.remove()
                 } catch {
                 }
-                document.body.classList.remove('tw-modal-open');
+                document.body.classList.remove('tw-modal-open')
+
+                try {
+                    ttsQ.clear();
+                } catch {
+                }  // ⬅️ ensure nothing keeps talking
             }
 
             panel.querySelector('.tw-close').onclick = e => {
                 e.preventDefault();
-                close();
+                close()
             };
             overlay.onclick = e => {
-                if (e.target === overlay) close();
+                if (e.target === overlay) close()
             };
         }
 
@@ -671,11 +896,395 @@
                 destroy() {
                 }
             };
+
+            // --- DOM refs (existing) ---
             const chat = root.querySelector('.ttw-log');
             const input = root.querySelector('.ttw-inp');
             const sendB = root.querySelector('.ttw-send');
             const form = root.querySelector('form');
 
+            // --- Voice UI refs (must exist in your template) ---
+            const voiceB = root.querySelector('#ttwVoice');
+            const bar = root.querySelector('.ttw-voicebar');
+            const preview = root.querySelector('.ttw-voice-preview');
+            const togB = root.querySelector('.ttw-voice-toggle');
+            const okB = root.querySelector('.ttw-voice-ok');
+            const cancelB = root.querySelector('.ttw-voice-cancel');
+
+            // --- Web Speech API state (voice input) ---
+            const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+            let rec = null;
+            let active = false;     // voice mode bar shown?
+            let listening = false;  // currently recording?
+            let starting = false;   // guard for start()
+            let finalBuf = '';      // accumulated final text
+            let interimBuf = '';    // live interim text
+
+            // --- TTS (Polly-first) + optional browser fallback ---
+            const panelEl = root.closest('.tw-panel');
+            const ttsBtn = panelEl?.querySelector('.tw-tts');
+
+            const tts = {
+                enabled: false,
+                voice: null,           // browser fallback voice (if used)
+                rate: 1.0,
+                pitch: 1.1,
+                volume: 1.0,
+                chosenName: localStorage.getItem('ttw_tts_voice') || null,
+                audio: null,           // HTMLAudioElement for server MP3
+                lastUrl: null          // blob: url for revocation
+            };
+
+            function ttsSupported() {
+                return 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+            }
+
+            function listVoicesSafe() {
+                try {
+                    return speechSynthesis.getVoices() || [];
+                } catch {
+                    return [];
+                }
+            }
+
+            // prefer Turkish female-ish names; otherwise good EN female as fallback
+            function rankVoice(v) {
+                let score = 0;
+                const name = (v.name || '').toLowerCase();
+                const lang = (v.lang || '').toLowerCase();
+                if (lang.startsWith('tr')) score += 5;
+                if (lang.includes('tr-tr')) score += 2;
+                if (/seda|filiz|yelda|female|kadin/.test(name)) score += 6;
+                if (/google|microsoft|online|natural/.test(name)) score += 2;
+                if (!lang.startsWith('tr') && /samantha|serena|victoria|aria|jenny|zira|emma|amy|joanna/.test(name)) score += 1;
+                return score;
+            }
+
+            function pickVoice(preferredName = null) {
+                const vs = listVoicesSafe();
+                if (!vs.length) return null;
+                if (preferredName) {
+                    const found = vs.find(v => v.name === preferredName);
+                    if (found) return found;
+                }
+                const ranked = [...vs].sort((a, b) => rankVoice(b) - rankVoice(a));
+                const trBest = ranked.find(v => (v.lang || '').toLowerCase().startsWith('tr'));
+                return trBest || ranked[0] || null;
+            }
+
+            function initVoicesOnce() {
+                if (!ttsSupported()) return;
+                tts.voice = pickVoice(tts.chosenName);
+                try {
+                    speechSynthesis.onvoiceschanged = () => {
+                        const prev = tts.voice && tts.voice.name;
+                        tts.voice = pickVoice(tts.chosenName || prev);
+                        updateTtsBtn();
+                    };
+                } catch {
+                }
+            }
+
+            function cleanForTTS(s) {
+                return (s || '')
+                    .replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1')
+                    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+                    .replace(/https?:\/\/\S+|www\.\S+|\S+@\S+/g, ' ')
+                    .replace(/\bM\.?S\.?\b/gi, ' ')
+                    .replace(/(>=|<=|=>|->|<-|==|!=|≈|±|↔|⇒|⇔|→|←|≥|≤)/g, ' ')
+                    .replace(/[=+\-/*<>|\\^~`_%$€£¥©®™°\[\]{}()@#:;]/g, ' ')
+                    .replace(/[`*_#>{}<~^]+/g, ' ')
+                    .replace(/[!?]{2,}/g, '!')
+                    .replace(/\.{3,}/g, '.')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            }
+
+            function ttsStop() {
+                try {
+                    speechSynthesis.cancel?.();
+                } catch {
+                }
+                try {
+                    if (tts.audio) {
+                        tts.audio.pause();
+                        tts.audio.src = '';
+                        tts.audio = null;
+                    }
+                    if (tts.lastUrl) {
+                        URL.revokeObjectURL(tts.lastUrl);
+                        tts.lastUrl = null;
+                    }
+                } catch {
+                }
+            }
+
+            async function ttsSpeak(text) {
+                if (!tts.enabled) return;
+                const raw = (text || '');
+                const clean = cleanForTTS(raw);
+                if (!clean) return;
+
+                // ---- FRONTEND LOGS: before request
+                dlog('TTS ▶ REQUEST', {
+                    provider: 'polly',
+                    voice: 'Burcu',
+                    len_raw: raw.length,
+                    len_clean: clean.length,
+                    raw_preview: raw.slice(0, 160),
+                    clean_preview: clean.slice(0, 160)
+                });
+
+                // 1) Server TTS (Polly)
+                try {
+                    const startedAt = Date.now();
+                    const res = await fetch(ttsEndpoint, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({text: clean, provider: 'polly', voice: 'Burcu'})
+                    });
+
+                    const hdr = (name) => res.headers.get(name) || '';
+                    const meta = {
+                        ok: res.ok,
+                        status: res.status,
+                        x_provider: hdr('X-TTS-Provider'),
+                        x_voice: hdr('X-TTS-Voice'),
+                        x_engine: hdr('X-TTS-Engine'),
+                        x_path: hdr('X-TTS-Path'),
+                        x_chars: hdr('X-TTS-Chars'),
+                        x_cache: hdr('X-TTS-Cache') // present only on cache hits
+                    };
+
+                    if (!res.ok) {
+                        const errText = await res.text();
+                        dlog('TTS ◀ ERROR', {...meta, errText: errText.slice(0, 200)});
+                        throw new Error(errText);
+                    }
+
+                    const blob = await res.blob();
+                    const url = URL.createObjectURL(blob);
+                    const dur = Date.now() - startedAt;
+
+                    dlog('TTS ◀ OK', {...meta, blob_bytes: blob.size, ms: dur});
+
+                    ttsStop(); // stop any previous
+                    tts.audio = new Audio(url);
+                    tts.lastUrl = url;
+
+                    // ---- FRONTEND LOGS: audio playback lifecycle
+                    tts.audio.onplay = () => dlog('TTS ♪ PLAY');
+                    tts.audio.onended = () => {
+                        dlog('TTS ♪ ENDED');
+                        try {
+                            URL.revokeObjectURL(url);
+                        } catch {
+                        }
+                        if (tts.lastUrl === url) tts.lastUrl = null;
+                    };
+                    tts.audio.onerror = (e) => dlog('TTS ♪ AUDIO ERROR', e?.message || e);
+                    tts.audio.onpause = () => dlog('TTS ♪ PAUSE');
+
+                    await tts.audio.play().catch(e => dlog('TTS ♪ play() failed', e?.message || e));
+                    return; // success
+                } catch (e) {
+                    console.warn('Server TTS (Polly) failed; falling back to browser TTS', e);
+                }
+
+                // 2) Fallback: browser SpeechSynthesis (still logs)
+                try {
+                    if (!ttsSupported()) return;
+                    speechSynthesis.cancel?.();
+                    const u = new SpeechSynthesisUtterance(clean);
+                    tts.voice = tts.voice || pickVoice(tts.chosenName);
+                    if (tts.voice) {
+                        u.voice = tts.voice;
+                        u.lang = tts.voice.lang;
+                    } else {
+                        u.lang = 'tr-TR';
+                    }
+                    u.rate = tts.rate;
+                    u.pitch = tts.pitch;
+                    u.volume = tts.volume;
+
+                    u.onstart = () => dlog('TTS ♫ BROWSER start', {voice: u.voice?.name, lang: u.lang});
+                    u.onend = () => dlog('TTS ♫ BROWSER end');
+                    u.onerror = (e) => dlog('TTS ♫ BROWSER error', e?.error || e);
+
+                    speechSynthesis.speak(u);
+                } catch (err) {
+                    console.warn('Browser TTS failed', err);
+                }
+            }
+
+            function updateTtsBtn() {
+                if (!ttsBtn) return;
+                ttsBtn.classList.toggle('on', tts.enabled);
+                ttsBtn.setAttribute('aria-pressed', String(tts.enabled));
+                ttsBtn.textContent = tts.enabled ? '🔊' : '🔈';
+                if (tts.voice) ttsBtn.title = `Sesi ${tts.enabled ? 'kapat' : 'aç'} · ${tts.voice.name}`;
+            }
+
+            // Toggle ON/OFF (no longer requires browser TTS support — server TTS works anywhere)
+            ttsBtn?.addEventListener('click', (ev) => {
+                if (ev.altKey) return; // alt-click handled below
+                tts.enabled = !tts.enabled;
+                if (tts.enabled && ttsSupported()) initVoicesOnce();
+                if (!tts.enabled) ttsStop();
+                updateTtsBtn();
+            });
+
+            // Alt+Click to cycle Turkish voices for the *browser fallback* only
+            ttsBtn?.addEventListener('click', (ev) => {
+                if (!ev.altKey) return;
+                ev.preventDefault();
+                if (!ttsSupported()) return;
+                const vs = listVoicesSafe();
+                if (!vs.length) return;
+                const pool = vs.filter(v => (v.lang || '').toLowerCase().startsWith('tr'));
+                const list = pool.length ? pool : vs;
+                if (!tts.voice) tts.voice = pickVoice(tts.chosenName);
+                const idx = Math.max(0, list.findIndex(v => tts.voice && v.name === tts.voice.name));
+                const next = list[(idx + 1) % list.length];
+                if (next) {
+                    tts.voice = next;
+                    tts.chosenName = next.name;
+                    localStorage.setItem('ttw_tts_voice', next.name);
+                    updateTtsBtn();
+                    if (tts.enabled) ttsSpeak('Ses seçildi.');
+                }
+            });
+
+            updateTtsBtn();
+            if (ttsSupported()) initVoicesOnce();
+
+            // ---------- Voice input helpers ----------
+            function srSupported() {
+                return !!SR;
+            }
+
+            function showBar(on) {
+                if (!bar) return;
+                bar.hidden = !on;
+                active = on;
+                if (!on) {
+                    finalBuf = '';
+                    interimBuf = '';
+                    if (preview) preview.textContent = '';
+                }
+            }
+
+            function setListening(on) {
+                listening = on;
+                voiceB?.classList.toggle('is-recording', on);
+                voiceB?.setAttribute('aria-pressed', on ? 'true' : 'false');
+                bar?.classList.toggle('paused', !on);
+                if (togB) togB.textContent = on ? 'Duraklat' : 'Devam';
+            }
+
+            function updatePreview() {
+                if (!preview) return;
+                const txt = (finalBuf + ' ' + interimBuf).replace(/\s+/g, ' ').trim();
+                preview.textContent = txt || 'Dinleniyor...';
+            }
+
+            function srStop() {
+                try {
+                    rec && rec.stop();
+                } catch {
+                }
+                setListening(false);
+            }
+
+            function srStart() {
+                if (starting || listening) return;
+                if (!srSupported()) {
+                    console.warn('Tarayıcınızda sesle yazma desteklenmiyor.');
+                    if (voiceB) voiceB.disabled = true;
+                    return;
+                }
+                starting = true;
+                if (!active) showBar(true);
+                rec = new SR();
+                rec.lang = 'tr-TR';
+                rec.interimResults = true;
+                rec.continuous = false;
+
+                rec.onstart = () => {
+                    starting = false;
+                    setListening(true);
+                };
+                rec.onresult = (e) => {
+                    interimBuf = '';
+                    for (let i = e.resultIndex; i < e.results.length; i++) {
+                        const chunk = e.results[i][0].transcript;
+                        if (e.results[i].isFinal) finalBuf += chunk + ' ';
+                        else interimBuf += chunk;
+                    }
+                    updatePreview();
+                };
+                rec.onerror = () => {
+                    setListening(false);
+                };
+                rec.onend = () => {
+                    setListening(false);
+                    updatePreview();
+                };
+
+                try {
+                    rec.start();
+                } catch (err) {
+                    starting = false;
+                    console.warn('SR start failed:', err);
+                }
+            }
+
+            // Mic button: first click opens bar + starts; subsequent clicks toggle pause/resume
+            voiceB?.addEventListener('click', () => {
+                if (!srSupported()) {
+                    console.warn('Tarayıcınızda sesle yazma desteklenmiyor.');
+                    if (voiceB) voiceB.disabled = true;
+                    return;
+                }
+                if (!active) {
+                    showBar(true);
+                    srStart();
+                    return;
+                }
+                listening ? srStop() : srStart();
+            });
+
+            // Voice bar controls
+            togB?.addEventListener('click', () => {
+                listening ? srStop() : srStart();
+            });
+            okB?.addEventListener('click', () => {
+                srStop();
+                const txt = (finalBuf + ' ' + interimBuf).replace(/\s+/g, ' ').trim();
+                if (txt) {
+                    input.value = (input.value ? (input.value.trim() + ' ') : '') + txt;
+                    input.focus();
+                }
+                showBar(false);
+            });
+            cancelB?.addEventListener('click', () => {
+                srStop();
+                showBar(false);
+            });
+            input?.addEventListener('keydown', () => {
+                if (listening) srStop();
+            });
+
+            // Stop & hide voice mode when modal closes
+            const mo = new MutationObserver(() => {
+                if (!document.body.classList.contains('tw-modal-open')) {
+                    srStop();
+                    showBar(false);
+                }
+            });
+            mo.observe(document.body, {attributes: true, attributeFilter: ['class']});
+
+            // ---------- Sending / WebSocket ----------
             form?.addEventListener('submit', e => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -693,6 +1302,142 @@
             });
 
             const base = resolveEndpoint(root, opts);
+            const httpBase = base.replace(/^wss:/, 'https:').replace(/^ws:/, 'http:').replace(/\/ws.*/, '');
+            const ttsEndpoint = httpBase + '/tts';
+            // ---- Simple audio queue so we can TTS while typing ----
+            const ttsQ = {
+                playing: false,
+                q: [],
+                async enqueue(text) {
+                    if (!tts.enabled) return;
+                    const raw = (text || '');
+                    const clean = cleanForTTS(raw);
+                    if (!clean) return;
+
+                    // NEW: log the outgoing request
+                    dlog('TTSQ ▶ REQUEST', {
+                        len_raw: raw.length,
+                        len_clean: clean.length,
+                        preview: clean.slice(0, 160)
+                    });
+
+                    try {
+                        const startedAt = Date.now();
+                        const res = await fetch(ttsEndpoint, {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({text: clean, provider: 'polly', voice: 'Burcu'})
+                        });
+                        if (!res.ok) {
+                            const err = await res.text();
+                            dlog('TTSQ ◀ ERROR', {status: res.status, err: err.slice(0, 180)});
+                            return;
+                        }
+                        const blob = await res.blob();
+                        const url = URL.createObjectURL(blob);
+
+                        // NEW: log OK + timing
+                        dlog('TTSQ ◀ OK', {status: res.status, bytes: blob.size, ms: Date.now() - startedAt});
+
+                        this.q.push(url);
+                        this.playNext();
+                    } catch (e) {
+                        dlog('TTSQ ◀ EXC', e?.message || e);
+                    }
+                },
+
+                playNext() {
+                    if (this.playing || !this.q.length) return;
+                    const url = this.q.shift();
+
+                    try {
+                        if (tts.audio) tts.audio.pause();
+                    } catch {
+                    }
+                    if (tts.lastUrl) {
+                        try {
+                            URL.revokeObjectURL(tts.lastUrl);
+                        } catch {
+                        }
+                    }
+
+                    tts.audio = new Audio(url);
+                    tts.lastUrl = url;
+                    this.playing = true;
+
+                    // NEW: add lifecycle logs to the queued audio element
+                    tts.audio.onplay = () => dlog('TTS ♪ PLAY');
+                    tts.audio.onpause = () => dlog('TTS ♪ PAUSE');
+                    tts.audio.onerror = (e) => dlog('TTS ♪ AUDIO ERROR', e?.message || e);
+                    tts.audio.onended = () => {
+                        dlog('TTS ♪ ENDED');
+                        try {
+                            URL.revokeObjectURL(url);
+                        } catch {
+                        }
+                        if (tts.lastUrl === url) tts.lastUrl = null;
+                        this.playing = false;
+                        this.playNext();
+                    };
+
+                    tts.audio.play().catch(e => {
+                        dlog('TTS ♪ play() failed', e?.message || e);
+                        this.playing = false;
+                        this.playNext();
+                    });
+                },
+
+                clear() {
+                    this.q.length = 0;
+                    this.playing = false;
+                    try {
+                        if (tts.audio) {
+                            tts.audio.pause();
+                            tts.audio.src = '';
+                            tts.audio = null;
+                        }
+                    } catch {
+                    }
+                    if (tts.lastUrl) {
+                        try {
+                            URL.revokeObjectURL(tts.lastUrl);
+                        } catch {
+                        }
+                        tts.lastUrl = null;
+                    }
+                }
+            };
+            // put this inside mount(), after the ttsQ declaration
+            const renderAssistantReply = async (chatEl, fullText) => {
+                const steps = splitSteps(fullText).slice(0, 8);
+
+                for (let i = 0; i < steps.length; i++) {
+                    const remove = showTyping(chatEl);
+
+                    // create bubble now
+                    const w = document.createElement('div');
+                    w.className = 'ttw-b a';
+                    chatEl.appendChild(w);
+                    chatEl.scrollTop = chatEl.scrollHeight;
+
+                    remove();
+
+                    dlog('ASSIST step', `${i + 1}/${steps.length}`, `chars=${steps[i].length}`);
+
+                    // start TTS for this step right away (plays while typewriter runs)
+                    if (tts.enabled) ttsQ.enqueue(steps[i]);
+
+                    // typewriter effect
+                    await typeWriter(w, steps[i]);
+
+                    // timestamp
+                    const ts = document.createElement('div');
+                    ts.className = 'ttw-ts';
+                    ts.textContent = new Date().toLocaleTimeString();
+                    w.appendChild(ts);
+                }
+            };
+
             const url = base + (base.includes('?') ? '&' : '?') + 'client_id=' + encodeURIComponent(getSid());
             let ws = null, open = false, queue = [];
             let typingHintRemove = null;
@@ -743,12 +1488,14 @@
             function send() {
                 const txt = (input?.value || '').trim();
                 if (!txt) return;
+                ttsQ.clear();                 // ⬅️ stop any playing audio when user sends
                 addBubble(chat, txt, 'user');
                 typingHintRemove?.();
                 typingHintRemove = showTyping(chat);
                 sendRaw(txt);
                 if (input) input.value = '';
             }
+
 
             async function onMsg(ev) {
                 dlog('WS ←', ev.data);
@@ -765,7 +1512,7 @@
                         await renderAssistantReply(chat, data.reply);
                     }
 
-                    // normalize image payloads and keep titles if present
+                    // normalize potential urls list into gallery
                     let urls = data.urls;
                     if (typeof urls === 'string') {
                         try {
@@ -794,7 +1541,7 @@
                         }));
                     }
                 } catch {
-                    await renderAssistantReply(chat, ev.data); // plain text fallback
+                    await renderAssistantReply(chat, ev.data);
                 }
             }
 
@@ -810,6 +1557,18 @@
             return {
                 destroy() {
                     try {
+                        srStop();
+                    } catch {
+                    }
+                    try {
+                        mo.disconnect();
+                    } catch {
+                    }
+                    try {
+                        ttsStop();
+                    } catch {
+                    }
+                    try {
                         ws?.close();
                     } catch {
                     }
@@ -822,9 +1581,8 @@
 
         // auto-init
         document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('[data-ttw-chatbot][data-autoinit]').forEach(root => mount(root, {}));
+            document.querySelectorAll('[data-ttw-chatbot][data-autoinit]').forEach(root => mount(root, {}))
         });
-
         window.addEventListener('error', e => dlog('window error', e.message || e));
         window.addEventListener('unhandledrejection', e => dlog('promise rejection', e.reason || e));
     })();

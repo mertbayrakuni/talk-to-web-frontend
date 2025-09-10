@@ -46,16 +46,17 @@
         </div>
     </div>
 
-    <div class="container-fluid bg-header biz-sizi-arayalim-section">
-        <div class="col-lg-10 d-flex justify-content-center">
-            <div class="col-lg-4 col-md-6 d-flex justify-content-center d-sm-flex">
-                <!-- CLEANED: removed fade classes; simple static card -->
-                <div id="miniChatCard" class="card p-3 shadow">
-                    <h4 class="info-title mb-2">Kendinden Bahset</h4>
+    <div class="container-fluid bg-header biz-sizi-arayalim-section px-0">
+        <div class="row g-0 justify-content-center align-items-start">
+
+            <!-- Chat card column -->
+            <div class="col-12 col-md-6 col-lg-4 d-flex justify-content-center">
+                <div id="miniChatCard" class="card p-3 shadow mx-auto" style="max-width: 380px;">
+                    <h4 class="info-title mb-2 text-center">Kendinden Bahset</h4>
 
                     <form id="miniChatForm" class="mini-chat-form" autocomplete="off">
-                        <textarea id="minichatInput" name="q" class="form-control form-control-lg"
-                                  placeholder="Sana uygun eğitimi bulalım" rows="3" required></textarea>
+          <textarea id="minichatInput" name="q" class="form-control form-control-lg"
+                    placeholder="Sana uygun eğitimi bulalım" rows="3" required></textarea>
                         <button id="startChatBtn" class="btn btn-primary w-100 mt-3" type="button">
                             Olivia ile Sohbet Başlat
                         </button>
@@ -65,13 +66,16 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 d-flex justify-content-center d-none d-sm-block"></div>
+            <!-- (optional) spacer on ≥md to balance layout -->
+            <div class="d-none d-md-block col-md-1"></div>
 
-            <div class="col-lg-3 d-flex justify-content-center align-items-end kariyer-header-container">
+            <!-- Right header column -->
+            <div class="col-12 col-md-5 col-lg-3 d-flex justify-content-center align-items-end kariyer-header-container">
                 <div class="text-white text-center">
                     <h1 class="kariyer-header">Kariyerinizi<br>Tasarlayın</h1>
                 </div>
             </div>
+
         </div>
     </div>
 

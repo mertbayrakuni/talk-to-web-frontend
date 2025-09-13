@@ -282,8 +282,8 @@
     </style>
     <script>
         // Note: You must update this URL whenever your ngrok tunnel address changes.
-        window.TTW_WS = "wss://14df8dbcb4e4.ngrok-free.app/ws";
-        /*window.TTW_WS = "ws://127.0.0.1:8000/ws";*/
+        //window.TTW_WS = "wss://14df8dbcb4e4.ngrok-free.app/ws";
+        window.TTW_WS = "ws://127.0.0.1:8000/ws";
     </script>
 </head>
 <body>
@@ -978,6 +978,7 @@
 </script>
 {% load static %}
 <script defer src="{% static 'frontend/js/hero-variant.v5.js' %}?v=5"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 {% block js %}{% endblock js %}
 </body>
 </html>

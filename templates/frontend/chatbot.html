@@ -589,12 +589,20 @@
             }
         };
 
+        function normalizeMd(s) {
+            return (s || '')
+                .replace(/\r\n/g, '\n')
+                .replace(/\r/g, '\n')
+                .replace(/\\n/g, '\n');
+        }
+
         /* ---------- bubbles ---------- */
         function addBubble(chatEl, text, who) {
             if (!chatEl) return;
             const w = document.createElement('div');
             w.className = 'ttw-b ' + (who === 'user' ? 'u' : 'a');
-            w.textContent = text;
+            // ✅ normalize before parsing
+            w.innerHTML = marked.parse(normalizeMd(text || ""));
             const ts = document.createElement('div');
             ts.className = 'ttw-ts';
             ts.textContent = new Date().toLocaleTimeString();
@@ -620,7 +628,7 @@
 
         /* split reply into steps */
         function splitSteps(text) {
-            const clean = (text || '').replace(/\r/g, '').trim();
+            const clean = normalizeMd(text || '').trim();  // ✅ normalize first
             if (!clean) return [];
             const out = [];
             const lines = clean.split('\n');
@@ -630,15 +638,15 @@
                 if (!ln.trim()) {
                     if (buf.length) {
                         out.push(buf.join(' ').trim());
-                        buf = []
+                        buf = [];
                     }
-                    continue
+                    continue;
                 }
                 if (isList(ln) && buf.length) {
                     out.push(buf.join(' ').trim());
-                    buf = [ln.replace(/^\s*(?:\d+[.)]|[-••])\s+/, '')]
+                    buf = [ln.replace(/^\s*(?:\d+[.)]|[-••])\s+/, '')];
                 } else {
-                    buf.push(ln.replace(/^\s*(?:\d+[.)]|[-••])\s*/, ''))
+                    buf.push(ln.replace(/^\s*(?:\d+[.)]|[-••])\s*/, ''));
                 }
             }
             if (buf.length) out.push(buf.join(' ').trim());
@@ -646,19 +654,23 @@
         }
 
         /* typewriter for a bubble */
-        function typeWriter(targetEl, text, speed = 18) {
+        function typeWriter(targetEl, text, speed = 16) {
             return new Promise(resolve => {
                 let i = 0;
+                const full = normalizeMd(text || "");   // ✅ normalize first
+                const len = full.length;
+
                 const id = setInterval(() => {
-                    targetEl.textContent += text.charAt(i++);
-                    if (i >= text.length) {
+                    i++;
+                    const partial = full.slice(0, i);
+                    targetEl.innerHTML = marked.parse(partial); // render markdown
+                    if (i >= len) {
                         clearInterval(id);
-                        resolve()
+                        resolve();
                     }
                 }, speed);
-            })
+            });
         }
-
 
         /* url resolver */
         function resolveUrl(u) {

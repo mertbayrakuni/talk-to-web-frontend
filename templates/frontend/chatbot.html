@@ -628,29 +628,24 @@
 
         /* split reply into steps */
         function splitSteps(text) {
-            const clean = normalizeMd(text || '').trim();  // ✅ normalize first
-            if (!clean) return [];
-            const out = [];
-            const lines = clean.split('\n');
-            let buf = [];
-            const isList = s => /^\s*(?:\d+[.)]|[-••])\s+/.test(s);
-            for (const ln of lines) {
-                if (!ln.trim()) {
-                    if (buf.length) {
-                        out.push(buf.join(' ').trim());
-                        buf = [];
-                    }
-                    continue;
-                }
-                if (isList(ln) && buf.length) {
-                    out.push(buf.join(' ').trim());
-                    buf = [ln.replace(/^\s*(?:\d+[.)]|[-••])\s+/, '')];
-                } else {
-                    buf.push(ln.replace(/^\s*(?:\d+[.)]|[-••])\s*/, ''));
-                }
-            }
-            if (buf.length) out.push(buf.join(' ').trim());
-            return out.length ? out : [clean];
+            const raw = text || "";
+            const norm = normalizeMd(raw)
+                .replace(/\n{3,}/g, "\n\n") // collapse 3+ NL to exactly two
+                .trim();
+
+            dlog("MD ▶ IN (raw 160):", raw.slice(0, 160).replace(/\n/g, "⏎"));
+            dlog("MD ▶ NORM (160):", norm.slice(0, 160).replace(/\n/g, "⏎"));
+
+            if (!norm) return [];
+
+            // Split into logical blocks by blank line. This preserves list syntax and
+            // paragraph boundaries for the markdown renderer.
+            const blocks = norm.split(/\n\s*\n/);
+
+            dlog("MD ▶ BLOCKS:", blocks.map(b => (b.slice(0, 80) + "…").replace(/\n/g, "⏎")));
+
+            // Optional: cap how many blocks we animate in one reply
+            return blocks.slice(0, 12);
         }
 
         /* typewriter for a bubble */

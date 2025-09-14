@@ -9,12 +9,12 @@
         display: flex;
         flex-direction: column;
         gap: 12px;
-        font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     }
 
-    /* header hidden per bossman */
+    /* header hidden per request */
     .ttw-h {
-        display: none !important
+        display: none !important;
     }
 
     .ttw-log {
@@ -34,22 +34,22 @@
         border-radius: 14px;
         max-width: 80%;
         position: relative;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, .05)
+        box-shadow: 0 2px 4px rgba(0, 0, 0, .05);
     }
 
-    /* ===== ChatGPT Light bubbles ===== */
+    /* ChatGPT-light bubble colors */
     .ttw-b.u {
         margin-left: auto;
         background: #dcfce7;
         color: #0c0c0d;
-        border-bottom-right-radius: 6px
+        border-bottom-right-radius: 6px;
     }
 
     .ttw-b.a {
         margin-right: auto;
         background: #f7f7f8;
         color: #0c0c0d;
-        border-bottom-left-radius: 6px
+        border-bottom-left-radius: 6px;
     }
 
     .ttw-ts {
@@ -57,94 +57,211 @@
         color: #6b7280;
         opacity: .9;
         margin-top: 6px;
-        text-align: right
+        text-align: right;
     }
 
+    /* ============ INPUT ROW ============ */
     .ttw-row {
         display: flex;
+        align-items: center;
         gap: 10px;
-        align-items: center
+        position: relative;
+        padding: 8px;
     }
-
-    @media (max-width: 768px) {
-        .ttw-row {
-            padding: 0 12px; /* adds space on both ends */
-        }
-
-        .ttw-inp {
-            margin-left: 4px; /* slight inner spacing before input */
-        }
-
-        .ttw-send {
-            margin-right: 4px; /* slight inner spacing after button */
-        }
-    }
-
 
     .ttw-inp {
         flex: 1;
         padding: 12px 14px;
-        border: 1px solid #d9d9e3;
-        border-radius: 22px;
         font-size: 15px;
         outline: none;
         background: #fff;
-        color: #0c0c0d
+        color: #0c0c0d;
+        border: 1px solid #d9d9e3;
+        border-radius: 22px;
     }
 
     .ttw-inp::placeholder {
-        color: #6b7280
+        color: #6b7280;
     }
 
     .ttw-inp:focus {
         border-color: #10a37f;
-        box-shadow: 0 0 0 2px rgba(16, 163, 127, .35)
+        box-shadow: 0 0 0 2px rgba(16, 163, 127, .35);
     }
 
-    .ttw-send {
+    /* buttons */
+    .ttw-send, .ttw-btn, .ttw-ok, .ttw-cancel {
         padding: 10px 18px;
         border: 0;
         border-radius: 24px;
         font-weight: 600;
         cursor: pointer;
+    }
+
+    .ttw-send {
         background: #10a37f;
         color: #fff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, .1)
+        box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
     }
 
     .ttw-send:hover {
-        background: #0e8f70
+        background: #0e8f70;
     }
 
     .ttw-send:active {
-        background: #0c7e63
+        background: #0c7e63;
     }
 
     .ttw-send:disabled {
         background: #a7dacd;
-        cursor: not-allowed
+        cursor: not-allowed;
     }
 
-    /* ============ GALLERY with captions (max 2 lines) ============ */
+    /* mic button (round) */
+    .ttw-mic {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border: 0;
+        border-radius: 999px;
+        cursor: pointer;
+        background: #fff;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, .1) inset;
+    }
+
+    .ttw-mic.rec {
+        box-shadow: 0 0 0 2px rgba(233, 67, 67, .25) inset;
+        animation: ttw-pulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes ttw-pulse {
+        0% {
+            transform: scale(1)
+        }
+        50% {
+            transform: scale(1.06)
+        }
+        100% {
+            transform: scale(1)
+        }
+    }
+
+    /* OK / İptal appear only while recording (toggled by JS) */
+    .ttw-ok {
+        background: #19a974;
+        color: #fff;
+        display: none;
+    }
+
+    .ttw-cancel {
+        background: #fff;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, .12) inset;
+        display: none;
+    }
+
+    /* collapse the input during recording so it doesn't push buttons */
+    .ttw-inp.is-voice {
+        opacity: 0;
+        pointer-events: none;
+        width: 0;
+        padding: 0;
+        border: 0;
+        margin: 0;
+        flex: 0 0 0;
+    }
+
+    /* while recording, create a flex spacer so buttons stay at the far right */
+    .ttw-row.rec::before {
+        content: "";
+        flex: 1 1 auto;
+    }
+
+    /* show/hide the right buttons by state */
+    .ttw-row.rec .ttw-send {
+        display: none;
+    }
+
+    .ttw-row.rec .ttw-ok,
+    .ttw-row.rec .ttw-cancel {
+        display: inline-block;
+    }
+
+    /* center the waves pill on the row and leave room for the right button cluster */
+    .ttw-waves {
+        position: absolute;
+        left: 14px;
+        right: 220px; /* room for mic + OK + İptal */
+        top: 50%;
+        height: 40px;
+        transform: translateY(-50%);
+        display: none;
+        align-items: flex-end;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(16, 163, 127, .08);
+        box-shadow: inset 0 0 0 1px rgba(16, 163, 127, .12), 0 4px 12px rgba(16, 163, 127, .06);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity .18s ease, transform .18s ease;
+    }
+
+    .ttw-waves.on {
+        display: flex;
+        opacity: 1;
+    }
+
+    .ttw-waves::before {
+        content: 'Dinliyorum...';
+        font-size: 14px;
+        color: #19a974;
+        margin-right: 8px;
+        align-self: center;
+    }
+
+    /* each bar */
+    .ttw-waves .bar {
+        flex: 1 1 4px;
+        max-width: 4px;
+        height: 40%;
+        border-radius: 2px;
+        transform-origin: bottom center;
+        background: linear-gradient(to top, rgba(16, 163, 127, .95), rgba(16, 163, 127, .45));
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
+    }
+
+
+    /* small mobile tweak so the pill doesn’t collide with the edge */
+    @media (max-width: 768px) {
+        .ttw-waves {
+            left: 12px;
+            right: 140px;
+            bottom: 10px;
+        }
+    }
+
+    /* ============ GALLERY ============ */
     .ttw-b.has-gallery {
-        max-width: 100%
+        max-width: 100%;
     }
 
     .ttw-gallery {
         display: grid;
         grid-template-columns:repeat(2, minmax(0, 1fr));
-        gap: 10px
+        gap: 10px;
     }
 
     @media (min-width: 480px) {
         .ttw-gallery {
-            grid-template-columns:repeat(3, 1fr)
+            grid-template-columns:repeat(3, 1fr);
         }
     }
 
     @media (min-width: 768px) {
         .ttw-gallery {
-            grid-template-columns:repeat(4, 1fr)
+            grid-template-columns:repeat(4, 1fr);
         }
     }
 
@@ -155,17 +272,17 @@
         overflow: hidden;
         background: #fff;
         transition: box-shadow .15s;
-        border: 1px solid #efeff1
+        border: 1px solid #efeff1;
     }
 
     .ttw-gallery .tile:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, .12)
+        box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
     }
 
     .ttw-gallery .img-wrap {
         width: 100%;
         height: 100px;
-        overflow: hidden
+        overflow: hidden;
     }
 
     .ttw-gallery img {
@@ -173,50 +290,43 @@
         height: 100%;
         object-fit: cover;
         display: block;
-        transition: transform .18s ease
+        transition: transform .18s ease;
     }
 
     .ttw-gallery .tile:hover .img-wrap img {
-        transform: scale(1.035)
+        transform: scale(1.035);
     }
 
-    /* Caption: always max 2 lines with ellipsis, never 3rd line */
+    /* caption clamp (2 lines) */
     .ttw-gallery .cap {
-        --cap-lh: 1.3; /* keep numbers here in sync with JS fallback below */
+        --cap-lh: 1.3;
         padding: 8px 10px;
         font-size: 12px;
         line-height: var(--cap-lh);
         color: #111;
-
-        /* Primary (Chromium/Safari): true multi-line ellipsis */
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
         overflow: hidden;
         text-overflow: ellipsis;
-
-        /* Give two-line block its natural space (prevents jitter when 1 line) */
         min-height: calc(2 * var(--cap-lh) * 1em);
-
-        /* Robust text behavior */
         white-space: normal !important;
         overflow-wrap: anywhere;
         word-break: normal;
         hyphens: auto;
     }
 
-    /* Firefox fallback (no -webkit-line-clamp support) */
-    @supports not (-webkit-line-clamp: 2) {
+    @supports not (-webkit-line-clamp:2) {
         .ttw-gallery .cap {
             display: block;
             max-height: calc(2 * var(--cap-lh) * 1em);
-            overflow: hidden
+            overflow: hidden;
         }
     }
 
     /* ============ MODAL CHROME ============ */
     body.tw-modal-open {
-        overflow: hidden
+        overflow: hidden;
     }
 
     .tw-overlay {
@@ -226,11 +336,11 @@
         backdrop-filter: blur(2px);
         z-index: 10000;
         opacity: 0;
-        transition: opacity .38s ease
+        transition: opacity .38s ease;
     }
 
     .tw-overlay.open {
-        opacity: 1
+        opacity: 1;
     }
 
     .tw-panel {
@@ -249,7 +359,7 @@
         transform-origin: top left;
         transition: transform .38s cubic-bezier(.2, .7, .2, 1), opacity .38s ease;
         will-change: transform, opacity;
-        opacity: 0
+        opacity: 0;
     }
 
     .tw-head {
@@ -261,7 +371,7 @@
         font-weight: 600;
         background: #fff;
         color: #0c0c0d;
-        border-bottom: 1px solid #e5e7eb
+        border-bottom: 1px solid #e5e7eb;
     }
 
     .tw-close {
@@ -278,7 +388,48 @@
         font-size: 22px;
         display: grid;
         place-items: center;
-        z-index: 9
+        z-index: 9;
+    }
+
+    /* TTS toggle button */
+    .tw-tts {
+        position: absolute;
+        top: 8px;
+        right: 52px;
+        z-index: 9;
+        width: 40px;
+        height: 40px;
+        border-radius: 999px;
+        border: 0;
+        cursor: pointer;
+        background: rgba(0, 0, 0, .12);
+        color: #111;
+        font-size: 16px;
+    }
+
+    .tw-tts.on {
+        background: #10a37f;
+        color: #fff;
+    }
+
+    .tw-tts.speaking::after {
+        content: '';
+        position: absolute;
+        inset: 6px;
+        border-radius: 50%;
+        border: 2px solid currentColor;
+        animation: ttw-tts-wave 1s infinite ease-in-out;
+    }
+
+    @keyframes ttw-tts-wave {
+        0% {
+            transform: scale(1);
+            opacity: 1
+        }
+        100% {
+            transform: scale(1.6);
+            opacity: 0
+        }
     }
 
     .tw-body {
@@ -287,7 +438,7 @@
         padding: 10px;
         background: #fff;
         display: flex;
-        flex-direction: column
+        flex-direction: column;
     }
 
     .tw-body .ttw-chatbot {
@@ -295,79 +446,26 @@
         display: flex;
         flex-direction: column;
         flex: 1;
-        min-height: 0
+        min-height: 0;
     }
 
     .tw-body .ttw-log {
         height: auto;
         flex: 1;
-        min-height: 0
+        min-height: 0;
     }
 
-    /* mobile only disclaimer & spacing */
-    .ttw-disclaimer {
-        display: none
-    }
-
-    @media (max-width: 768px) {
-        .tw-panel {
-            left: 0;
-            top: 0;
-            width: 100vw;
-            height: 100dvh;
-            border-radius: 0;
-            box-shadow: none
-        }
-
-        .tw-body {
-            padding: 10px env(safe-area-inset-right) calc(10px + env(safe-area-inset-bottom)) env(safe-area-inset-left)
-        }
-
-        .tw-head {
-            padding-left: 16px;
-            padding-right: 72px
-        }
-
-        .tw-close {
-            top: 6px;
-            right: 6px;
-            background: rgba(0, 0, 0, .3)
-        }
-
-        .ttw-disclaimer {
-            display: block;
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 9999;
-            padding: 8px;
-            background: #f1f3f5;
-            color: #444;
-            font-size: 12px;
-            text-align: center
-        }
-
-        .ttw-row {
-            margin-bottom: 40px
-        }
-
-        .tw-body {
-            padding-bottom: 64px
-        }
-    }
-
-    /* ============ Typing indicator ============ */
+    /* typing indicator */
     .ttw-b.ttw-typing {
         margin-right: auto;
         color: #3b4a6b;
-        background: #eef3ff
+        background: #eef3ff;
     }
 
     .ttw-typing .dots {
         display: inline-flex;
         gap: 4px;
-        vertical-align: middle
+        vertical-align: middle;
     }
 
     .ttw-typing .dot {
@@ -376,15 +474,15 @@
         border-radius: 50%;
         background: #3b4a6b;
         opacity: .32;
-        animation: ttw-bounce 1s infinite ease-in-out
+        animation: ttw-bounce 1s infinite ease-in-out;
     }
 
     .ttw-typing .dot:nth-child(2) {
-        animation-delay: .15s
+        animation-delay: .15s;
     }
 
     .ttw-typing .dot:nth-child(3) {
-        animation-delay: .3s
+        animation-delay: .3s;
     }
 
     @keyframes ttw-bounce {
@@ -398,150 +496,78 @@
         }
     }
 
+    /* hide mini launcher while modal open */
     body.tw-modal-open #miniChatCard {
         opacity: 0;
         pointer-events: none;
-        transition: opacity 0.3s ease;
+        transition: opacity .3s ease;
     }
 
-    /* Voice button */
-    .ttw-voice {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 44px;
-        height: 44px;
-        border: 0;
-        border-radius: 999px;
-        cursor: pointer;
-        background: #fff;
-        box-shadow: 0 0 0 1px rgba(0, 0, 0, .1) inset
-    }
-
-    .ttw-voice svg {
-        display: block
-    }
-
-    .ttw-voice.is-recording {
-        box-shadow: 0 0 0 2px rgba(233, 67, 67, .25) inset;
-        animation: ttw-pulse 1.2s ease-in-out infinite
-    }
-
-    @keyframes ttw-pulse {
-        0% {
-            transform: scale(1)
-        }
-        50% {
-            transform: scale(1.06)
-        }
-        100% {
-            transform: scale(1)
-        }
-    }
-
+    /* ============ MOBILE TWEAKS ============ */
     @media (max-width: 768px) {
+        .tw-panel {
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100dvh;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .tw-body {
+            padding: 10px env(safe-area-inset-right) calc(10px + env(safe-area-inset-bottom)) env(safe-area-inset-left);
+        }
+
+        .tw-head {
+            padding-left: 16px;
+            padding-right: 72px;
+        }
+
+        .tw-close {
+            top: 6px;
+            right: 6px;
+            background: rgba(0, 0, 0, .3);
+        }
+
         .ttw-row {
-            padding: 0 12px
+            padding: 0 12px;
+            margin-bottom: 40px;
         }
-    }
 
-    /* Voice preview bar */
-    .ttw-voicebar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        margin: 8px 14px 12px;
-        border-radius: 12px;
-        padding: 10px 12px;
-        background: #fafafa;
-        border: 1px solid rgba(0, 0, 0, .08)
-    }
+        .tw-body {
+            padding-bottom: 64px;
+        }
 
-    .ttw-voicebar-left {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        min-width: 0
-    }
-
-    .ttw-voice-preview {
-        font-size: 14px;
-        color: #444;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 56vw;
-    }
-
-    .ttw-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: #e94343;
-        box-shadow: 0 0 0 4px rgba(233, 67, 67, .18)
-    }
-
-    .ttw-voicebar.paused .ttw-dot {
-        background: #bbb;
-        box-shadow: none
-    }
-
-    .ttw-voicebar-right {
-        display: flex;
-        align-items: center;
-        gap: 8px
-    }
-
-    .ttw-voicebar-right button {
-        height: 34px;
-        padding: 0 12px;
-        border-radius: 999px;
-        border: 1px solid rgba(0, 0, 0, .1);
-        cursor: pointer;
-        background: #fff
-    }
-
-    .ttw-voicebar-right .ttw-voice-ok {
-        background: #19a974;
-        color: #fff;
-        border: 0
-    }
-
-    .ttw-voicebar-right .ttw-voice-cancel {
-        background: #fff
-    }
-
-    .tw-tts {
-        position: absolute;
-        top: 8px;
-        right: 52px;
-        z-index: 9;
-        width: 40px;
-        height: 40px;
-        border-radius: 999px;
-        border: 0;
-        cursor: pointer;
-        background: rgba(0, 0, 0, .12);
-        color: #111;
-        font-size: 16px
-    }
-
-    .tw-tts.on {
-        background: #10a37f;
-        color: #fff
-    }
-
-    @media (max-width: 768px) {
         .tw-tts {
             top: 6px;
             right: 52px;
             background: rgba(0, 0, 0, .2);
-            color: #fff
+            color: #fff;
         }
     }
 
+    /* optional disclaimer (mobile) */
+    .ttw-disclaimer {
+        display: none;
+    }
+
+    @media (max-width: 768px) {
+        .ttw-disclaimer {
+            display: block;
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 9999;
+            padding: 8px;
+            background: #f1f3f5;
+            color: #444;
+            font-size: 12px;
+            text-align: center;
+        }
+    }
 </style>
+
 
 <script>
     (() => {
@@ -550,61 +576,55 @@
         const dlog = (...a) => {
             try {
                 if (!DBG.box) {
-                    const el = document.createElement('div');
-                    el.className = 'ttw-debug';
+                    const el = document.createElement("div");
+                    el.className = "ttw-debug";
                     el.innerHTML = '<div class="hd">TTW Debug (F9)</div><div class="bd"></div>';
                     document.body.appendChild(el);
                     DBG.box = el;
-                    DBG.body = el.querySelector('.bd');
-                    window.addEventListener('keydown', e => {
-                        if (e.key === 'F9') DBG.box.classList.toggle('open')
-                    })
+                    DBG.body = el.querySelector(".bd");
+                    window.addEventListener("keydown", (e) => {
+                        if (e.key === "F9") DBG.box.classList.toggle("open");
+                    });
                 }
-                const line = '[' + new Date().toLocaleTimeString() + '] ' + a.map(x => {
+                const line = `[${new Date().toLocaleTimeString()}] ` + a.map(x => {
                     try {
-                        return typeof x === 'string' ? x : JSON.stringify(x)
+                        return typeof x === "string" ? x : JSON.stringify(x);
                     } catch {
-                        return String(x)
+                        return String(x);
                     }
-                }).join(' ');
+                }).join(" ");
                 DBG.lines.push(line);
                 if (DBG.lines.length > 400) DBG.lines.shift();
-                DBG.body.textContent = DBG.lines.join('\n');
+                DBG.body.textContent = DBG.lines.join("\n");
                 DBG.body.scrollTop = DBG.body.scrollHeight;
-                console.log('[TTW]', ...a)
+                console.log("[TTW]", ...a);
             } catch {
             }
         };
 
         const getSid = () => {
             try {
-                let sid = localStorage.getItem('ttw_sid');
+                let sid = localStorage.getItem("ttw_sid");
                 if (!sid) {
-                    sid = (crypto?.randomUUID?.() || Math.random().toString(36).slice(2));
-                    localStorage.setItem('ttw_sid', sid)
+                    sid = crypto?.randomUUID?.() || Math.random().toString(36).slice(2);
+                    localStorage.setItem("ttw_sid", sid);
                 }
-                return sid
+                return sid;
             } catch {
-                return Math.random().toString(36).slice(2)
+                return Math.random().toString(36).slice(2);
             }
         };
 
-        function normalizeMd(s) {
-            return (s || '')
-                .replace(/\r\n/g, '\n')
-                .replace(/\r/g, '\n')
-                .replace(/\\n/g, '\n');
-        }
+        const normalizeMd = s => (s || "").replace(/\r\n/g, "\n").replace(/\r/g, "\n").replace(/\\n/g, "\n");
 
         /* ---------- bubbles ---------- */
         function addBubble(chatEl, text, who) {
             if (!chatEl) return;
-            const w = document.createElement('div');
-            w.className = 'ttw-b ' + (who === 'user' ? 'u' : 'a');
-            // ✅ normalize before parsing
+            const w = document.createElement("div");
+            w.className = "ttw-b " + (who === "user" ? "u" : "a");
             w.innerHTML = marked.parse(normalizeMd(text || ""));
-            const ts = document.createElement('div');
-            ts.className = 'ttw-ts';
+            const ts = document.createElement("div");
+            ts.className = "ttw-ts";
             ts.textContent = new Date().toLocaleTimeString();
             w.appendChild(ts);
             chatEl.appendChild(w);
@@ -613,144 +633,110 @@
 
         /* typing indicator bubble */
         function showTyping(chatEl) {
-            const b = document.createElement('div');
-            b.className = 'ttw-b a ttw-typing';
+            const b = document.createElement("div");
+            b.className = "ttw-b a ttw-typing";
             b.innerHTML = '<span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>';
             chatEl.appendChild(b);
             chatEl.scrollTop = chatEl.scrollHeight;
             return () => {
                 try {
-                    b.remove()
+                    b.remove();
                 } catch {
                 }
             };
         }
 
-        /* split reply into steps */
+        /* split reply into steps (paragraphs) */
         function splitSteps(text) {
             const raw = text || "";
-            const norm = normalizeMd(raw)
-                .replace(/\n{3,}/g, "\n\n") // collapse 3+ NL to exactly two
-                .trim();
-
-            dlog("MD ▶ IN (raw 160):", raw.slice(0, 160).replace(/\n/g, "⏎"));
-            dlog("MD ▶ NORM (160):", norm.slice(0, 160).replace(/\n/g, "⏎"));
-
+            const norm = normalizeMd(raw).replace(/\n{3,}/g, "\n\n").trim();
             if (!norm) return [];
-
-            // Split into logical blocks by blank line. This preserves list syntax and
-            // paragraph boundaries for the markdown renderer.
             const blocks = norm.split(/\n\s*\n/);
-
-            dlog("MD ▶ BLOCKS:", blocks.map(b => (b.slice(0, 80) + "…").replace(/\n/g, "⏎")));
-
-            // Optional: cap how many blocks we animate in one reply
+            dlog("MD ▶ BLOCKS", blocks.map(b => (b.slice(0, 80) + "…").replace(/\n/g, "⏎")));
             return blocks.slice(0, 12);
-        }
-
-        /* typewriter for a bubble */
-        function typeWriter(targetEl, text, speed = 16) {
-            return new Promise(resolve => {
-                let i = 0;
-                const full = normalizeMd(text || "");   // ✅ normalize first
-                const len = full.length;
-
-                const id = setInterval(() => {
-                    i++;
-                    const partial = full.slice(0, i);
-                    targetEl.innerHTML = marked.parse(partial); // render markdown
-                    if (i >= len) {
-                        clearInterval(id);
-                        resolve();
-                    }
-                }, speed);
-            });
         }
 
         /* url resolver */
         function resolveUrl(u) {
             if (!u) return null;
             if (/^https?:\/\//i.test(u)) return u;
-            if (u.startsWith('//')) return location.protocol + u;
-            if (u.startsWith('/')) return location.origin + u;
-            return location.origin + '/' + u.replace(/^\.?\//, '')
+            if (u.startsWith("//")) return location.protocol + u;
+            if (u.startsWith("/")) return location.origin + u;
+            return location.origin + "/" + u.replace(/^\.?\//, "");
         }
 
-        /* ===== HARD CLAMP (post-layout) — guarantees 2 lines, never 3 ===== */
+        /* ===== HARD CLAMP (gallery captions) ===== */
         function hardClampCaptions(scope) {
             const doClamp = () => {
-                const caps = (scope || document).querySelectorAll('.ttw-gallery .cap');
-                caps.forEach(el => {
+                const caps = (scope || document).querySelectorAll(".ttw-gallery .cap");
+                caps.forEach((el) => {
                     const cs = getComputedStyle(el);
                     let lh = parseFloat(cs.lineHeight);
                     if (!isFinite(lh)) {
                         const fs = parseFloat(cs.fontSize) || 12;
                         lh = fs * 1.3;
-                    }     // fallback if 'normal'
-                    const maxH = Math.round(lh * 2);                                            // exactly two lines
-                    if (el.scrollHeight > maxH + 1) {                                             // allow tiny rounding
-                        const full = (el.getAttribute('data-full') || el.textContent || '').trim().replace(/\s+/g, ' ');
-                        let lo = 0, hi = full.length, best = '';
+                    }
+                    const maxH = Math.round(lh * 2);
+                    if (el.scrollHeight > maxH + 1) {
+                        const full = (el.getAttribute("data-full") || el.textContent || "").trim().replace(/\s+/g, " ");
+                        let lo = 0, hi = full.length, best = "";
                         while (lo <= hi) {
                             const mid = (lo + hi) >> 1;
-                            el.textContent = full.slice(0, mid).trim() + '…';
+                            el.textContent = full.slice(0, mid).trim() + "…";
                             if (el.scrollHeight <= maxH + 1) {
                                 best = el.textContent;
                                 lo = mid + 1;
-                            } else {
-                                hi = mid - 1;
-                            }
+                            } else hi = mid - 1;
                         }
-                        el.textContent = best || (full.slice(0, 2) + '…');
+                        el.textContent = best || full.slice(0, 2) + "…";
                         if (!el.title) el.title = full;
                     }
                 });
             };
-            // run after layout settles
             requestAnimationFrame(() => requestAnimationFrame(doClamp));
         }
 
-        /* ---- responsive gallery; accepts string or {image, adres, title} ---- */
+        /* ---- gallery ---- */
         function addImageGallery(chatEl, items) {
             if (!chatEl || !items?.length) return;
-            const wrap = document.createElement('div');
-            wrap.className = 'ttw-b a has-gallery';
-            const grid = document.createElement('div');
-            grid.className = 'ttw-gallery';
+            const wrap = document.createElement("div");
+            wrap.className = "ttw-b a has-gallery";
+            const grid = document.createElement("div");
+            grid.className = "ttw-gallery";
 
-            items.slice(0, 12).forEach(it => {
-                const obj = (typeof it === 'string') ? {image: it, adres: it} : (it || {});
+            items.slice(0, 12).forEach((it) => {
+                const obj = typeof it === "string" ? {image: it, adres: it} : it || {};
                 const imgSrc = resolveUrl(obj.image || obj.adres);
                 const href = resolveUrl(obj.adres || obj.image);
                 if (!imgSrc) return;
-                const tile = document.createElement('a');
-                tile.className = 'tile';
+                const tile = document.createElement("a");
+                tile.className = "tile";
                 tile.href = href || imgSrc;
-                tile.target = '_blank';
-                tile.rel = 'noopener noreferrer';
-                const imgWrap = document.createElement('div');
-                imgWrap.className = 'img-wrap';
-                const img = document.createElement('img');
+                tile.target = "_blank";
+                tile.rel = "noopener noreferrer";
+                const imgWrap = document.createElement("div");
+                imgWrap.className = "img-wrap";
+                const img = document.createElement("img");
                 img.src = imgSrc;
-                img.alt = (obj.title || 'görsel');
-                img.loading = 'lazy';
+                img.alt = obj.title || "görsel";
+                img.loading = "lazy";
                 imgWrap.appendChild(img);
                 tile.appendChild(imgWrap);
 
-                const cap = document.createElement('div');
-                cap.className = 'cap';
-                const title = (obj.title || '').trim();
+                const cap = document.createElement("div");
+                cap.className = "cap";
+                const title = (obj.title || "").trim();
                 cap.textContent = title;
                 cap.title = title;
-                cap.setAttribute('data-full', title);
+                cap.setAttribute("data-full", title);
                 tile.appendChild(cap);
 
                 grid.appendChild(tile);
             });
 
             wrap.appendChild(grid);
-            const ts = document.createElement('div');
-            ts.className = 'ttw-ts';
+            const ts = document.createElement("div");
+            ts.className = "ttw-ts";
             ts.textContent = new Date().toLocaleTimeString();
             wrap.appendChild(ts);
             chatEl.appendChild(wrap);
@@ -761,185 +747,364 @@
 
         /* endpoint resolution */
         function resolveEndpoint(root, opts) {
-            const scheme = location.protocol === 'https:' ? 'wss' : 'ws';
-            if (opts?.endpoint) {
-                dlog('endpoint via opts', opts.endpoint);
-                return opts.endpoint
-            }
-            if (root?.dataset.endpoint) {
-                dlog('endpoint via data-endpoint', root.dataset.endpoint);
-                return root.dataset.endpoint
-            }
-            if (window.TTW_WS) {
-                dlog('endpoint via window.TTW_WS', window.TTW_WS);
-                return window.TTW_WS
-            }
-            if (location.port === '9000') {
-                const ep = `${scheme}://${location.hostname}:8000/ws`;
-                dlog('endpoint 9000→8000', ep);
-                return ep
-            }
-            const ep = `${scheme}://${location.host}/ws`;
-            dlog('endpoint default', ep);
-            return ep
+            const scheme = location.protocol === "https:" ? "wss" : "ws";
+            if (opts?.endpoint) return opts.endpoint;
+            if (root?.dataset.endpoint) return root.dataset.endpoint;
+            if (window.TTW_WS) return window.TTW_WS;
+            if (location.port === "9000") return `${scheme}://${location.hostname}:8000/ws`;
+            return `${scheme}://${location.host}/ws`;
         }
 
-        const pageRect = el => {
+        const pageRect = (el) => {
             const r = el.getBoundingClientRect();
-            return {left: r.left + scrollX, top: r.top + scrollY, width: r.width, height: r.height}
+            return {left: r.left + scrollX, top: r.top + scrollY, width: r.width, height: r.height};
         };
 
         /* ---------------- Modal with grow-from-origin ---------------- */
         function openModal(opts) {
-            const overlay = document.createElement('div');
-            overlay.className = 'tw-overlay';
-            const panel = document.createElement('div');
-            panel.className = 'tw-panel';
+            const overlay = document.createElement("div");
+            overlay.className = "tw-overlay";
+            const panel = document.createElement("div");
+            panel.className = "tw-panel";
             panel.innerHTML = `
-        <div class="tw-head">
-            Olivia · Canlı Sohbet
-            <button class="tw-tts" type="button" title="Sesi aç/kapat" aria-pressed="false">🔈</button>
-            <button class="tw-close" type="button">×</button>
-        </div>
-        <div class="tw-body">
+      <div class="tw-head">
+        Olivia · Canlı Sohbet
+        <button class="tw-tts" type="button" title="Sesi aç/kapat" aria-pressed="false">🔈</button>
+        <button class="tw-close" type="button">×</button>
+      </div>
+      <div class="tw-body">
         <div class="ttw-chatbot" data-ttw-chatbot data-autoinit="1">
           <header class="ttw-h"><h2>AI Chatbot</h2><div class="s">Size yardımcı olmak için buradayım</div></header>
           <div class="ttw-log" role="log" aria-live="polite"></div>
-            <form class="ttw-row" autocomplete="off">
-                <input class="ttw-inp" type="text" placeholder="Mesajınızı yazın..." aria-label="Mesajınızı yazın">
-                <!-- NEW: Voice button (left of Gönder) -->
-                <button class="ttw-voice" type="button" id="ttwVoice" aria-pressed="false" aria-label="Sesle yaz">
-                    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 14 0h-2zM11 19h2v3h-2v-3z"/>
-                    </svg>
-                </button>
-                <button class="ttw-send" type="button">Gönder</button>
-            </form>
-            <div class="ttw-voicebar" hidden>
-                <div class="ttw-voicebar-left">
-                    <div class="ttw-dot"></div>
-                    <div class="ttw-voice-preview" title="Geçici deşifre"></div>
-                </div>
-                <div class="ttw-voicebar-right">
-                    <button type="button" class="ttw-voice-toggle" aria-pressed="true">Duraklat</button>
-                    <button type="button" class="ttw-voice-ok">OK</button>
-                    <button type="button" class="ttw-voice-cancel">İptal</button>
-                </div>
+          <form class="ttw-row" autocomplete="off">
+            <input class="ttw-inp" type="text" placeholder="Mesajınızı yazın..." aria-label="Mesajınızı yazın">
+            <div class="ttw-waves" aria-hidden="true">
             </div>
+            <button class="ttw-mic" type="button" id="ttwMic" aria-pressed="false" title="Sesle yaz"></button>
+            <button class="ttw-btn ttw-send" type="button" id="ttwSend">Gönder</button>
+            <button class="ttw-btn ttw-ok" type="button" id="ttwOk" style="display:none;background:#19a974;color:#fff">OK</button>
+            <button class="ttw-btn ttw-cancel" type="button" id="ttwCancel" style="display:none;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.12) inset">İptal</button>
+          </form>
           <div class="ttw-disclaimer">Olivia, TalktoWeb Teknoloji Departmanı tarafından geliştirilen bir yapay zeka robotudur</div>
         </div>
       </div>`;
             document.body.append(overlay, panel);
-            document.body.classList.add('tw-modal-open');
+            document.body.classList.add("tw-modal-open");
 
-            const originEl = typeof opts?.animateFrom === 'string' ? document.querySelector(opts.animateFrom) : (opts?.animateFrom || null);
+            // round mic icon
+            const micBtn = panel.querySelector("#ttwMic");
+            if (micBtn) {
+                micBtn.innerHTML = `
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3z"></path>
+          <path d="M19 11a7 7 0 0 1-14 0"></path>
+          <path d="M12 19v3"></path>
+        </svg>`;
+            }
+
+            const originEl = typeof opts?.animateFrom === "string" ? document.querySelector(opts.animateFrom) : (opts?.animateFrom || null);
             const doGrow = originEl && originEl.getBoundingClientRect().width > 0 && originEl.getBoundingClientRect().height > 0;
 
             function setFromOrigin() {
                 const t = panel.getBoundingClientRect(), p = pageRect(panel), o = pageRect(originEl);
                 const sx = Math.max(0.01, o.width / t.width), sy = Math.max(0.01, o.height / t.height);
                 const dx = (o.left - p.left), dy = (o.top - p.top);
-                panel.style.transformOrigin = 'top left';
+                panel.style.transformOrigin = "top left";
                 panel.style.transform = `translate(${dx}px,${dy}px) scale(${sx},${sy})`;
-                panel.style.opacity = '0.001';
+                panel.style.opacity = "0.001";
             }
 
             requestAnimationFrame(() => {
                 if (doGrow) setFromOrigin();
                 requestAnimationFrame(() => {
-                    overlay.classList.add('open');
-                    panel.style.transform = 'none';
-                    panel.style.opacity = '1'
-                })
+                    overlay.classList.add("open");
+                    panel.style.transform = "none";
+                    panel.style.opacity = "1";
+                });
             });
 
-            const controller = mount(panel.querySelector('[data-ttw-chatbot]'), opts || {});
+            const controller = mount(panel.querySelector("[data-ttw-chatbot]"), opts || {});
 
             function close() {
                 if (doGrow) {
                     setFromOrigin();
-                    overlay.classList.remove('open');
+                    overlay.classList.remove("open");
                     const done = () => {
-                        panel.removeEventListener('transitionend', done);
-                        cleanup()
+                        panel.removeEventListener("transitionend", done);
+                        cleanup();
                     };
-                    panel.addEventListener('transitionend', done)
+                    panel.addEventListener("transitionend", done);
                 } else cleanup();
             }
 
             function cleanup() {
                 try {
-                    controller?.destroy?.()
+                    controller?.destroy?.();
                 } catch {
                 }
                 try {
-                    overlay.remove()
+                    overlay.remove();
                 } catch {
                 }
                 try {
-                    panel.remove()
+                    panel.remove();
                 } catch {
                 }
-                document.body.classList.remove('tw-modal-open')
-
-                try {
-                    ttsQ.clear();
-                } catch {
-                }  // ⬅️ ensure nothing keeps talking
+                document.body.classList.remove("tw-modal-open");
             }
 
-            panel.querySelector('.tw-close').onclick = e => {
+            panel.querySelector(".tw-close").onclick = (e) => {
                 e.preventDefault();
-                close()
+                close();
             };
-            overlay.onclick = e => {
-                if (e.target === overlay) close()
+            overlay.onclick = (e) => {
+                if (e.target === overlay) close();
             };
         }
 
         /* ---------------- Core mount ---------------- */
         function mount(root, opts) {
+            const row = root.querySelector(".ttw-row");
+
             if (!root) return {
                 destroy() {
                 }
             };
 
-            // --- DOM refs (existing) ---
-            const chat = root.querySelector('.ttw-log');
-            const input = root.querySelector('.ttw-inp');
-            const sendB = root.querySelector('.ttw-send');
-            const form = root.querySelector('form');
+            // --- DOM refs ---
+            const chat = root.querySelector(".ttw-log");
+            const input = root.querySelector(".ttw-inp");
+            const sendB = root.querySelector(".ttw-send");
+            const form = root.querySelector("form");
+            const mic = root.querySelector("#ttwMic");
+            const waves = root.querySelector(".ttw-waves");
+            const okB = root.querySelector("#ttwOk");
+            const cancelB = root.querySelector("#ttwCancel");
 
-            // --- Voice UI refs (must exist in your template) ---
-            const voiceB = root.querySelector('#ttwVoice');
-            const bar = root.querySelector('.ttw-voicebar');
-            const preview = root.querySelector('.ttw-voice-preview');
-            const togB = root.querySelector('.ttw-voice-toggle');
-            const okB = root.querySelector('.ttw-voice-ok');
-            const cancelB = root.querySelector('.ttw-voice-cancel');
-
-            // --- Web Speech API state (voice input) ---
+            // --- Voice state ---
             const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-            let rec = null;
-            let active = false;     // voice mode bar shown?
-            let listening = false;  // currently recording?
-            let starting = false;   // guard for start()
-            let finalBuf = '';      // accumulated final text
-            let interimBuf = '';    // live interim text
+            let rec = null, listening = false, starting = false;
+            let finalBuf = "", interimBuf = "";
+            let srKeepAlive = false;
+            let mediaStream = null; // for analyser waves
 
-            // --- TTS (Polly-first) + optional browser fallback ---
-            const panelEl = root.closest('.tw-panel');
-            const ttsBtn = panelEl?.querySelector('.tw-tts');
+            // --- WebAudio waves ---
+            // --- WebAudio waves ---
+            let audioCtx = null, analyser = null, rafId = 0, agc = 0.15;
 
+            function buildWavesUI() {
+                if (!waves) return;
+                waves.innerHTML = '';
+                const lbl = document.createElement('span');
+                lbl.className = 'lbl';
+                lbl.textContent = 'Dinliyorum…';
+                const meter = document.createElement('span');
+                meter.className = 'meter';
+                for (let i = 0; i < 16; i++) {
+                    const b = document.createElement('span');
+                    b.className = 'bar';
+                    meter.appendChild(b);
+                }
+                waves.append(lbl, meter);
+                return Array.from(meter.children);
+            }
+
+            function startWaves(stream) {
+                if (!waves) return;
+                try {
+                    // make sure we have bars
+                    let bars = Array.from(waves.querySelectorAll('.bar'));
+                    if (bars.length === 0) {
+                        const targetBars = 28;                // nice density
+                        const frag = document.createDocumentFragment();
+                        for (let i = 0; i < targetBars; i++) {
+                            const b = document.createElement('span');
+                            b.className = 'bar';
+                            frag.appendChild(b);
+                        }
+                        waves.appendChild(frag);
+                        bars = Array.from(waves.querySelectorAll('.bar'));
+                    }
+
+                    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    const src = audioCtx.createMediaStreamSource(stream);
+
+                    analyser = audioCtx.createAnalyser();
+                    analyser.fftSize = 1024;
+                    analyser.smoothingTimeConstant = 0.75;
+
+                    const freq = new Uint8Array(analyser.frequencyBinCount);
+                    const step = Math.floor(freq.length / bars.length);
+                    const gain = 1.8;                        // responsiveness boost
+
+                    const draw = () => {
+                        analyser.getByteFrequencyData(freq);
+                        for (let i = 0; i < bars.length; i++) {
+                            let sum = 0;
+                            for (let j = i * step; j < (i + 1) * step; j++) sum += freq[j];
+                            const v = (sum / step) / 255;            // 0..1
+                            const s = Math.max(0.12, Math.min(1.25, v * gain));
+                            bars[i].style.transform = `scaleY(${s})`;
+                        }
+                        rafId = requestAnimationFrame(draw);
+                    };
+
+                    waves.classList.add('on');
+                    src.connect(analyser);
+                    draw();
+                } catch (e) {
+                    console.warn('waves init failed', e);
+                }
+            }
+
+            function stopWaves() {
+                try {
+                    cancelAnimationFrame(rafId);
+                } catch {
+                }
+                rafId = 0;
+                waves?.classList.remove('on');
+                // leave DOM — it will rebuild next time
+            }
+
+            // Input UI toggle (don’t disable input)
+            function toggleRecordUI(on) {
+                const oldph = input.getAttribute('data-oldph') || input.placeholder || '';
+                if (!input.getAttribute('data-oldph')) input.setAttribute('data-oldph', oldph);
+
+                root.querySelector('.ttw-row')?.classList.toggle('rec', !!on);
+                mic?.classList.toggle('rec', !!on);
+                waves?.classList.toggle('on', !!on);
+
+                if (sendB) sendB.style.display = on ? 'none' : 'inline-block';
+                if (okB) okB.style.display = on ? 'inline-block' : 'none';
+                if (cancelB) cancelB.style.display = on ? 'inline-block' : 'none';
+
+                if (on) {
+                    input.classList.add('is-voice');
+                    input.placeholder = 'Dinliyorum…';
+                    input.setAttribute('aria-label', 'Dinliyorum…');
+                } else {
+                    input.classList.remove('is-voice');
+                    input.placeholder = input.getAttribute('data-oldph') || 'Mesajınızı yazın...';
+                    input.setAttribute('aria-label', 'Mesajınızı yazın');
+                }
+            }
+
+            function srSupported() {
+                return !!SR;
+            }
+
+            function srStop() {
+                srKeepAlive = false;
+                try {
+                    rec && rec.stop();
+                } catch {
+                }
+                listening = false;
+                toggleRecordUI(false);
+                stopWaves();
+                try {
+                    mediaStream?.getTracks()?.forEach(t => t.stop());
+                } catch {
+                }
+                mediaStream = null;
+            }
+
+            async function srStart() {
+                if (starting || listening) return;
+                if (!srSupported()) {
+                    console.warn("SpeechRecognition not supported");
+                    mic && (mic.disabled = true);
+                    return;
+                }
+                starting = true;
+                srKeepAlive = true;
+                toggleRecordUI(true);
+
+                // ensure mic stream for waves + permission prompt
+                try {
+                    mediaStream = mediaStream || await navigator.mediaDevices.getUserMedia({audio: true});
+                    startWaves(mediaStream);
+                } catch (err) {
+                    console.warn('Mic permission error', err);
+                }
+
+                rec = new SR();
+                rec.lang = 'tr-TR';
+                rec.interimResults = true;
+                rec.continuous = true;
+
+                rec.onstart = () => {
+                    starting = false;
+                    listening = true;
+                };
+
+                rec.onresult = (e) => {
+                    interimBuf = '';
+                    for (let i = e.resultIndex; i < e.results.length; i++) {
+                        const chunk = e.results[i][0].transcript;
+                        if (e.results[i].isFinal) finalBuf += chunk + ' ';
+                        else interimBuf += chunk;
+                    }
+                    // live preview while speaking
+                    input.value = (finalBuf + ' ' + interimBuf).replace(/\s+/g, ' ').trim();
+                };
+
+                rec.onerror = () => { /* keep UI; we'll restart in onend */
+                };
+
+                rec.onend = () => {
+                    if (srKeepAlive) {
+                        try {
+                            rec.start();
+                        } catch {
+                            setTimeout(() => {
+                                try {
+                                    rec.start();
+                                } catch {
+                                }
+                            }, 200);
+                        }
+                    }
+                };
+
+                try {
+                    rec.start();
+                } catch (err) {
+                    starting = false;
+                    console.warn('SR start fail', err);
+                }
+            }
+
+            mic?.addEventListener('click', () => {
+                (!listening && !starting) ? srStart() : srStop();
+            });
+            cancelB?.addEventListener('click', () => {
+                srStop();
+                input.value = (input.value || '').trim();
+                input.focus();
+            });
+            okB?.addEventListener('click', () => {
+                srStop();
+                input.focus();
+            });
+            input?.addEventListener('keydown', () => {
+                if (listening) srStop();
+            });
+
+            // ---------- TTS ----------
+            const panelEl = root.closest(".tw-panel");
+            const ttsBtn = panelEl?.querySelector(".tw-tts");
             const tts = {
                 enabled: false,
-                voice: null,           // browser fallback voice (if used)
+                voice: null,
                 rate: 1.0,
                 pitch: 1.1,
                 volume: 1.0,
                 chosenName: localStorage.getItem('ttw_tts_voice') || null,
-                audio: null,           // HTMLAudioElement for server MP3
-                lastUrl: null          // blob: url for revocation
+                audio: null,
+                lastUrl: null
             };
 
             function ttsSupported() {
@@ -954,29 +1119,26 @@
                 }
             }
 
-            // prefer Turkish female-ish names; otherwise good EN female as fallback
             function rankVoice(v) {
-                let score = 0;
-                const name = (v.name || '').toLowerCase();
-                const lang = (v.lang || '').toLowerCase();
-                if (lang.startsWith('tr')) score += 5;
-                if (lang.includes('tr-tr')) score += 2;
-                if (/seda|filiz|yelda|female|kadin/.test(name)) score += 6;
-                if (/google|microsoft|online|natural/.test(name)) score += 2;
-                if (!lang.startsWith('tr') && /samantha|serena|victoria|aria|jenny|zira|emma|amy|joanna/.test(name)) score += 1;
-                return score;
+                let s = 0;
+                const n = (v.name || '').toLowerCase(), l = (v.lang || '').toLowerCase();
+                if (l.startsWith('tr')) s += 5;
+                if (l.includes('tr-tr')) s += 2;
+                if (/seda|filiz|yelda|female|kadin/.test(n)) s += 6;
+                if (/google|microsoft|online|natural/.test(n)) s += 2;
+                if (!l.startsWith('tr') && /samantha|serena|victoria|aria|jenny|zira|emma|amy|joanna/.test(n)) s += 1;
+                return s;
             }
 
-            function pickVoice(preferredName = null) {
+            function pickVoice(preferred) {
                 const vs = listVoicesSafe();
                 if (!vs.length) return null;
-                if (preferredName) {
-                    const found = vs.find(v => v.name === preferredName);
-                    if (found) return found;
+                if (preferred) {
+                    const f = vs.find(v => v.name === preferred);
+                    if (f) return f;
                 }
                 const ranked = [...vs].sort((a, b) => rankVoice(b) - rankVoice(a));
-                const trBest = ranked.find(v => (v.lang || '').toLowerCase().startsWith('tr'));
-                return trBest || ranked[0] || null;
+                return ranked.find(v => (v.lang || '').toLowerCase().startsWith('tr')) || ranked[0] || null;
             }
 
             function initVoicesOnce() {
@@ -993,25 +1155,15 @@
             }
 
             function cleanForTTS(s) {
-                return (s || '')
-                    .replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1')
-                    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-                    .replace(/https?:\/\/\S+|www\.\S+|\S+@\S+/g, ' ')
-                    .replace(/\bM\.?S\.?\b/gi, ' ')
-                    .replace(/(>=|<=|=>|->|<-|==|!=|≈|±|↔|⇒|⇔|→|←|≥|≤)/g, ' ')
-                    .replace(/[=+\-/*<>|\\^~`_%$€£¥©®™°\[\]{}()@#:;]/g, ' ')
-                    .replace(/[`*_#>{}<~^]+/g, ' ')
-                    .replace(/[!?]{2,}/g, '!')
-                    .replace(/\.{3,}/g, '.')
-                    .replace(/\s+/g, ' ')
-                    .trim();
+                return (s || "").replace(/!\[[^\]]*\]\([^)]+\)/g, '$1').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/https?:\/\/\S+|www\.\S+|\S+@\S+/g, ' ').replace(/\bM\.?S\.?\b/gi, ' ').replace(/(>=|<=|=>|->|<-|==|!=|≈|±|↔|⇒|⇔|→|←|≥|≤)/g, ' ').replace(/[=+\-/*<>|\\^~`_%$€£¥©®™°\[\]{}()@#:;]/g, ' ').replace(/[`*_#>{}<~^]+/g, ' ').replace(/[!?]{2,}/g, '!').replace(/\.{3,}/g, '.').replace(/\s+/g, ' ').trim();
             }
 
             function ttsStop() {
                 try {
-                    speechSynthesis.cancel?.();
+                    speechSynthesis.cancel?.()
                 } catch {
                 }
+                ;
                 try {
                     if (tts.audio) {
                         tts.audio.pause();
@@ -1026,104 +1178,6 @@
                 }
             }
 
-            async function ttsSpeak(text) {
-                if (!tts.enabled) return;
-                const raw = (text || '');
-                const clean = cleanForTTS(raw);
-                if (!clean) return;
-
-                // ---- FRONTEND LOGS: before request
-                dlog('TTS ▶ REQUEST', {
-                    provider: 'polly',
-                    voice: 'Burcu',
-                    len_raw: raw.length,
-                    len_clean: clean.length,
-                    raw_preview: raw.slice(0, 160),
-                    clean_preview: clean.slice(0, 160)
-                });
-
-                // 1) Server TTS (Polly)
-                try {
-                    const startedAt = Date.now();
-                    const res = await fetch(ttsEndpoint, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({text: clean, provider: 'polly', voice: 'Burcu'})
-                    });
-
-                    const hdr = (name) => res.headers.get(name) || '';
-                    const meta = {
-                        ok: res.ok,
-                        status: res.status,
-                        x_provider: hdr('X-TTS-Provider'),
-                        x_voice: hdr('X-TTS-Voice'),
-                        x_engine: hdr('X-TTS-Engine'),
-                        x_path: hdr('X-TTS-Path'),
-                        x_chars: hdr('X-TTS-Chars'),
-                        x_cache: hdr('X-TTS-Cache') // present only on cache hits
-                    };
-
-                    if (!res.ok) {
-                        const errText = await res.text();
-                        dlog('TTS ◀ ERROR', {...meta, errText: errText.slice(0, 200)});
-                        throw new Error(errText);
-                    }
-
-                    const blob = await res.blob();
-                    const url = URL.createObjectURL(blob);
-                    const dur = Date.now() - startedAt;
-
-                    dlog('TTS ◀ OK', {...meta, blob_bytes: blob.size, ms: dur});
-
-                    ttsStop(); // stop any previous
-                    tts.audio = new Audio(url);
-                    tts.lastUrl = url;
-
-                    // ---- FRONTEND LOGS: audio playback lifecycle
-                    tts.audio.onplay = () => dlog('TTS ♪ PLAY');
-                    tts.audio.onended = () => {
-                        dlog('TTS ♪ ENDED');
-                        try {
-                            URL.revokeObjectURL(url);
-                        } catch {
-                        }
-                        if (tts.lastUrl === url) tts.lastUrl = null;
-                    };
-                    tts.audio.onerror = (e) => dlog('TTS ♪ AUDIO ERROR', e?.message || e);
-                    tts.audio.onpause = () => dlog('TTS ♪ PAUSE');
-
-                    await tts.audio.play().catch(e => dlog('TTS ♪ play() failed', e?.message || e));
-                    return; // success
-                } catch (e) {
-                    console.warn('Server TTS (Polly) failed; falling back to browser TTS', e);
-                }
-
-                // 2) Fallback: browser SpeechSynthesis (still logs)
-                try {
-                    if (!ttsSupported()) return;
-                    speechSynthesis.cancel?.();
-                    const u = new SpeechSynthesisUtterance(clean);
-                    tts.voice = tts.voice || pickVoice(tts.chosenName);
-                    if (tts.voice) {
-                        u.voice = tts.voice;
-                        u.lang = tts.voice.lang;
-                    } else {
-                        u.lang = 'tr-TR';
-                    }
-                    u.rate = tts.rate;
-                    u.pitch = tts.pitch;
-                    u.volume = tts.volume;
-
-                    u.onstart = () => dlog('TTS ♫ BROWSER start', {voice: u.voice?.name, lang: u.lang});
-                    u.onend = () => dlog('TTS ♫ BROWSER end');
-                    u.onerror = (e) => dlog('TTS ♫ BROWSER error', e?.error || e);
-
-                    speechSynthesis.speak(u);
-                } catch (err) {
-                    console.warn('Browser TTS failed', err);
-                }
-            }
-
             function updateTtsBtn() {
                 if (!ttsBtn) return;
                 ttsBtn.classList.toggle('on', tts.enabled);
@@ -1132,16 +1186,13 @@
                 if (tts.voice) ttsBtn.title = `Sesi ${tts.enabled ? 'kapat' : 'aç'} · ${tts.voice.name}`;
             }
 
-            // Toggle ON/OFF (no longer requires browser TTS support — server TTS works anywhere)
             ttsBtn?.addEventListener('click', (ev) => {
-                if (ev.altKey) return; // alt-click handled below
+                if (ev.altKey) return;
                 tts.enabled = !tts.enabled;
                 if (tts.enabled && ttsSupported()) initVoicesOnce();
                 if (!tts.enabled) ttsStop();
                 updateTtsBtn();
             });
-
-            // Alt+Click to cycle Turkish voices for the *browser fallback* only
             ttsBtn?.addEventListener('click', (ev) => {
                 if (!ev.altKey) return;
                 ev.preventDefault();
@@ -1158,286 +1209,111 @@
                     tts.chosenName = next.name;
                     localStorage.setItem('ttw_tts_voice', next.name);
                     updateTtsBtn();
-                    if (tts.enabled) ttsSpeak('Ses seçildi.');
                 }
             });
-
             updateTtsBtn();
             if (ttsSupported()) initVoicesOnce();
 
-            // ---------- Voice input helpers ----------
-            function srSupported() {
-                return !!SR;
-            }
-
-            function showBar(on) {
-                if (!bar) return;
-                bar.hidden = !on;
-                active = on;
-                if (!on) {
-                    finalBuf = '';
-                    interimBuf = '';
-                    if (preview) preview.textContent = '';
-                }
-            }
-
-            function setListening(on) {
-                listening = on;
-                voiceB?.classList.toggle('is-recording', on);
-                voiceB?.setAttribute('aria-pressed', on ? 'true' : 'false');
-                bar?.classList.toggle('paused', !on);
-                if (togB) togB.textContent = on ? 'Duraklat' : 'Devam';
-            }
-
-            function updatePreview() {
-                if (!preview) return;
-                const txt = (finalBuf + ' ' + interimBuf).replace(/\s+/g, ' ').trim();
-                preview.textContent = txt || 'Dinleniyor...';
-            }
-
-            function srStop() {
-                try {
-                    rec && rec.stop();
-                } catch {
-                }
-                setListening(false);
-            }
-
-            function srStart() {
-                if (starting || listening) return;
-                if (!srSupported()) {
-                    console.warn('Tarayıcınızda sesle yazma desteklenmiyor.');
-                    if (voiceB) voiceB.disabled = true;
-                    return;
-                }
-                starting = true;
-                if (!active) showBar(true);
-                rec = new SR();
-                rec.lang = 'tr-TR';
-                rec.interimResults = true;
-                rec.continuous = false;
-
-                rec.onstart = () => {
-                    starting = false;
-                    setListening(true);
-                };
-                rec.onresult = (e) => {
-                    interimBuf = '';
-                    for (let i = e.resultIndex; i < e.results.length; i++) {
-                        const chunk = e.results[i][0].transcript;
-                        if (e.results[i].isFinal) finalBuf += chunk + ' ';
-                        else interimBuf += chunk;
-                    }
-                    updatePreview();
-                };
-                rec.onerror = () => {
-                    setListening(false);
-                };
-                rec.onend = () => {
-                    setListening(false);
-                    updatePreview();
-                };
-
-                try {
-                    rec.start();
-                } catch (err) {
-                    starting = false;
-                    console.warn('SR start failed:', err);
-                }
-            }
-
-            // Mic button: first click opens bar + starts; subsequent clicks toggle pause/resume
-            voiceB?.addEventListener('click', () => {
-                if (!srSupported()) {
-                    console.warn('Tarayıcınızda sesle yazma desteklenmiyor.');
-                    if (voiceB) voiceB.disabled = true;
-                    return;
-                }
-                if (!active) {
-                    showBar(true);
-                    srStart();
-                    return;
-                }
-                listening ? srStop() : srStart();
-            });
-
-            // Voice bar controls
-            togB?.addEventListener('click', () => {
-                listening ? srStop() : srStart();
-            });
-            okB?.addEventListener('click', () => {
-                srStop();
-                const txt = (finalBuf + ' ' + interimBuf).replace(/\s+/g, ' ').trim();
-                if (txt) {
-                    input.value = (input.value ? (input.value.trim() + ' ') : '') + txt;
-                    input.focus();
-                }
-                showBar(false);
-            });
-            cancelB?.addEventListener('click', () => {
-                srStop();
-                showBar(false);
-            });
-            input?.addEventListener('keydown', () => {
-                if (listening) srStop();
-            });
-
-            // Stop & hide voice mode when modal closes
-            const mo = new MutationObserver(() => {
-                if (!document.body.classList.contains('tw-modal-open')) {
-                    srStop();
-                    showBar(false);
-                }
-            });
-            mo.observe(document.body, {attributes: true, attributeFilter: ['class']});
-
-            // ---------- Sending / WebSocket ----------
-            form?.addEventListener('submit', e => {
-                e.preventDefault();
-                e.stopPropagation();
-            });
-            sendB?.addEventListener('click', e => {
-                e.preventDefault();
-                e.stopPropagation();
-                send();
-            });
-            input?.addEventListener('keydown', e => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    send();
-                }
-            });
-
+            // base + endpoints
             const base = resolveEndpoint(root, opts);
-            const httpBase = base.replace(/^wss:/, 'https:').replace(/^ws:/, 'http:').replace(/\/ws.*/, '');
-            const ttsEndpoint = httpBase + '/tts';
-            // ---- Simple audio queue so we can TTS while typing ----
-            const ttsQ = {
-                playing: false,
-                q: [],
-                async enqueue(text) {
-                    if (!tts.enabled) return;
-                    const raw = (text || '');
-                    const clean = cleanForTTS(raw);
-                    if (!clean) return;
+            const httpBase = base.replace(/^wss:/, "https:").replace(/^ws:/, "http:").replace(/\/ws.*/, "");
+            const ttsEndpoint = httpBase + "/tts";
 
-                    // NEW: log the outgoing request
-                    dlog('TTSQ ▶ REQUEST', {
-                        len_raw: raw.length,
-                        len_clean: clean.length,
-                        preview: clean.slice(0, 160)
-                    });
+            // prepare TTS and get duration for sync
+            async function speakAndGetDuration(text) {
+                if (!tts.enabled) return {
+                    play: async () => {
+                    }, durationMs: 0
+                };
+                const clean = cleanForTTS(text || "");
+                if (!clean) return {
+                    play: async () => {
+                    }, durationMs: 0
+                };
+                const res = await fetch(ttsEndpoint, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({text: clean, provider: 'polly', voice: 'Burcu'})
+                });
+                if (!res.ok) return {
+                    play: async () => {
+                    }, durationMs: 0
+                };
+                const blob = await res.blob();
+                const url = URL.createObjectURL(blob);
 
-                    try {
-                        const startedAt = Date.now();
-                        const res = await fetch(ttsEndpoint, {
-                            method: 'POST',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify({text: clean, provider: 'polly', voice: 'Burcu'})
-                        });
-                        if (!res.ok) {
-                            const err = await res.text();
-                            dlog('TTSQ ◀ ERROR', {status: res.status, err: err.slice(0, 180)});
-                            return;
-                        }
-                        const blob = await res.blob();
-                        const url = URL.createObjectURL(blob);
+                // probe duration
+                const probe = new Audio();
+                const durationMs = await new Promise(r => {
+                    probe.preload = 'metadata';
+                    probe.src = url;
+                    probe.onloadedmetadata = () => r(Math.max(0, (probe.duration || 0) * 1000));
+                    probe.onerror = () => r(0);
+                });
 
-                        // NEW: log OK + timing
-                        dlog('TTSQ ◀ OK', {status: res.status, bytes: blob.size, ms: Date.now() - startedAt});
-
-                        this.q.push(url);
-                        this.playNext();
-                    } catch (e) {
-                        dlog('TTSQ ◀ EXC', e?.message || e);
-                    }
-                },
-
-                playNext() {
-                    if (this.playing || !this.q.length) return;
-                    const url = this.q.shift();
-
+                const play = () => new Promise(resolve => {
                     try {
                         if (tts.audio) tts.audio.pause();
                     } catch {
                     }
-                    if (tts.lastUrl) {
-                        try {
-                            URL.revokeObjectURL(tts.lastUrl);
-                        } catch {
-                        }
-                    }
-
                     tts.audio = new Audio(url);
                     tts.lastUrl = url;
-                    this.playing = true;
-
-                    // NEW: add lifecycle logs to the queued audio element
-                    tts.audio.onplay = () => dlog('TTS ♪ PLAY');
-                    tts.audio.onpause = () => dlog('TTS ♪ PAUSE');
-                    tts.audio.onerror = (e) => dlog('TTS ♪ AUDIO ERROR', e?.message || e);
                     tts.audio.onended = () => {
-                        dlog('TTS ♪ ENDED');
                         try {
                             URL.revokeObjectURL(url);
                         } catch {
                         }
                         if (tts.lastUrl === url) tts.lastUrl = null;
-                        this.playing = false;
-                        this.playNext();
+                        resolve();
                     };
+                    tts.audio.play().catch(() => resolve());
+                });
 
-                    tts.audio.play().catch(e => {
-                        dlog('TTS ♪ play() failed', e?.message || e);
-                        this.playing = false;
-                        this.playNext();
-                    });
-                },
+                return {play, durationMs: durationMs || Math.max(1200, clean.length * 55)};
+            }
 
-                clear() {
-                    this.q.length = 0;
-                    this.playing = false;
-                    try {
-                        if (tts.audio) {
-                            tts.audio.pause();
-                            tts.audio.src = '';
-                            tts.audio = null;
+            // typewriter that accepts msPerChar
+            function typeWriter(el, text, msPerChar = 16) {
+                return new Promise(res => {
+                    const full = normalizeMd(text || "");
+                    let i = 0, len = full.length;
+                    const id = setInterval(() => {
+                        i++;
+                        el.innerHTML = marked.parse(full.slice(0, i));
+                        if (i >= len) {
+                            clearInterval(id);
+                            res();
                         }
-                    } catch {
-                    }
-                    if (tts.lastUrl) {
-                        try {
-                            URL.revokeObjectURL(tts.lastUrl);
-                        } catch {
-                        }
-                        tts.lastUrl = null;
-                    }
-                }
-            };
-            // put this inside mount(), after the ttsQ declaration
+                    }, msPerChar);
+                });
+            }
+
+            // assistant render with sync
             const renderAssistantReply = async (chatEl, fullText) => {
                 const steps = splitSteps(fullText).slice(0, 8);
-
-                for (let i = 0; i < steps.length; i++) {
+                for (const step of steps) {
                     const remove = showTyping(chatEl);
-
-                    // create bubble now
                     const w = document.createElement('div');
                     w.className = 'ttw-b a';
                     chatEl.appendChild(w);
                     chatEl.scrollTop = chatEl.scrollHeight;
-
                     remove();
 
-                    dlog('ASSIST step', `${i + 1}/${steps.length}`, `chars=${steps[i].length}`);
+                    let msPerChar = 16;
+                    let playAudio = async () => {
+                    };
+                    try {
+                        const {play, durationMs} = await speakAndGetDuration(step);
+                        playAudio = play;
+                        if (durationMs && step.length) {
+                            msPerChar = Math.ceil(durationMs / step.length);
+                            msPerChar = Math.min(Math.max(msPerChar, 8), 64);
+                        }
+                    } catch {
+                    }
 
-                    // start TTS for this step right away (plays while typewriter runs)
-                    if (tts.enabled) ttsQ.enqueue(steps[i]);
+                    await Promise.all([typeWriter(w, step, msPerChar), playAudio()]);
 
-                    // typewriter effect
-                    await typeWriter(w, steps[i]);
-
-                    // timestamp
                     const ts = document.createElement('div');
                     ts.className = 'ttw-ts';
                     ts.textContent = new Date().toLocaleTimeString();
@@ -1445,8 +1321,9 @@
                 }
             };
 
+            // ---------- WS ----------
             const url = base + (base.includes('?') ? '&' : '?') + 'client_id=' + encodeURIComponent(getSid());
-            let ws = null, open = false, queue = [];
+            let ws = null, open = false, q = [];
             let typingHintRemove = null;
 
             function connect() {
@@ -1456,9 +1333,9 @@
                     ws.addEventListener('open', () => {
                         open = true;
                         dlog('WS open');
-                        while (queue.length) {
+                        while (q.length) {
                             try {
-                                ws.send(queue.shift());
+                                ws.send(q.shift());
                             } catch {
                                 break;
                             }
@@ -1487,22 +1364,20 @@
                         dlog('WS send err', e);
                     }
                 } else {
-                    queue.push(s);
+                    q.push(s);
                     dlog('WS queued', s);
                 }
             }
 
             function send() {
-                const txt = (input?.value || '').trim();
+                const txt = (input?.value || "").trim();
                 if (!txt) return;
-                ttsQ.clear();                 // ⬅️ stop any playing audio when user sends
-                addBubble(chat, txt, 'user');
+                addBubble(chat, txt, "user");
                 typingHintRemove?.();
                 typingHintRemove = showTyping(chat);
                 sendRaw(txt);
-                if (input) input.value = '';
+                if (input) input.value = "";
             }
-
 
             async function onMsg(ev) {
                 dlog('WS ←', ev.data);
@@ -1511,23 +1386,18 @@
                     typingHintRemove = null;
                 } catch {
                 }
-
                 try {
                     const data = JSON.parse(ev.data);
+                    if (data.reply) await renderAssistantReply(chat, data.reply);
 
-                    if (data.reply) {
-                        await renderAssistantReply(chat, data.reply);
-                    }
-
-                    // normalize potential urls list into gallery
                     let urls = data.urls;
-                    if (typeof urls === 'string') {
+                    if (typeof urls === "string") {
                         try {
                             urls = JSON.parse(urls);
                         } catch {
                         }
                     }
-                    if (!Array.isArray(urls) && typeof data.reply === 'string') {
+                    if (!Array.isArray(urls) && typeof data.reply === "string") {
                         const m = data.reply.match(/"urls"\s*:\s*(\[[\s\S]*?\])/);
                         if (m) {
                             try {
@@ -1552,6 +1422,28 @@
                 }
             }
 
+            form?.addEventListener('submit', e => {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+            sendB?.addEventListener('click', e => {
+                e.preventDefault();
+                e.stopPropagation();
+                send();
+            });
+            input?.addEventListener('keydown', e => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    send();
+                }
+            });
+
+            // stop voice when modal closes
+            const mo = new MutationObserver(() => {
+                if (!document.body.classList.contains('tw-modal-open')) srStop();
+            });
+            mo.observe(document.body, {attributes: true, attributeFilter: ['class']});
+
             connect();
             const first = (opts.initialText || '').trim();
             if (first) {
@@ -1564,19 +1456,19 @@
             return {
                 destroy() {
                     try {
-                        srStop();
+                        srStop()
                     } catch {
                     }
                     try {
-                        mo.disconnect();
+                        mo.disconnect()
                     } catch {
                     }
                     try {
-                        ttsStop();
+                        ttsStop()
                     } catch {
                     }
                     try {
-                        ws?.close();
+                        ws?.close()
                     } catch {
                     }
                 }
@@ -1588,7 +1480,7 @@
 
         // auto-init
         document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('[data-ttw-chatbot][data-autoinit]').forEach(root => mount(root, {}))
+            document.querySelectorAll('[data-ttw-chatbot][data-autoinit]').forEach(root => mount(root, {}));
         });
         window.addEventListener('error', e => dlog('window error', e.message || e));
         window.addEventListener('unhandledrejection', e => dlog('promise rejection', e.reason || e));
